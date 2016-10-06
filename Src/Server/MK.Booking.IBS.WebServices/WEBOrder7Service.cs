@@ -24,435 +24,432 @@ using System.Xml.Serialization;
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Web.Services.WebServiceBindingAttribute(Name = "IWEBOrder_7binding", Namespace = "http://tempuri.org/")]
+[System.Web.Services.WebServiceBindingAttribute(Name="IWEBOrder_7binding", Namespace="http://tempuri.org/")]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBannedZone))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TException))]
-public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol
-{
-
+public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol {
+    
     private System.Threading.SendOrPostCallback GetOrderStatusOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrderOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrderWrapperOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback CancelBookOrderOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetHeartBeatOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback DeleteBookOrderOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetFareTollsDistanceOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetVehicleLocationOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetDriverLocationOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SendDriverMsgOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveExtrPaymentOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveExtrPayment_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveExtrPayment_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNoOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderHistoryOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrderWithCarOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback AddressCorrelationOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNo_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderHistory_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetVehicleLocationWithTaxiNoOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback CancelBookOrder_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNo_5OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_5OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderHistory_5OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_5OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBannedZonesOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNo_6OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_6OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderHistory_6OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_6OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback CancelRunOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback CancelSROrderOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetAvailableVehiclesOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetAvailableVehicles_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetAvailableVehicles_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetAvailableVehicles_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrderByConfirmationNo_7OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetBookOrder_7OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderHistory_7OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrderStatus_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatusOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatus_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatus_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatus_4OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatus_5OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetOrdersStatus_6OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetRunOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetVehicleLocationWithTaxiNoCompOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_7OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_8OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveRunOperationCompleted;
-
+    
+    private System.Threading.SendOrPostCallback SaveTripValuesOperationCompleted;
+    
     private System.Threading.SendOrPostCallback SendDriverMsg_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SendMsg_3dPartyPaymentAuthOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SendMsg_3dPartyPaymentNotificationOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback UpdateJobPaymentTypeOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateFareOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateFare_8OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_9OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateFare_9OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateFare_10OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateDistanceOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateDistance_2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback EstimateDistance_3OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback RideCurrentFareOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SendP2DCallOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_10OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_11OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_12OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback GetVehicleCandidatesOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback UpdateJobToVehicleOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SendMsg_3dPartyPaymentAuth2OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback UpdateDestinationAddressOperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_13OperationCompleted;
-
+    
     private System.Threading.SendOrPostCallback SaveBookOrder_14OperationCompleted;
-
-    private System.Threading.SendOrPostCallback SaveBookOrder_15OperationCompleted;
-
+    
     /// <remarks/>
-    public WebOrder7Service()
-    {
-        this.Url = "http://64.179.222.39:6928/xds_iaspi.dll/soap/IWEBOrder_7";
+    public WebOrder7Service() {
+        this.Url = "http://204.101.4.78/IBSCabStaging/IBSCab.dll/soap/IWEBOrder_7";
     }
-
+    
     /// <remarks/>
     public event GetOrderStatusCompletedEventHandler GetOrderStatusCompleted;
-
+    
     /// <remarks/>
     public event GetBookOrderCompletedEventHandler GetBookOrderCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrderCompletedEventHandler SaveBookOrderCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrderWrapperCompletedEventHandler SaveBookOrderWrapperCompleted;
-
+    
     /// <remarks/>
     public event CancelBookOrderCompletedEventHandler CancelBookOrderCompleted;
-
+    
     /// <remarks/>
     public event GetHeartBeatCompletedEventHandler GetHeartBeatCompleted;
-
-    /// <remarks/>fv
+    
+    /// <remarks/>
     public event DeleteBookOrderCompletedEventHandler DeleteBookOrderCompleted;
-
+    
     /// <remarks/>
     public event GetFareTollsDistanceCompletedEventHandler GetFareTollsDistanceCompleted;
-
+    
     /// <remarks/>
     public event GetVehicleLocationCompletedEventHandler GetVehicleLocationCompleted;
-
+    
     /// <remarks/>
     public event GetDriverLocationCompletedEventHandler GetDriverLocationCompleted;
-
+    
     /// <remarks/>
     public event SendDriverMsgCompletedEventHandler SendDriverMsgCompleted;
-
+    
     /// <remarks/>
     public event SaveExtrPaymentCompletedEventHandler SaveExtrPaymentCompleted;
-
+    
     /// <remarks/>
     public event SaveExtrPayment_2CompletedEventHandler SaveExtrPayment_2Completed;
-
+    
     /// <remarks/>
     public event SaveExtrPayment_3CompletedEventHandler SaveExtrPayment_3Completed;
-
+    
     /// <remarks/>
     public event GetBookOrder_2CompletedEventHandler GetBookOrder_2Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_2CompletedEventHandler SaveBookOrder_2Completed;
-
+    
     /// <remarks/>
     public event GetBookOrderByConfirmationNoCompletedEventHandler GetBookOrderByConfirmationNoCompleted;
-
+    
     /// <remarks/>
     public event GetBookOrder_3CompletedEventHandler GetBookOrder_3Completed;
-
+    
     /// <remarks/>
     public event GetOrderHistoryCompletedEventHandler GetOrderHistoryCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrderWithCarCompletedEventHandler SaveBookOrderWithCarCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrder_3CompletedEventHandler SaveBookOrder_3Completed;
-
+    
     /// <remarks/>
     public event AddressCorrelationCompletedEventHandler AddressCorrelationCompleted;
-
+    
     /// <remarks/>
     public event GetBookOrderByConfirmationNo_4CompletedEventHandler GetBookOrderByConfirmationNo_4Completed;
-
+    
     /// <remarks/>
     public event GetBookOrder_4CompletedEventHandler GetBookOrder_4Completed;
-
+    
     /// <remarks/>
     public event GetOrderHistory_4CompletedEventHandler GetOrderHistory_4Completed;
-
+    
     /// <remarks/>
     public event GetVehicleLocationWithTaxiNoCompletedEventHandler GetVehicleLocationWithTaxiNoCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrder_4CompletedEventHandler SaveBookOrder_4Completed;
-
+    
     /// <remarks/>
     public event CancelBookOrder_2CompletedEventHandler CancelBookOrder_2Completed;
-
+    
     /// <remarks/>
     public event GetBookOrderByConfirmationNo_5CompletedEventHandler GetBookOrderByConfirmationNo_5Completed;
-
+    
     /// <remarks/>
     public event GetBookOrder_5CompletedEventHandler GetBookOrder_5Completed;
-
+    
     /// <remarks/>
     public event GetOrderHistory_5CompletedEventHandler GetOrderHistory_5Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_5CompletedEventHandler SaveBookOrder_5Completed;
-
+    
     /// <remarks/>
     public event GetBannedZonesCompletedEventHandler GetBannedZonesCompleted;
-
+    
     /// <remarks/>
     public event GetBookOrderByConfirmationNo_6CompletedEventHandler GetBookOrderByConfirmationNo_6Completed;
-
+    
     /// <remarks/>
     public event GetBookOrder_6CompletedEventHandler GetBookOrder_6Completed;
-
+    
     /// <remarks/>
     public event GetOrderHistory_6CompletedEventHandler GetOrderHistory_6Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_6CompletedEventHandler SaveBookOrder_6Completed;
-
+    
     /// <remarks/>
     public event CancelRunCompletedEventHandler CancelRunCompleted;
-
+    
     /// <remarks/>
     public event CancelSROrderCompletedEventHandler CancelSROrderCompleted;
-
+    
     /// <remarks/>
     public event GetAvailableVehiclesCompletedEventHandler GetAvailableVehiclesCompleted;
-
+    
     /// <remarks/>
     public event GetAvailableVehicles_2CompletedEventHandler GetAvailableVehicles_2Completed;
-
+    
     /// <remarks/>
     public event GetAvailableVehicles_3CompletedEventHandler GetAvailableVehicles_3Completed;
-
+    
     /// <remarks/>
     public event GetAvailableVehicles_4CompletedEventHandler GetAvailableVehicles_4Completed;
-
+    
     /// <remarks/>
     public event GetBookOrderByConfirmationNo_7CompletedEventHandler GetBookOrderByConfirmationNo_7Completed;
-
+    
     /// <remarks/>
     public event GetBookOrder_7CompletedEventHandler GetBookOrder_7Completed;
-
+    
     /// <remarks/>
     public event GetOrderHistory_7CompletedEventHandler GetOrderHistory_7Completed;
-
+    
     /// <remarks/>
     public event GetOrderStatus_2CompletedEventHandler GetOrderStatus_2Completed;
-
+    
     /// <remarks/>
     public event GetOrdersStatusCompletedEventHandler GetOrdersStatusCompleted;
-
+    
     /// <remarks/>
     public event GetOrdersStatus_2CompletedEventHandler GetOrdersStatus_2Completed;
-
+    
     /// <remarks/>
     public event GetOrdersStatus_3CompletedEventHandler GetOrdersStatus_3Completed;
-
+    
     /// <remarks/>
     public event GetOrdersStatus_4CompletedEventHandler GetOrdersStatus_4Completed;
-
+    
     /// <remarks/>
     public event GetOrdersStatus_5CompletedEventHandler GetOrdersStatus_5Completed;
-
+    
     /// <remarks/>
     public event GetOrdersStatus_6CompletedEventHandler GetOrdersStatus_6Completed;
-
+    
     /// <remarks/>
     public event GetRunCompletedEventHandler GetRunCompleted;
-
+    
     /// <remarks/>
     public event GetVehicleLocationWithTaxiNoCompCompletedEventHandler GetVehicleLocationWithTaxiNoCompCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrder_7CompletedEventHandler SaveBookOrder_7Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_8CompletedEventHandler SaveBookOrder_8Completed;
-
+    
     /// <remarks/>
     public event SaveRunCompletedEventHandler SaveRunCompleted;
-
+    
+    /// <remarks/>
+    public event SaveTripValuesCompletedEventHandler SaveTripValuesCompleted;
+    
     /// <remarks/>
     public event SendDriverMsg_2CompletedEventHandler SendDriverMsg_2Completed;
-
+    
     /// <remarks/>
     public event SendMsg_3dPartyPaymentAuthCompletedEventHandler SendMsg_3dPartyPaymentAuthCompleted;
-
+    
     /// <remarks/>
     public event SendMsg_3dPartyPaymentNotificationCompletedEventHandler SendMsg_3dPartyPaymentNotificationCompleted;
-
+    
     /// <remarks/>
     public event UpdateJobPaymentTypeCompletedEventHandler UpdateJobPaymentTypeCompleted;
-
+    
     /// <remarks/>
     public event EstimateFareCompletedEventHandler EstimateFareCompleted;
-
+    
     /// <remarks/>
     public event EstimateFare_8CompletedEventHandler EstimateFare_8Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_9CompletedEventHandler SaveBookOrder_9Completed;
-
+    
     /// <remarks/>
     public event EstimateFare_9CompletedEventHandler EstimateFare_9Completed;
-
+    
     /// <remarks/>
     public event EstimateFare_10CompletedEventHandler EstimateFare_10Completed;
-
+    
     /// <remarks/>
     public event EstimateDistanceCompletedEventHandler EstimateDistanceCompleted;
-
+    
     /// <remarks/>
     public event EstimateDistance_2CompletedEventHandler EstimateDistance_2Completed;
-
+    
     /// <remarks/>
     public event EstimateDistance_3CompletedEventHandler EstimateDistance_3Completed;
-
+    
     /// <remarks/>
     public event RideCurrentFareCompletedEventHandler RideCurrentFareCompleted;
-
+    
     /// <remarks/>
     public event SendP2DCallCompletedEventHandler SendP2DCallCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrder_10CompletedEventHandler SaveBookOrder_10Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_11CompletedEventHandler SaveBookOrder_11Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_12CompletedEventHandler SaveBookOrder_12Completed;
-
+    
     /// <remarks/>
     public event GetVehicleCandidatesCompletedEventHandler GetVehicleCandidatesCompleted;
-
+    
     /// <remarks/>
     public event UpdateJobToVehicleCompletedEventHandler UpdateJobToVehicleCompleted;
-
+    
     /// <remarks/>
     public event SendMsg_3dPartyPaymentAuth2CompletedEventHandler SendMsg_3dPartyPaymentAuth2Completed;
-
+    
     /// <remarks/>
     public event UpdateDestinationAddressCompletedEventHandler UpdateDestinationAddressCompleted;
-
+    
     /// <remarks/>
     public event SaveBookOrder_13CompletedEventHandler SaveBookOrder_13Completed;
-
+    
     /// <remarks/>
     public event SaveBookOrder_14CompletedEventHandler SaveBookOrder_14Completed;
-
+    
     /// <remarks/>
-    public event SaveBookOrder_15CompletedEventHandler SaveBookOrder_15Completed;
-
-    /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TWEBOrderStatusValue GetOrderStatus(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TWEBOrderStatusValue GetOrderStatus(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetOrderStatus", new object[] {
                     Login,
                     Password,
@@ -462,10 +459,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TWEBOrderStatusValue)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderStatus(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderStatus(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderStatus", new object[] {
                     Login,
                     Password,
@@ -474,25 +470,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue EndGetOrderStatus(System.IAsyncResult asyncResult)
-    {
+    public TWEBOrderStatusValue EndGetOrderStatus(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TWEBOrderStatusValue)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderStatusAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetOrderStatusAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetOrderStatusAsync(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderStatusAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetOrderStatusOperationCompleted == null))
-        {
+    public void GetOrderStatusAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetOrderStatusOperationCompleted == null)) {
             this.GetOrderStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderStatusOperationCompleted);
         }
         this.InvokeAsync("GetOrderStatus", new object[] {
@@ -503,21 +495,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetOrderStatusOperationCompleted, userState);
     }
-
-    private void OnGetOrderStatusOperationCompleted(object arg)
-    {
-        if ((this.GetOrderStatusCompleted != null))
-        {
+    
+    private void OnGetOrderStatusOperationCompleted(object arg) {
+        if ((this.GetOrderStatusCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderStatusCompleted(this, new GetOrderStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder GetBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder GetBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder", new object[] {
                     Login,
                     Password,
@@ -527,10 +516,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder", new object[] {
                     Login,
                     Password,
@@ -539,25 +527,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder EndGetBookOrder(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder EndGetBookOrder(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrderAsync(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderOperationCompleted == null))
-        {
+    public void GetBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrderOperationCompleted == null)) {
             this.GetBookOrderOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderOperationCompleted);
         }
         this.InvokeAsync("GetBookOrder", new object[] {
@@ -568,55 +552,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrderOperationCompleted, userState);
     }
-
-    private void OnGetBookOrderOperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderCompleted != null))
-        {
+    
+    private void OnGetBookOrderOperationCompleted(object arg) {
+        if ((this.GetBookOrderCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderCompleted(this, new GetBookOrderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder(string Login, string Password, TBookOrder BookOrder)
-    {
+    public int SaveBookOrder(string Login, string Password, TBookOrder BookOrder) {
         object[] results = this.Invoke("SaveBookOrder", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder(string Login, string Password, TBookOrder BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder(string Login, string Password, TBookOrder BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrderAsync(string Login, string Password, TBookOrder BookOrder)
-    {
+    public void SaveBookOrderAsync(string Login, string Password, TBookOrder BookOrder) {
         this.SaveBookOrderAsync(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrderAsync(string Login, string Password, TBookOrder BookOrder, object userState)
-    {
-        if ((this.SaveBookOrderOperationCompleted == null))
-        {
+    public void SaveBookOrderAsync(string Login, string Password, TBookOrder BookOrder, object userState) {
+        if ((this.SaveBookOrderOperationCompleted == null)) {
             this.SaveBookOrderOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrderOperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder", new object[] {
@@ -624,74 +600,71 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrderOperationCompleted, userState);
     }
-
-    private void OnSaveBookOrderOperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrderCompleted != null))
-        {
+    
+    private void OnSaveBookOrderOperationCompleted(object arg) {
+        if ((this.SaveBookOrderCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrderCompleted(this, new SaveBookOrderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWrapper", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWrapper", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public int SaveBookOrderWrapper(
-                string Login,
-                string Password,
-                int ServiceProviderID,
-                int ConfirmationID,
-                int AccountID,
-                string Customer,
-                string Phone,
-                int PickupYear,
-                int PickupMonth,
-                int PickupDay,
-                int PickupHour,
-                int PickupMinute,
-                string PickupStreetPlace,
-                string PickupAptBaz,
-                string PickupPostal,
-                int PickupCityID,
-                int PickupRegionID,
-                int PickupCountryID,
-                int PickupAddressID,
-                double PickupLatitude,
-                double PickupLongitude,
-                string DropoffStreetPlace,
-                string DropoffAptBaz,
-                string DropoffPostal,
-                int DropoffCityID,
-                int DropoffRegionID,
-                int DropoffCountryID,
-                int DropoffAddressID,
-                double DropoffLatitude,
-                double DropoffLongitude,
-                int Passengers,
-                string VehicleTypeName,
-                int VehicleTypeID,
-                string Note,
-                string ContactPhone,
-                string CCNumber,
-                string CCExpMonth,
-                string CCExpYear,
-                int CCTransID,
-                TWEBOrderStatusValue OrderStatus,
-                int OrderID,
-                double Fare,
-                double Tolls,
-                double EstDistance,
-                string CCHolder,
-                string CCStartMonth,
-                string CCStartYear,
-                string CCSecurityCode,
-                string CCIssueNumber,
-                string CCTransDate,
-                TCCTransResult CCTransResult,
-                string CCRespondText,
-                string CCAuth)
-    {
+                string Login, 
+                string Password, 
+                int ServiceProviderID, 
+                int ConfirmationID, 
+                int AccountID, 
+                string Customer, 
+                string Phone, 
+                int PickupYear, 
+                int PickupMonth, 
+                int PickupDay, 
+                int PickupHour, 
+                int PickupMinute, 
+                string PickupStreetPlace, 
+                string PickupAptBaz, 
+                string PickupPostal, 
+                int PickupCityID, 
+                int PickupRegionID, 
+                int PickupCountryID, 
+                int PickupAddressID, 
+                double PickupLatitude, 
+                double PickupLongitude, 
+                string DropoffStreetPlace, 
+                string DropoffAptBaz, 
+                string DropoffPostal, 
+                int DropoffCityID, 
+                int DropoffRegionID, 
+                int DropoffCountryID, 
+                int DropoffAddressID, 
+                double DropoffLatitude, 
+                double DropoffLongitude, 
+                int Passengers, 
+                string VehicleTypeName, 
+                int VehicleTypeID, 
+                string Note, 
+                string ContactPhone, 
+                string CCNumber, 
+                string CCExpMonth, 
+                string CCExpYear, 
+                int CCTransID, 
+                TWEBOrderStatusValue OrderStatus, 
+                int OrderID, 
+                double Fare, 
+                double Tolls, 
+                double EstDistance, 
+                string CCHolder, 
+                string CCStartMonth, 
+                string CCStartYear, 
+                string CCSecurityCode, 
+                string CCIssueNumber, 
+                string CCTransDate, 
+                TCCTransResult CCTransResult, 
+                string CCRespondText, 
+                string CCAuth) {
         object[] results = this.Invoke("SaveBookOrderWrapper", new object[] {
                     Login,
                     Password,
@@ -748,65 +721,64 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCAuth});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public System.IAsyncResult BeginSaveBookOrderWrapper(
-                string Login,
-                string Password,
-                int ServiceProviderID,
-                int ConfirmationID,
-                int AccountID,
-                string Customer,
-                string Phone,
-                int PickupYear,
-                int PickupMonth,
-                int PickupDay,
-                int PickupHour,
-                int PickupMinute,
-                string PickupStreetPlace,
-                string PickupAptBaz,
-                string PickupPostal,
-                int PickupCityID,
-                int PickupRegionID,
-                int PickupCountryID,
-                int PickupAddressID,
-                double PickupLatitude,
-                double PickupLongitude,
-                string DropoffStreetPlace,
-                string DropoffAptBaz,
-                string DropoffPostal,
-                int DropoffCityID,
-                int DropoffRegionID,
-                int DropoffCountryID,
-                int DropoffAddressID,
-                double DropoffLatitude,
-                double DropoffLongitude,
-                int Passengers,
-                string VehicleTypeName,
-                int VehicleTypeID,
-                string Note,
-                string ContactPhone,
-                string CCNumber,
-                string CCExpMonth,
-                string CCExpYear,
-                int CCTransID,
-                TWEBOrderStatusValue OrderStatus,
-                int OrderID,
-                double Fare,
-                double Tolls,
-                double EstDistance,
-                string CCHolder,
-                string CCStartMonth,
-                string CCStartYear,
-                string CCSecurityCode,
-                string CCIssueNumber,
-                string CCTransDate,
-                TCCTransResult CCTransResult,
-                string CCRespondText,
-                string CCAuth,
-                System.AsyncCallback callback,
-                object asyncState)
-    {
+                string Login, 
+                string Password, 
+                int ServiceProviderID, 
+                int ConfirmationID, 
+                int AccountID, 
+                string Customer, 
+                string Phone, 
+                int PickupYear, 
+                int PickupMonth, 
+                int PickupDay, 
+                int PickupHour, 
+                int PickupMinute, 
+                string PickupStreetPlace, 
+                string PickupAptBaz, 
+                string PickupPostal, 
+                int PickupCityID, 
+                int PickupRegionID, 
+                int PickupCountryID, 
+                int PickupAddressID, 
+                double PickupLatitude, 
+                double PickupLongitude, 
+                string DropoffStreetPlace, 
+                string DropoffAptBaz, 
+                string DropoffPostal, 
+                int DropoffCityID, 
+                int DropoffRegionID, 
+                int DropoffCountryID, 
+                int DropoffAddressID, 
+                double DropoffLatitude, 
+                double DropoffLongitude, 
+                int Passengers, 
+                string VehicleTypeName, 
+                int VehicleTypeID, 
+                string Note, 
+                string ContactPhone, 
+                string CCNumber, 
+                string CCExpMonth, 
+                string CCExpYear, 
+                int CCTransID, 
+                TWEBOrderStatusValue OrderStatus, 
+                int OrderID, 
+                double Fare, 
+                double Tolls, 
+                double EstDistance, 
+                string CCHolder, 
+                string CCStartMonth, 
+                string CCStartYear, 
+                string CCSecurityCode, 
+                string CCIssueNumber, 
+                string CCTransDate, 
+                TCCTransResult CCTransResult, 
+                string CCRespondText, 
+                string CCAuth, 
+                System.AsyncCallback callback, 
+                object asyncState) {
         return this.BeginInvoke("SaveBookOrderWrapper", new object[] {
                     Login,
                     Password,
@@ -862,132 +834,128 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCRespondText,
                     CCAuth}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrderWrapper(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrderWrapper(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public void SaveBookOrderWrapperAsync(
-                string Login,
-                string Password,
-                int ServiceProviderID,
-                int ConfirmationID,
-                int AccountID,
-                string Customer,
-                string Phone,
-                int PickupYear,
-                int PickupMonth,
-                int PickupDay,
-                int PickupHour,
-                int PickupMinute,
-                string PickupStreetPlace,
-                string PickupAptBaz,
-                string PickupPostal,
-                int PickupCityID,
-                int PickupRegionID,
-                int PickupCountryID,
-                int PickupAddressID,
-                double PickupLatitude,
-                double PickupLongitude,
-                string DropoffStreetPlace,
-                string DropoffAptBaz,
-                string DropoffPostal,
-                int DropoffCityID,
-                int DropoffRegionID,
-                int DropoffCountryID,
-                int DropoffAddressID,
-                double DropoffLatitude,
-                double DropoffLongitude,
-                int Passengers,
-                string VehicleTypeName,
-                int VehicleTypeID,
-                string Note,
-                string ContactPhone,
-                string CCNumber,
-                string CCExpMonth,
-                string CCExpYear,
-                int CCTransID,
-                TWEBOrderStatusValue OrderStatus,
-                int OrderID,
-                double Fare,
-                double Tolls,
-                double EstDistance,
-                string CCHolder,
-                string CCStartMonth,
-                string CCStartYear,
-                string CCSecurityCode,
-                string CCIssueNumber,
-                string CCTransDate,
-                TCCTransResult CCTransResult,
-                string CCRespondText,
-                string CCAuth)
-    {
+                string Login, 
+                string Password, 
+                int ServiceProviderID, 
+                int ConfirmationID, 
+                int AccountID, 
+                string Customer, 
+                string Phone, 
+                int PickupYear, 
+                int PickupMonth, 
+                int PickupDay, 
+                int PickupHour, 
+                int PickupMinute, 
+                string PickupStreetPlace, 
+                string PickupAptBaz, 
+                string PickupPostal, 
+                int PickupCityID, 
+                int PickupRegionID, 
+                int PickupCountryID, 
+                int PickupAddressID, 
+                double PickupLatitude, 
+                double PickupLongitude, 
+                string DropoffStreetPlace, 
+                string DropoffAptBaz, 
+                string DropoffPostal, 
+                int DropoffCityID, 
+                int DropoffRegionID, 
+                int DropoffCountryID, 
+                int DropoffAddressID, 
+                double DropoffLatitude, 
+                double DropoffLongitude, 
+                int Passengers, 
+                string VehicleTypeName, 
+                int VehicleTypeID, 
+                string Note, 
+                string ContactPhone, 
+                string CCNumber, 
+                string CCExpMonth, 
+                string CCExpYear, 
+                int CCTransID, 
+                TWEBOrderStatusValue OrderStatus, 
+                int OrderID, 
+                double Fare, 
+                double Tolls, 
+                double EstDistance, 
+                string CCHolder, 
+                string CCStartMonth, 
+                string CCStartYear, 
+                string CCSecurityCode, 
+                string CCIssueNumber, 
+                string CCTransDate, 
+                TCCTransResult CCTransResult, 
+                string CCRespondText, 
+                string CCAuth) {
         this.SaveBookOrderWrapperAsync(Login, Password, ServiceProviderID, ConfirmationID, AccountID, Customer, Phone, PickupYear, PickupMonth, PickupDay, PickupHour, PickupMinute, PickupStreetPlace, PickupAptBaz, PickupPostal, PickupCityID, PickupRegionID, PickupCountryID, PickupAddressID, PickupLatitude, PickupLongitude, DropoffStreetPlace, DropoffAptBaz, DropoffPostal, DropoffCityID, DropoffRegionID, DropoffCountryID, DropoffAddressID, DropoffLatitude, DropoffLongitude, Passengers, VehicleTypeName, VehicleTypeID, Note, ContactPhone, CCNumber, CCExpMonth, CCExpYear, CCTransID, OrderStatus, OrderID, Fare, Tolls, EstDistance, CCHolder, CCStartMonth, CCStartYear, CCSecurityCode, CCIssueNumber, CCTransDate, CCTransResult, CCRespondText, CCAuth, null);
     }
-
+    
     /// <remarks/>
     public void SaveBookOrderWrapperAsync(
-                string Login,
-                string Password,
-                int ServiceProviderID,
-                int ConfirmationID,
-                int AccountID,
-                string Customer,
-                string Phone,
-                int PickupYear,
-                int PickupMonth,
-                int PickupDay,
-                int PickupHour,
-                int PickupMinute,
-                string PickupStreetPlace,
-                string PickupAptBaz,
-                string PickupPostal,
-                int PickupCityID,
-                int PickupRegionID,
-                int PickupCountryID,
-                int PickupAddressID,
-                double PickupLatitude,
-                double PickupLongitude,
-                string DropoffStreetPlace,
-                string DropoffAptBaz,
-                string DropoffPostal,
-                int DropoffCityID,
-                int DropoffRegionID,
-                int DropoffCountryID,
-                int DropoffAddressID,
-                double DropoffLatitude,
-                double DropoffLongitude,
-                int Passengers,
-                string VehicleTypeName,
-                int VehicleTypeID,
-                string Note,
-                string ContactPhone,
-                string CCNumber,
-                string CCExpMonth,
-                string CCExpYear,
-                int CCTransID,
-                TWEBOrderStatusValue OrderStatus,
-                int OrderID,
-                double Fare,
-                double Tolls,
-                double EstDistance,
-                string CCHolder,
-                string CCStartMonth,
-                string CCStartYear,
-                string CCSecurityCode,
-                string CCIssueNumber,
-                string CCTransDate,
-                TCCTransResult CCTransResult,
-                string CCRespondText,
-                string CCAuth,
-                object userState)
-    {
-        if ((this.SaveBookOrderWrapperOperationCompleted == null))
-        {
+                string Login, 
+                string Password, 
+                int ServiceProviderID, 
+                int ConfirmationID, 
+                int AccountID, 
+                string Customer, 
+                string Phone, 
+                int PickupYear, 
+                int PickupMonth, 
+                int PickupDay, 
+                int PickupHour, 
+                int PickupMinute, 
+                string PickupStreetPlace, 
+                string PickupAptBaz, 
+                string PickupPostal, 
+                int PickupCityID, 
+                int PickupRegionID, 
+                int PickupCountryID, 
+                int PickupAddressID, 
+                double PickupLatitude, 
+                double PickupLongitude, 
+                string DropoffStreetPlace, 
+                string DropoffAptBaz, 
+                string DropoffPostal, 
+                int DropoffCityID, 
+                int DropoffRegionID, 
+                int DropoffCountryID, 
+                int DropoffAddressID, 
+                double DropoffLatitude, 
+                double DropoffLongitude, 
+                int Passengers, 
+                string VehicleTypeName, 
+                int VehicleTypeID, 
+                string Note, 
+                string ContactPhone, 
+                string CCNumber, 
+                string CCExpMonth, 
+                string CCExpYear, 
+                int CCTransID, 
+                TWEBOrderStatusValue OrderStatus, 
+                int OrderID, 
+                double Fare, 
+                double Tolls, 
+                double EstDistance, 
+                string CCHolder, 
+                string CCStartMonth, 
+                string CCStartYear, 
+                string CCSecurityCode, 
+                string CCIssueNumber, 
+                string CCTransDate, 
+                TCCTransResult CCTransResult, 
+                string CCRespondText, 
+                string CCAuth, 
+                object userState) {
+        if ((this.SaveBookOrderWrapperOperationCompleted == null)) {
             this.SaveBookOrderWrapperOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrderWrapperOperationCompleted);
         }
         this.InvokeAsync("SaveBookOrderWrapper", new object[] {
@@ -1045,21 +1013,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCRespondText,
                     CCAuth}, this.SaveBookOrderWrapperOperationCompleted, userState);
     }
-
-    private void OnSaveBookOrderWrapperOperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrderWrapperCompleted != null))
-        {
+    
+    private void OnSaveBookOrderWrapperOperationCompleted(object arg) {
+        if ((this.SaveBookOrderWrapperCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrderWrapperCompleted(this, new SaveBookOrderWrapperCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int CancelBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public int CancelBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("CancelBookOrder", new object[] {
                     Login,
                     Password,
@@ -1069,10 +1034,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginCancelBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginCancelBookOrder(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("CancelBookOrder", new object[] {
                     Login,
                     Password,
@@ -1081,25 +1045,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndCancelBookOrder(System.IAsyncResult asyncResult)
-    {
+    public int EndCancelBookOrder(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void CancelBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void CancelBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.CancelBookOrderAsync(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void CancelBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.CancelBookOrderOperationCompleted == null))
-        {
+    public void CancelBookOrderAsync(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.CancelBookOrderOperationCompleted == null)) {
             this.CancelBookOrderOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCancelBookOrderOperationCompleted);
         }
         this.InvokeAsync("CancelBookOrder", new object[] {
@@ -1110,108 +1070,92 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.CancelBookOrderOperationCompleted, userState);
     }
-
-    private void OnCancelBookOrderOperationCompleted(object arg)
-    {
-        if ((this.CancelBookOrderCompleted != null))
-        {
+    
+    private void OnCancelBookOrderOperationCompleted(object arg) {
+        if ((this.CancelBookOrderCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.CancelBookOrderCompleted(this, new CancelBookOrderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetHeartBeat", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetHeartBeat", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TWEBTimeStamp GetHeartBeat(string Login, string Password)
-    {
+    public TWEBTimeStamp GetHeartBeat(string Login, string Password) {
         object[] results = this.Invoke("GetHeartBeat", new object[] {
                     Login,
                     Password});
         return ((TWEBTimeStamp)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetHeartBeat(string Login, string Password, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetHeartBeat(string Login, string Password, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetHeartBeat", new object[] {
                     Login,
                     Password}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp EndGetHeartBeat(System.IAsyncResult asyncResult)
-    {
+    public TWEBTimeStamp EndGetHeartBeat(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TWEBTimeStamp)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetHeartBeatAsync(string Login, string Password)
-    {
+    public void GetHeartBeatAsync(string Login, string Password) {
         this.GetHeartBeatAsync(Login, Password, null);
     }
-
+    
     /// <remarks/>
-    public void GetHeartBeatAsync(string Login, string Password, object userState)
-    {
-        if ((this.GetHeartBeatOperationCompleted == null))
-        {
+    public void GetHeartBeatAsync(string Login, string Password, object userState) {
+        if ((this.GetHeartBeatOperationCompleted == null)) {
             this.GetHeartBeatOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetHeartBeatOperationCompleted);
         }
         this.InvokeAsync("GetHeartBeat", new object[] {
                     Login,
                     Password}, this.GetHeartBeatOperationCompleted, userState);
     }
-
-    private void OnGetHeartBeatOperationCompleted(object arg)
-    {
-        if ((this.GetHeartBeatCompleted != null))
-        {
+    
+    private void OnGetHeartBeatOperationCompleted(object arg) {
+        if ((this.GetHeartBeatCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetHeartBeatCompleted(this, new GetHeartBeatCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#DeleteBookOrder", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#DeleteBookOrder", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int DeleteBookOrder(string Login, string Password, int OrderID)
-    {
+    public int DeleteBookOrder(string Login, string Password, int OrderID) {
         object[] results = this.Invoke("DeleteBookOrder", new object[] {
                     Login,
                     Password,
                     OrderID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginDeleteBookOrder(string Login, string Password, int OrderID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginDeleteBookOrder(string Login, string Password, int OrderID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("DeleteBookOrder", new object[] {
                     Login,
                     Password,
                     OrderID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndDeleteBookOrder(System.IAsyncResult asyncResult)
-    {
+    public int EndDeleteBookOrder(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void DeleteBookOrderAsync(string Login, string Password, int OrderID)
-    {
+    public void DeleteBookOrderAsync(string Login, string Password, int OrderID) {
         this.DeleteBookOrderAsync(Login, Password, OrderID, null);
     }
-
+    
     /// <remarks/>
-    public void DeleteBookOrderAsync(string Login, string Password, int OrderID, object userState)
-    {
-        if ((this.DeleteBookOrderOperationCompleted == null))
-        {
+    public void DeleteBookOrderAsync(string Login, string Password, int OrderID, object userState) {
+        if ((this.DeleteBookOrderOperationCompleted == null)) {
             this.DeleteBookOrderOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteBookOrderOperationCompleted);
         }
         this.InvokeAsync("DeleteBookOrder", new object[] {
@@ -1219,21 +1163,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderID}, this.DeleteBookOrderOperationCompleted, userState);
     }
-
-    private void OnDeleteBookOrderOperationCompleted(object arg)
-    {
-        if ((this.DeleteBookOrderCompleted != null))
-        {
+    
+    private void OnDeleteBookOrderOperationCompleted(object arg) {
+        if ((this.DeleteBookOrderCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.DeleteBookOrderCompleted(this, new DeleteBookOrderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetFareTollsDistance", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetFareTollsDistance", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int GetFareTollsDistance(string Login, string Password, int OrderID, ref double Fare, ref double Tolls, ref double Distance)
-    {
+    public int GetFareTollsDistance(string Login, string Password, int OrderID, ref double Fare, ref double Tolls, ref double Distance) {
         object[] results = this.Invoke("GetFareTollsDistance", new object[] {
                     Login,
                     Password,
@@ -1246,10 +1187,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         Distance = ((double)(results[3]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetFareTollsDistance(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetFareTollsDistance(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetFareTollsDistance", new object[] {
                     Login,
                     Password,
@@ -1258,28 +1198,24 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Tolls,
                     Distance}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndGetFareTollsDistance(System.IAsyncResult asyncResult, out double Fare, out double Tolls, out double Distance)
-    {
+    public int EndGetFareTollsDistance(System.IAsyncResult asyncResult, out double Fare, out double Tolls, out double Distance) {
         object[] results = this.EndInvoke(asyncResult);
         Fare = ((double)(results[1]));
         Tolls = ((double)(results[2]));
         Distance = ((double)(results[3]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetFareTollsDistanceAsync(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance)
-    {
+    public void GetFareTollsDistanceAsync(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance) {
         this.GetFareTollsDistanceAsync(Login, Password, OrderID, Fare, Tolls, Distance, null);
     }
-
+    
     /// <remarks/>
-    public void GetFareTollsDistanceAsync(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance, object userState)
-    {
-        if ((this.GetFareTollsDistanceOperationCompleted == null))
-        {
+    public void GetFareTollsDistanceAsync(string Login, string Password, int OrderID, double Fare, double Tolls, double Distance, object userState) {
+        if ((this.GetFareTollsDistanceOperationCompleted == null)) {
             this.GetFareTollsDistanceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetFareTollsDistanceOperationCompleted);
         }
         this.InvokeAsync("GetFareTollsDistance", new object[] {
@@ -1290,21 +1226,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Tolls,
                     Distance}, this.GetFareTollsDistanceOperationCompleted, userState);
     }
-
-    private void OnGetFareTollsDistanceOperationCompleted(object arg)
-    {
-        if ((this.GetFareTollsDistanceCompleted != null))
-        {
+    
+    private void OnGetFareTollsDistanceOperationCompleted(object arg) {
+        if ((this.GetFareTollsDistanceCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetFareTollsDistanceCompleted(this, new GetFareTollsDistanceCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocation", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocation", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int GetVehicleLocation(string Login, string Password, int OrderID, ref double Lon, ref double Lat)
-    {
+    public int GetVehicleLocation(string Login, string Password, int OrderID, ref double Lon, ref double Lat) {
         object[] results = this.Invoke("GetVehicleLocation", new object[] {
                     Login,
                     Password,
@@ -1315,10 +1248,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         Lat = ((double)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetVehicleLocation(string Login, string Password, int OrderID, double Lon, double Lat, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetVehicleLocation(string Login, string Password, int OrderID, double Lon, double Lat, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetVehicleLocation", new object[] {
                     Login,
                     Password,
@@ -1326,27 +1258,23 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lon,
                     Lat}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndGetVehicleLocation(System.IAsyncResult asyncResult, out double Lon, out double Lat)
-    {
+    public int EndGetVehicleLocation(System.IAsyncResult asyncResult, out double Lon, out double Lat) {
         object[] results = this.EndInvoke(asyncResult);
         Lon = ((double)(results[1]));
         Lat = ((double)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationAsync(string Login, string Password, int OrderID, double Lon, double Lat)
-    {
+    public void GetVehicleLocationAsync(string Login, string Password, int OrderID, double Lon, double Lat) {
         this.GetVehicleLocationAsync(Login, Password, OrderID, Lon, Lat, null);
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationAsync(string Login, string Password, int OrderID, double Lon, double Lat, object userState)
-    {
-        if ((this.GetVehicleLocationOperationCompleted == null))
-        {
+    public void GetVehicleLocationAsync(string Login, string Password, int OrderID, double Lon, double Lat, object userState) {
+        if ((this.GetVehicleLocationOperationCompleted == null)) {
             this.GetVehicleLocationOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetVehicleLocationOperationCompleted);
         }
         this.InvokeAsync("GetVehicleLocation", new object[] {
@@ -1356,21 +1284,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lon,
                     Lat}, this.GetVehicleLocationOperationCompleted, userState);
     }
-
-    private void OnGetVehicleLocationOperationCompleted(object arg)
-    {
-        if ((this.GetVehicleLocationCompleted != null))
-        {
+    
+    private void OnGetVehicleLocationOperationCompleted(object arg) {
+        if ((this.GetVehicleLocationCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetVehicleLocationCompleted(this, new GetVehicleLocationCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetDriverLocation", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetDriverLocation", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int GetDriverLocation(string Login, string Password, string DriverID, ref double Lon, ref double Lat)
-    {
+    public int GetDriverLocation(string Login, string Password, string DriverID, ref double Lon, ref double Lat) {
         object[] results = this.Invoke("GetDriverLocation", new object[] {
                     Login,
                     Password,
@@ -1381,10 +1306,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         Lat = ((double)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetDriverLocation(string Login, string Password, string DriverID, double Lon, double Lat, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetDriverLocation(string Login, string Password, string DriverID, double Lon, double Lat, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetDriverLocation", new object[] {
                     Login,
                     Password,
@@ -1392,27 +1316,23 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lon,
                     Lat}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndGetDriverLocation(System.IAsyncResult asyncResult, out double Lon, out double Lat)
-    {
+    public int EndGetDriverLocation(System.IAsyncResult asyncResult, out double Lon, out double Lat) {
         object[] results = this.EndInvoke(asyncResult);
         Lon = ((double)(results[1]));
         Lat = ((double)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetDriverLocationAsync(string Login, string Password, string DriverID, double Lon, double Lat)
-    {
+    public void GetDriverLocationAsync(string Login, string Password, string DriverID, double Lon, double Lat) {
         this.GetDriverLocationAsync(Login, Password, DriverID, Lon, Lat, null);
     }
-
+    
     /// <remarks/>
-    public void GetDriverLocationAsync(string Login, string Password, string DriverID, double Lon, double Lat, object userState)
-    {
-        if ((this.GetDriverLocationOperationCompleted == null))
-        {
+    public void GetDriverLocationAsync(string Login, string Password, string DriverID, double Lon, double Lat, object userState) {
+        if ((this.GetDriverLocationOperationCompleted == null)) {
             this.GetDriverLocationOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetDriverLocationOperationCompleted);
         }
         this.InvokeAsync("GetDriverLocation", new object[] {
@@ -1422,21 +1342,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lon,
                     Lat}, this.GetDriverLocationOperationCompleted, userState);
     }
-
-    private void OnGetDriverLocationOperationCompleted(object arg)
-    {
-        if ((this.GetDriverLocationCompleted != null))
-        {
+    
+    private void OnGetDriverLocationOperationCompleted(object arg) {
+        if ((this.GetDriverLocationCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetDriverLocationCompleted(this, new GetDriverLocationCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendDriverMsg(string Login, string Password, string CarID, string Msg)
-    {
+    public int SendDriverMsg(string Login, string Password, string CarID, string Msg) {
         object[] results = this.Invoke("SendDriverMsg", new object[] {
                     Login,
                     Password,
@@ -1444,35 +1361,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Msg});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendDriverMsg(string Login, string Password, string CarID, string Msg, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendDriverMsg(string Login, string Password, string CarID, string Msg, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendDriverMsg", new object[] {
                     Login,
                     Password,
                     CarID,
                     Msg}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendDriverMsg(System.IAsyncResult asyncResult)
-    {
+    public int EndSendDriverMsg(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendDriverMsgAsync(string Login, string Password, string CarID, string Msg)
-    {
+    public void SendDriverMsgAsync(string Login, string Password, string CarID, string Msg) {
         this.SendDriverMsgAsync(Login, Password, CarID, Msg, null);
     }
-
+    
     /// <remarks/>
-    public void SendDriverMsgAsync(string Login, string Password, string CarID, string Msg, object userState)
-    {
-        if ((this.SendDriverMsgOperationCompleted == null))
-        {
+    public void SendDriverMsgAsync(string Login, string Password, string CarID, string Msg, object userState) {
+        if ((this.SendDriverMsgOperationCompleted == null)) {
             this.SendDriverMsgOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendDriverMsgOperationCompleted);
         }
         this.InvokeAsync("SendDriverMsg", new object[] {
@@ -1481,21 +1393,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CarID,
                     Msg}, this.SendDriverMsgOperationCompleted, userState);
     }
-
-    private void OnSendDriverMsgOperationCompleted(object arg)
-    {
-        if ((this.SendDriverMsgCompleted != null))
-        {
+    
+    private void OnSendDriverMsgOperationCompleted(object arg) {
+        if ((this.SendDriverMsgCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendDriverMsgCompleted(this, new SendDriverMsgCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveExtrPayment(string Login, string Password, int RideID, double Amount, string AuthNum)
-    {
+    public int SaveExtrPayment(string Login, string Password, int RideID, double Amount, string AuthNum) {
         object[] results = this.Invoke("SaveExtrPayment", new object[] {
                     Login,
                     Password,
@@ -1504,10 +1413,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AuthNum});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveExtrPayment(string Login, string Password, int RideID, double Amount, string AuthNum, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveExtrPayment(string Login, string Password, int RideID, double Amount, string AuthNum, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveExtrPayment", new object[] {
                     Login,
                     Password,
@@ -1515,25 +1423,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Amount,
                     AuthNum}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveExtrPayment(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveExtrPayment(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveExtrPaymentAsync(string Login, string Password, int RideID, double Amount, string AuthNum)
-    {
+    public void SaveExtrPaymentAsync(string Login, string Password, int RideID, double Amount, string AuthNum) {
         this.SaveExtrPaymentAsync(Login, Password, RideID, Amount, AuthNum, null);
     }
-
+    
     /// <remarks/>
-    public void SaveExtrPaymentAsync(string Login, string Password, int RideID, double Amount, string AuthNum, object userState)
-    {
-        if ((this.SaveExtrPaymentOperationCompleted == null))
-        {
+    public void SaveExtrPaymentAsync(string Login, string Password, int RideID, double Amount, string AuthNum, object userState) {
+        if ((this.SaveExtrPaymentOperationCompleted == null)) {
             this.SaveExtrPaymentOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveExtrPaymentOperationCompleted);
         }
         this.InvokeAsync("SaveExtrPayment", new object[] {
@@ -1543,43 +1447,40 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Amount,
                     AuthNum}, this.SaveExtrPaymentOperationCompleted, userState);
     }
-
-    private void OnSaveExtrPaymentOperationCompleted(object arg)
-    {
-        if ((this.SaveExtrPaymentCompleted != null))
-        {
+    
+    private void OnSaveExtrPaymentOperationCompleted(object arg) {
+        if ((this.SaveExtrPaymentCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveExtrPaymentCompleted(this, new SaveExtrPaymentCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public int SaveExtrPayment_2(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID) {
         object[] results = this.Invoke("SaveExtrPayment_2", new object[] {
                     Login,
                     Password,
@@ -1605,34 +1506,33 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     GUID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public System.IAsyncResult BeginSaveExtrPayment_2(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                System.AsyncCallback callback,
-                object asyncState)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                System.AsyncCallback callback, 
+                object asyncState) {
         return this.BeginInvoke("SaveExtrPayment_2", new object[] {
                     Login,
                     Password,
@@ -1657,70 +1557,66 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     UserAgent,
                     GUID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveExtrPayment_2(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveExtrPayment_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public void SaveExtrPayment_2Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID) {
         this.SaveExtrPayment_2Async(Login, Password, OrderID, TransID, AuthNum, CardToken, PaymentType, PaymentProvider, MDTTip, MDTToll, MDTExtras, MDTFare, PaymentTipAmount, PaymentMeterAmount, PaymentTotal, AccountID, Name, Phone, Email, OS, UserAgent, GUID, null);
     }
-
+    
     /// <remarks/>
     public void SaveExtrPayment_2Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                object userState)
-    {
-        if ((this.SaveExtrPayment_2OperationCompleted == null))
-        {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                object userState) {
+        if ((this.SaveExtrPayment_2OperationCompleted == null)) {
             this.SaveExtrPayment_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveExtrPayment_2OperationCompleted);
         }
         this.InvokeAsync("SaveExtrPayment_2", new object[] {
@@ -1747,48 +1643,45 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     UserAgent,
                     GUID}, this.SaveExtrPayment_2OperationCompleted, userState);
     }
-
-    private void OnSaveExtrPayment_2OperationCompleted(object arg)
-    {
-        if ((this.SaveExtrPayment_2Completed != null))
-        {
+    
+    private void OnSaveExtrPayment_2OperationCompleted(object arg) {
+        if ((this.SaveExtrPayment_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveExtrPayment_2Completed(this, new SaveExtrPayment_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveExtrPayment_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
     public int SaveExtrPayment_3(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                int MDTVAT, 
+                int MDTFee, 
+                int MDTDiscount, 
+                int Collect, 
+                int Balance) {
         object[] results = this.Invoke("SaveExtrPayment_3", new object[] {
                     Login,
                     Password,
@@ -1819,39 +1712,38 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Balance});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public System.IAsyncResult BeginSaveExtrPayment_3(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance,
-                System.AsyncCallback callback,
-                object asyncState)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                int MDTVAT, 
+                int MDTFee, 
+                int MDTDiscount, 
+                int Collect, 
+                int Balance, 
+                System.AsyncCallback callback, 
+                object asyncState) {
         return this.BeginInvoke("SaveExtrPayment_3", new object[] {
                     Login,
                     Password,
@@ -1881,80 +1773,76 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Collect,
                     Balance}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveExtrPayment_3(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveExtrPayment_3(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
     public void SaveExtrPayment_3Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance)
-    {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                int MDTVAT, 
+                int MDTFee, 
+                int MDTDiscount, 
+                int Collect, 
+                int Balance) {
         this.SaveExtrPayment_3Async(Login, Password, OrderID, TransID, AuthNum, CardToken, PaymentType, PaymentProvider, MDTTip, MDTToll, MDTExtras, MDTFare, PaymentTipAmount, PaymentMeterAmount, PaymentTotal, AccountID, Name, Phone, Email, OS, UserAgent, GUID, MDTVAT, MDTFee, MDTDiscount, Collect, Balance, null);
     }
-
+    
     /// <remarks/>
     public void SaveExtrPayment_3Async(
-                string Login,
-                string Password,
-                int OrderID,
-                string TransID,
-                string AuthNum,
-                string CardToken,
-                string PaymentType,
-                string PaymentProvider,
-                int MDTTip,
-                int MDTToll,
-                int MDTExtras,
-                int MDTFare,
-                int PaymentTipAmount,
-                int PaymentMeterAmount,
-                int PaymentTotal,
-                int AccountID,
-                string Name,
-                string Phone,
-                string Email,
-                string OS,
-                string UserAgent,
-                string GUID,
-                int MDTVAT,
-                int MDTFee,
-                int MDTDiscount,
-                int Collect,
-                int Balance,
-                object userState)
-    {
-        if ((this.SaveExtrPayment_3OperationCompleted == null))
-        {
+                string Login, 
+                string Password, 
+                int OrderID, 
+                string TransID, 
+                string AuthNum, 
+                string CardToken, 
+                string PaymentType, 
+                string PaymentProvider, 
+                int MDTTip, 
+                int MDTToll, 
+                int MDTExtras, 
+                int MDTFare, 
+                int PaymentTipAmount, 
+                int PaymentMeterAmount, 
+                int PaymentTotal, 
+                int AccountID, 
+                string Name, 
+                string Phone, 
+                string Email, 
+                string OS, 
+                string UserAgent, 
+                string GUID, 
+                int MDTVAT, 
+                int MDTFee, 
+                int MDTDiscount, 
+                int Collect, 
+                int Balance, 
+                object userState) {
+        if ((this.SaveExtrPayment_3OperationCompleted == null)) {
             this.SaveExtrPayment_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveExtrPayment_3OperationCompleted);
         }
         this.InvokeAsync("SaveExtrPayment_3", new object[] {
@@ -1986,21 +1874,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Collect,
                     Balance}, this.SaveExtrPayment_3OperationCompleted, userState);
     }
-
-    private void OnSaveExtrPayment_3OperationCompleted(object arg)
-    {
-        if ((this.SaveExtrPayment_3Completed != null))
-        {
+    
+    private void OnSaveExtrPayment_3OperationCompleted(object arg) {
+        if ((this.SaveExtrPayment_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveExtrPayment_3Completed(this, new SaveExtrPayment_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_2 GetBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_2 GetBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_2", new object[] {
                     Login,
                     Password,
@@ -2010,10 +1895,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_2)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_2", new object[] {
                     Login,
                     Password,
@@ -2022,25 +1906,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_2 EndGetBookOrder_2(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_2 EndGetBookOrder_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_2)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_2Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_2OperationCompleted == null))
-        {
+    public void GetBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_2OperationCompleted == null)) {
             this.GetBookOrder_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_2OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_2", new object[] {
@@ -2051,55 +1931,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_2OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_2OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_2Completed != null))
-        {
+    
+    private void OnGetBookOrder_2OperationCompleted(object arg) {
+        if ((this.GetBookOrder_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_2Completed(this, new GetBookOrder_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_2(string Login, string Password, TBookOrder_2 BookOrder)
-    {
+    public int SaveBookOrder_2(string Login, string Password, TBookOrder_2 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_2", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_2(string Login, string Password, TBookOrder_2 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_2(string Login, string Password, TBookOrder_2 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_2", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_2(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_2Async(string Login, string Password, TBookOrder_2 BookOrder)
-    {
+    public void SaveBookOrder_2Async(string Login, string Password, TBookOrder_2 BookOrder) {
         this.SaveBookOrder_2Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_2Async(string Login, string Password, TBookOrder_2 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_2OperationCompleted == null))
-        {
+    public void SaveBookOrder_2Async(string Login, string Password, TBookOrder_2 BookOrder, object userState) {
+        if ((this.SaveBookOrder_2OperationCompleted == null)) {
             this.SaveBookOrder_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_2OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_2", new object[] {
@@ -2107,21 +1979,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_2OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_2OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_2Completed != null))
-        {
+    
+    private void OnSaveBookOrder_2OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_2Completed(this, new SaveBookOrder_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_3 GetBookOrderByConfirmationNo(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public TBookOrderList_3 GetBookOrderByConfirmationNo(string Login, string Password, int ConfirmationNo, int AccountID) {
         object[] results = this.Invoke("GetBookOrderByConfirmationNo", new object[] {
                     Login,
                     Password,
@@ -2129,35 +1998,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrderList_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrderByConfirmationNo(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrderByConfirmationNo(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrderByConfirmationNo", new object[] {
                     Login,
                     Password,
                     ConfirmationNo,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_3 EndGetBookOrderByConfirmationNo(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_3 EndGetBookOrderByConfirmationNo(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNoAsync(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public void GetBookOrderByConfirmationNoAsync(string Login, string Password, int ConfirmationNo, int AccountID) {
         this.GetBookOrderByConfirmationNoAsync(Login, Password, ConfirmationNo, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNoAsync(string Login, string Password, int ConfirmationNo, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderByConfirmationNoOperationCompleted == null))
-        {
+    public void GetBookOrderByConfirmationNoAsync(string Login, string Password, int ConfirmationNo, int AccountID, object userState) {
+        if ((this.GetBookOrderByConfirmationNoOperationCompleted == null)) {
             this.GetBookOrderByConfirmationNoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderByConfirmationNoOperationCompleted);
         }
         this.InvokeAsync("GetBookOrderByConfirmationNo", new object[] {
@@ -2166,21 +2030,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ConfirmationNo,
                     AccountID}, this.GetBookOrderByConfirmationNoOperationCompleted, userState);
     }
-
-    private void OnGetBookOrderByConfirmationNoOperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderByConfirmationNoCompleted != null))
-        {
+    
+    private void OnGetBookOrderByConfirmationNoOperationCompleted(object arg) {
+        if ((this.GetBookOrderByConfirmationNoCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderByConfirmationNoCompleted(this, new GetBookOrderByConfirmationNoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_3 GetBookOrder_3(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_3 GetBookOrder_3(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_3", new object[] {
                     Login,
                     Password,
@@ -2190,10 +2051,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_3(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_3(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_3", new object[] {
                     Login,
                     Password,
@@ -2202,25 +2062,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_3 EndGetBookOrder_3(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_3 EndGetBookOrder_3(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_3Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_3Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_3Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_3Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_3OperationCompleted == null))
-        {
+    public void GetBookOrder_3Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_3OperationCompleted == null)) {
             this.GetBookOrder_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_3OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_3", new object[] {
@@ -2231,21 +2087,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_3OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_3OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_3Completed != null))
-        {
+    
+    private void OnGetBookOrder_3OperationCompleted(object arg) {
+        if ((this.GetBookOrder_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_3Completed(this, new GetBookOrder_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_3 GetOrderHistory(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public TBookOrderList_3 GetOrderHistory(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         object[] results = this.Invoke("GetOrderHistory", new object[] {
                     Login,
                     Password,
@@ -2255,10 +2108,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderStatus});
         return ((TBookOrderList_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderHistory(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderHistory(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderHistory", new object[] {
                     Login,
                     Password,
@@ -2267,25 +2119,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_3 EndGetOrderHistory(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_3 EndGetOrderHistory(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_3)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistoryAsync(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public void GetOrderHistoryAsync(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         this.GetOrderHistoryAsync(Login, Password, AccountID, FrDate, ToDate, OrderStatus, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistoryAsync(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState)
-    {
-        if ((this.GetOrderHistoryOperationCompleted == null))
-        {
+    public void GetOrderHistoryAsync(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState) {
+        if ((this.GetOrderHistoryOperationCompleted == null)) {
             this.GetOrderHistoryOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderHistoryOperationCompleted);
         }
         this.InvokeAsync("GetOrderHistory", new object[] {
@@ -2296,21 +2144,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, this.GetOrderHistoryOperationCompleted, userState);
     }
-
-    private void OnGetOrderHistoryOperationCompleted(object arg)
-    {
-        if ((this.GetOrderHistoryCompleted != null))
-        {
+    
+    private void OnGetOrderHistoryOperationCompleted(object arg) {
+        if ((this.GetOrderHistoryCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderHistoryCompleted(this, new GetOrderHistoryCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWithCar", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrderWithCar", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrderWithCar(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder)
-    {
+    public int SaveBookOrderWithCar(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder) {
         object[] results = this.Invoke("SaveBookOrderWithCar", new object[] {
                     Login,
                     Password,
@@ -2318,35 +2163,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrderWithCar(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrderWithCar(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrderWithCar", new object[] {
                     Login,
                     Password,
                     CarNumber,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrderWithCar(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrderWithCar(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrderWithCarAsync(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder)
-    {
+    public void SaveBookOrderWithCarAsync(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder) {
         this.SaveBookOrderWithCarAsync(Login, Password, CarNumber, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrderWithCarAsync(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrderWithCarOperationCompleted == null))
-        {
+    public void SaveBookOrderWithCarAsync(string Login, string Password, int CarNumber, TBookOrder_3 BookOrder, object userState) {
+        if ((this.SaveBookOrderWithCarOperationCompleted == null)) {
             this.SaveBookOrderWithCarOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrderWithCarOperationCompleted);
         }
         this.InvokeAsync("SaveBookOrderWithCar", new object[] {
@@ -2355,55 +2195,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CarNumber,
                     BookOrder}, this.SaveBookOrderWithCarOperationCompleted, userState);
     }
-
-    private void OnSaveBookOrderWithCarOperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrderWithCarCompleted != null))
-        {
+    
+    private void OnSaveBookOrderWithCarOperationCompleted(object arg) {
+        if ((this.SaveBookOrderWithCarCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrderWithCarCompleted(this, new SaveBookOrderWithCarCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_3(string Login, string Password, TBookOrder_3 BookOrder)
-    {
+    public int SaveBookOrder_3(string Login, string Password, TBookOrder_3 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_3", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_3(string Login, string Password, TBookOrder_3 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_3(string Login, string Password, TBookOrder_3 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_3", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_3(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_3(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_3Async(string Login, string Password, TBookOrder_3 BookOrder)
-    {
+    public void SaveBookOrder_3Async(string Login, string Password, TBookOrder_3 BookOrder) {
         this.SaveBookOrder_3Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_3Async(string Login, string Password, TBookOrder_3 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_3OperationCompleted == null))
-        {
+    public void SaveBookOrder_3Async(string Login, string Password, TBookOrder_3 BookOrder, object userState) {
+        if ((this.SaveBookOrder_3OperationCompleted == null)) {
             this.SaveBookOrder_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_3OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_3", new object[] {
@@ -2411,21 +2243,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_3OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_3OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_3Completed != null))
-        {
+    
+    private void OnSaveBookOrder_3OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_3Completed(this, new SaveBookOrder_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#AddressCorrelation", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#AddressCorrelation", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TWEBFavotiteAddress[] AddressCorrelation(string Login, string Password, double Lon, double Lat)
-    {
+    public TWEBFavotiteAddress[] AddressCorrelation(string Login, string Password, double Lon, double Lat) {
         object[] results = this.Invoke("AddressCorrelation", new object[] {
                     Login,
                     Password,
@@ -2433,35 +2262,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lat});
         return ((TWEBFavotiteAddress[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginAddressCorrelation(string Login, string Password, double Lon, double Lat, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginAddressCorrelation(string Login, string Password, double Lon, double Lat, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("AddressCorrelation", new object[] {
                     Login,
                     Password,
                     Lon,
                     Lat}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TWEBFavotiteAddress[] EndAddressCorrelation(System.IAsyncResult asyncResult)
-    {
+    public TWEBFavotiteAddress[] EndAddressCorrelation(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TWEBFavotiteAddress[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void AddressCorrelationAsync(string Login, string Password, double Lon, double Lat)
-    {
+    public void AddressCorrelationAsync(string Login, string Password, double Lon, double Lat) {
         this.AddressCorrelationAsync(Login, Password, Lon, Lat, null);
     }
-
+    
     /// <remarks/>
-    public void AddressCorrelationAsync(string Login, string Password, double Lon, double Lat, object userState)
-    {
-        if ((this.AddressCorrelationOperationCompleted == null))
-        {
+    public void AddressCorrelationAsync(string Login, string Password, double Lon, double Lat, object userState) {
+        if ((this.AddressCorrelationOperationCompleted == null)) {
             this.AddressCorrelationOperationCompleted = new System.Threading.SendOrPostCallback(this.OnAddressCorrelationOperationCompleted);
         }
         this.InvokeAsync("AddressCorrelation", new object[] {
@@ -2470,21 +2294,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Lon,
                     Lat}, this.AddressCorrelationOperationCompleted, userState);
     }
-
-    private void OnAddressCorrelationOperationCompleted(object arg)
-    {
-        if ((this.AddressCorrelationCompleted != null))
-        {
+    
+    private void OnAddressCorrelationOperationCompleted(object arg) {
+        if ((this.AddressCorrelationCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.AddressCorrelationCompleted(this, new AddressCorrelationCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_4 GetBookOrderByConfirmationNo_4(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public TBookOrderList_4 GetBookOrderByConfirmationNo_4(string Login, string Password, int ConfirmationNo, int AccountID) {
         object[] results = this.Invoke("GetBookOrderByConfirmationNo_4", new object[] {
                     Login,
                     Password,
@@ -2492,35 +2313,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrderList_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_4(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_4(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrderByConfirmationNo_4", new object[] {
                     Login,
                     Password,
                     ConfirmationNo,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_4 EndGetBookOrderByConfirmationNo_4(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_4 EndGetBookOrderByConfirmationNo_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_4Async(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public void GetBookOrderByConfirmationNo_4Async(string Login, string Password, int ConfirmationNo, int AccountID) {
         this.GetBookOrderByConfirmationNo_4Async(Login, Password, ConfirmationNo, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_4Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderByConfirmationNo_4OperationCompleted == null))
-        {
+    public void GetBookOrderByConfirmationNo_4Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState) {
+        if ((this.GetBookOrderByConfirmationNo_4OperationCompleted == null)) {
             this.GetBookOrderByConfirmationNo_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderByConfirmationNo_4OperationCompleted);
         }
         this.InvokeAsync("GetBookOrderByConfirmationNo_4", new object[] {
@@ -2529,21 +2345,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ConfirmationNo,
                     AccountID}, this.GetBookOrderByConfirmationNo_4OperationCompleted, userState);
     }
-
-    private void OnGetBookOrderByConfirmationNo_4OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderByConfirmationNo_4Completed != null))
-        {
+    
+    private void OnGetBookOrderByConfirmationNo_4OperationCompleted(object arg) {
+        if ((this.GetBookOrderByConfirmationNo_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderByConfirmationNo_4Completed(this, new GetBookOrderByConfirmationNo_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_4 GetBookOrder_4(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_4 GetBookOrder_4(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_4", new object[] {
                     Login,
                     Password,
@@ -2553,10 +2366,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_4(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_4(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_4", new object[] {
                     Login,
                     Password,
@@ -2565,25 +2377,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_4 EndGetBookOrder_4(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_4 EndGetBookOrder_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_4Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_4Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_4Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_4Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_4OperationCompleted == null))
-        {
+    public void GetBookOrder_4Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_4OperationCompleted == null)) {
             this.GetBookOrder_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_4OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_4", new object[] {
@@ -2594,21 +2402,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_4OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_4OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_4Completed != null))
-        {
+    
+    private void OnGetBookOrder_4OperationCompleted(object arg) {
+        if ((this.GetBookOrder_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_4Completed(this, new GetBookOrder_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_4 GetOrderHistory_4(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public TBookOrderList_4 GetOrderHistory_4(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         object[] results = this.Invoke("GetOrderHistory_4", new object[] {
                     Login,
                     Password,
@@ -2618,10 +2423,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderStatus});
         return ((TBookOrderList_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderHistory_4(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderHistory_4(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderHistory_4", new object[] {
                     Login,
                     Password,
@@ -2630,25 +2434,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_4 EndGetOrderHistory_4(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_4 EndGetOrderHistory_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_4)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_4Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public void GetOrderHistory_4Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         this.GetOrderHistory_4Async(Login, Password, AccountID, FrDate, ToDate, OrderStatus, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_4Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState)
-    {
-        if ((this.GetOrderHistory_4OperationCompleted == null))
-        {
+    public void GetOrderHistory_4Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState) {
+        if ((this.GetOrderHistory_4OperationCompleted == null)) {
             this.GetOrderHistory_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderHistory_4OperationCompleted);
         }
         this.InvokeAsync("GetOrderHistory_4", new object[] {
@@ -2659,21 +2459,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, this.GetOrderHistory_4OperationCompleted, userState);
     }
-
-    private void OnGetOrderHistory_4OperationCompleted(object arg)
-    {
-        if ((this.GetOrderHistory_4Completed != null))
-        {
+    
+    private void OnGetOrderHistory_4OperationCompleted(object arg) {
+        if ((this.GetOrderHistory_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderHistory_4Completed(this, new GetOrderHistory_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNo", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNo", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int GetVehicleLocationWithTaxiNo(string Login, string Password, int OrderID, ref double Lon, ref double Lat, ref TWEBTimeStamp LastGPSUpdate, ref string TaxiNo)
-    {
+    public int GetVehicleLocationWithTaxiNo(string Login, string Password, int OrderID, ref double Lon, ref double Lat, ref TWEBTimeStamp LastGPSUpdate, ref string TaxiNo) {
         object[] results = this.Invoke("GetVehicleLocationWithTaxiNo", new object[] {
                     Login,
                     Password,
@@ -2688,10 +2485,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         TaxiNo = ((string)(results[4]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetVehicleLocationWithTaxiNo(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetVehicleLocationWithTaxiNo(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetVehicleLocationWithTaxiNo", new object[] {
                     Login,
                     Password,
@@ -2701,10 +2497,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     LastGPSUpdate,
                     TaxiNo}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndGetVehicleLocationWithTaxiNo(System.IAsyncResult asyncResult, out double Lon, out double Lat, out TWEBTimeStamp LastGPSUpdate, out string TaxiNo)
-    {
+    public int EndGetVehicleLocationWithTaxiNo(System.IAsyncResult asyncResult, out double Lon, out double Lat, out TWEBTimeStamp LastGPSUpdate, out string TaxiNo) {
         object[] results = this.EndInvoke(asyncResult);
         Lon = ((double)(results[1]));
         Lat = ((double)(results[2]));
@@ -2712,18 +2507,15 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         TaxiNo = ((string)(results[4]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationWithTaxiNoAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo)
-    {
+    public void GetVehicleLocationWithTaxiNoAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo) {
         this.GetVehicleLocationWithTaxiNoAsync(Login, Password, OrderID, Lon, Lat, LastGPSUpdate, TaxiNo, null);
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationWithTaxiNoAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, object userState)
-    {
-        if ((this.GetVehicleLocationWithTaxiNoOperationCompleted == null))
-        {
+    public void GetVehicleLocationWithTaxiNoAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, object userState) {
+        if ((this.GetVehicleLocationWithTaxiNoOperationCompleted == null)) {
             this.GetVehicleLocationWithTaxiNoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetVehicleLocationWithTaxiNoOperationCompleted);
         }
         this.InvokeAsync("GetVehicleLocationWithTaxiNo", new object[] {
@@ -2735,55 +2527,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     LastGPSUpdate,
                     TaxiNo}, this.GetVehicleLocationWithTaxiNoOperationCompleted, userState);
     }
-
-    private void OnGetVehicleLocationWithTaxiNoOperationCompleted(object arg)
-    {
-        if ((this.GetVehicleLocationWithTaxiNoCompleted != null))
-        {
+    
+    private void OnGetVehicleLocationWithTaxiNoOperationCompleted(object arg) {
+        if ((this.GetVehicleLocationWithTaxiNoCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetVehicleLocationWithTaxiNoCompleted(this, new GetVehicleLocationWithTaxiNoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_4(string Login, string Password, TBookOrder_4 BookOrder)
-    {
+    public int SaveBookOrder_4(string Login, string Password, TBookOrder_4 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_4", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_4(string Login, string Password, TBookOrder_4 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_4(string Login, string Password, TBookOrder_4 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_4", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_4(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_4Async(string Login, string Password, TBookOrder_4 BookOrder)
-    {
+    public void SaveBookOrder_4Async(string Login, string Password, TBookOrder_4 BookOrder) {
         this.SaveBookOrder_4Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_4Async(string Login, string Password, TBookOrder_4 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_4OperationCompleted == null))
-        {
+    public void SaveBookOrder_4Async(string Login, string Password, TBookOrder_4 BookOrder, object userState) {
+        if ((this.SaveBookOrder_4OperationCompleted == null)) {
             this.SaveBookOrder_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_4OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_4", new object[] {
@@ -2791,21 +2575,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_4OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_4OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_4Completed != null))
-        {
+    
+    private void OnSaveBookOrder_4OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_4Completed(this, new SaveBookOrder_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelBookOrder_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int CancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason)
-    {
+    public int CancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason) {
         object[] results = this.Invoke("CancelBookOrder_2", new object[] {
                     Login,
                     Password,
@@ -2816,10 +2597,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Reason});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginCancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginCancelBookOrder_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("CancelBookOrder_2", new object[] {
                     Login,
                     Password,
@@ -2829,25 +2609,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID,
                     Reason}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndCancelBookOrder_2(System.IAsyncResult asyncResult)
-    {
+    public int EndCancelBookOrder_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason)
-    {
+    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason) {
         this.CancelBookOrder_2Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, Reason, null);
     }
-
+    
     /// <remarks/>
-    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, object userState)
-    {
-        if ((this.CancelBookOrder_2OperationCompleted == null))
-        {
+    public void CancelBookOrder_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, string Reason, object userState) {
+        if ((this.CancelBookOrder_2OperationCompleted == null)) {
             this.CancelBookOrder_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnCancelBookOrder_2OperationCompleted);
         }
         this.InvokeAsync("CancelBookOrder_2", new object[] {
@@ -2859,21 +2635,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID,
                     Reason}, this.CancelBookOrder_2OperationCompleted, userState);
     }
-
-    private void OnCancelBookOrder_2OperationCompleted(object arg)
-    {
-        if ((this.CancelBookOrder_2Completed != null))
-        {
+    
+    private void OnCancelBookOrder_2OperationCompleted(object arg) {
+        if ((this.CancelBookOrder_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.CancelBookOrder_2Completed(this, new CancelBookOrder_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_5", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_5", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_5 GetBookOrderByConfirmationNo_5(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public TBookOrderList_5 GetBookOrderByConfirmationNo_5(string Login, string Password, int ConfirmationNo, int AccountID) {
         object[] results = this.Invoke("GetBookOrderByConfirmationNo_5", new object[] {
                     Login,
                     Password,
@@ -2881,35 +2654,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrderList_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_5(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_5(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrderByConfirmationNo_5", new object[] {
                     Login,
                     Password,
                     ConfirmationNo,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_5 EndGetBookOrderByConfirmationNo_5(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_5 EndGetBookOrderByConfirmationNo_5(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_5Async(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public void GetBookOrderByConfirmationNo_5Async(string Login, string Password, int ConfirmationNo, int AccountID) {
         this.GetBookOrderByConfirmationNo_5Async(Login, Password, ConfirmationNo, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_5Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderByConfirmationNo_5OperationCompleted == null))
-        {
+    public void GetBookOrderByConfirmationNo_5Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState) {
+        if ((this.GetBookOrderByConfirmationNo_5OperationCompleted == null)) {
             this.GetBookOrderByConfirmationNo_5OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderByConfirmationNo_5OperationCompleted);
         }
         this.InvokeAsync("GetBookOrderByConfirmationNo_5", new object[] {
@@ -2918,21 +2686,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ConfirmationNo,
                     AccountID}, this.GetBookOrderByConfirmationNo_5OperationCompleted, userState);
     }
-
-    private void OnGetBookOrderByConfirmationNo_5OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderByConfirmationNo_5Completed != null))
-        {
+    
+    private void OnGetBookOrderByConfirmationNo_5OperationCompleted(object arg) {
+        if ((this.GetBookOrderByConfirmationNo_5Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderByConfirmationNo_5Completed(this, new GetBookOrderByConfirmationNo_5CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_5", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_5", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_5 GetBookOrder_5(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_5 GetBookOrder_5(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_5", new object[] {
                     Login,
                     Password,
@@ -2942,10 +2707,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_5(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_5(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_5", new object[] {
                     Login,
                     Password,
@@ -2954,25 +2718,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_5 EndGetBookOrder_5(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_5 EndGetBookOrder_5(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_5Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_5Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_5Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_5Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_5OperationCompleted == null))
-        {
+    public void GetBookOrder_5Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_5OperationCompleted == null)) {
             this.GetBookOrder_5OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_5OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_5", new object[] {
@@ -2983,21 +2743,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_5OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_5OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_5Completed != null))
-        {
+    
+    private void OnGetBookOrder_5OperationCompleted(object arg) {
+        if ((this.GetBookOrder_5Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_5Completed(this, new GetBookOrder_5CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_5", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_5", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_5 GetOrderHistory_5(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public TBookOrderList_5 GetOrderHistory_5(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         object[] results = this.Invoke("GetOrderHistory_5", new object[] {
                     Login,
                     Password,
@@ -3007,10 +2764,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderStatus});
         return ((TBookOrderList_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderHistory_5(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderHistory_5(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderHistory_5", new object[] {
                     Login,
                     Password,
@@ -3019,25 +2775,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_5 EndGetOrderHistory_5(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_5 EndGetOrderHistory_5(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_5)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_5Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public void GetOrderHistory_5Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         this.GetOrderHistory_5Async(Login, Password, AccountID, FrDate, ToDate, OrderStatus, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_5Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState)
-    {
-        if ((this.GetOrderHistory_5OperationCompleted == null))
-        {
+    public void GetOrderHistory_5Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState) {
+        if ((this.GetOrderHistory_5OperationCompleted == null)) {
             this.GetOrderHistory_5OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderHistory_5OperationCompleted);
         }
         this.InvokeAsync("GetOrderHistory_5", new object[] {
@@ -3048,55 +2800,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, this.GetOrderHistory_5OperationCompleted, userState);
     }
-
-    private void OnGetOrderHistory_5OperationCompleted(object arg)
-    {
-        if ((this.GetOrderHistory_5Completed != null))
-        {
+    
+    private void OnGetOrderHistory_5OperationCompleted(object arg) {
+        if ((this.GetOrderHistory_5Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderHistory_5Completed(this, new GetOrderHistory_5CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_5", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_5", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_5(string Login, string Password, TBookOrder_5 BookOrder)
-    {
+    public int SaveBookOrder_5(string Login, string Password, TBookOrder_5 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_5", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_5(string Login, string Password, TBookOrder_5 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_5(string Login, string Password, TBookOrder_5 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_5", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_5(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_5(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_5Async(string Login, string Password, TBookOrder_5 BookOrder)
-    {
+    public void SaveBookOrder_5Async(string Login, string Password, TBookOrder_5 BookOrder) {
         this.SaveBookOrder_5Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_5Async(string Login, string Password, TBookOrder_5 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_5OperationCompleted == null))
-        {
+    public void SaveBookOrder_5Async(string Login, string Password, TBookOrder_5 BookOrder, object userState) {
+        if ((this.SaveBookOrder_5OperationCompleted == null)) {
             this.SaveBookOrder_5OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_5OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_5", new object[] {
@@ -3104,21 +2848,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_5OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_5OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_5Completed != null))
-        {
+    
+    private void OnSaveBookOrder_5OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_5Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_5Completed(this, new SaveBookOrder_5CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBannedZones", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBannedZones", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBannedZone[] GetBannedZones(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber)
-    {
+    public TBannedZone[] GetBannedZones(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber) {
         object[] results = this.Invoke("GetBannedZones", new object[] {
                     Login,
                     Password,
@@ -3129,10 +2870,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CallNumber});
         return ((TBannedZone[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBannedZones(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBannedZones(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBannedZones", new object[] {
                     Login,
                     Password,
@@ -3142,25 +2882,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CabNo,
                     CallNumber}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBannedZone[] EndGetBannedZones(System.IAsyncResult asyncResult)
-    {
+    public TBannedZone[] EndGetBannedZones(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBannedZone[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBannedZonesAsync(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber)
-    {
+    public void GetBannedZonesAsync(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber) {
         this.GetBannedZonesAsync(Login, Password, ProviderID, Zone, CompanyID, CabNo, CallNumber, null);
     }
-
+    
     /// <remarks/>
-    public void GetBannedZonesAsync(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber, object userState)
-    {
-        if ((this.GetBannedZonesOperationCompleted == null))
-        {
+    public void GetBannedZonesAsync(string Login, string Password, int ProviderID, string Zone, string CompanyID, string CabNo, string CallNumber, object userState) {
+        if ((this.GetBannedZonesOperationCompleted == null)) {
             this.GetBannedZonesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBannedZonesOperationCompleted);
         }
         this.InvokeAsync("GetBannedZones", new object[] {
@@ -3172,21 +2908,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CabNo,
                     CallNumber}, this.GetBannedZonesOperationCompleted, userState);
     }
-
-    private void OnGetBannedZonesOperationCompleted(object arg)
-    {
-        if ((this.GetBannedZonesCompleted != null))
-        {
+    
+    private void OnGetBannedZonesOperationCompleted(object arg) {
+        if ((this.GetBannedZonesCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBannedZonesCompleted(this, new GetBannedZonesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_6", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_6 GetBookOrderByConfirmationNo_6(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public TBookOrderList_6 GetBookOrderByConfirmationNo_6(string Login, string Password, int ConfirmationNo, int AccountID) {
         object[] results = this.Invoke("GetBookOrderByConfirmationNo_6", new object[] {
                     Login,
                     Password,
@@ -3194,35 +2927,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrderList_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_6(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_6(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrderByConfirmationNo_6", new object[] {
                     Login,
                     Password,
                     ConfirmationNo,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_6 EndGetBookOrderByConfirmationNo_6(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_6 EndGetBookOrderByConfirmationNo_6(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_6Async(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public void GetBookOrderByConfirmationNo_6Async(string Login, string Password, int ConfirmationNo, int AccountID) {
         this.GetBookOrderByConfirmationNo_6Async(Login, Password, ConfirmationNo, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_6Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderByConfirmationNo_6OperationCompleted == null))
-        {
+    public void GetBookOrderByConfirmationNo_6Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState) {
+        if ((this.GetBookOrderByConfirmationNo_6OperationCompleted == null)) {
             this.GetBookOrderByConfirmationNo_6OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderByConfirmationNo_6OperationCompleted);
         }
         this.InvokeAsync("GetBookOrderByConfirmationNo_6", new object[] {
@@ -3231,21 +2959,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ConfirmationNo,
                     AccountID}, this.GetBookOrderByConfirmationNo_6OperationCompleted, userState);
     }
-
-    private void OnGetBookOrderByConfirmationNo_6OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderByConfirmationNo_6Completed != null))
-        {
+    
+    private void OnGetBookOrderByConfirmationNo_6OperationCompleted(object arg) {
+        if ((this.GetBookOrderByConfirmationNo_6Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderByConfirmationNo_6Completed(this, new GetBookOrderByConfirmationNo_6CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_6", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_6 GetBookOrder_6(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_6 GetBookOrder_6(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_6", new object[] {
                     Login,
                     Password,
@@ -3255,10 +2980,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_6(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_6(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_6", new object[] {
                     Login,
                     Password,
@@ -3267,25 +2991,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_6 EndGetBookOrder_6(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_6 EndGetBookOrder_6(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_6Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_6Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_6Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_6Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_6OperationCompleted == null))
-        {
+    public void GetBookOrder_6Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_6OperationCompleted == null)) {
             this.GetBookOrder_6OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_6OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_6", new object[] {
@@ -3296,21 +3016,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_6OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_6OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_6Completed != null))
-        {
+    
+    private void OnGetBookOrder_6OperationCompleted(object arg) {
+        if ((this.GetBookOrder_6Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_6Completed(this, new GetBookOrder_6CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_6", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_6 GetOrderHistory_6(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public TBookOrderList_6 GetOrderHistory_6(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         object[] results = this.Invoke("GetOrderHistory_6", new object[] {
                     Login,
                     Password,
@@ -3320,10 +3037,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderStatus});
         return ((TBookOrderList_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderHistory_6(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderHistory_6(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderHistory_6", new object[] {
                     Login,
                     Password,
@@ -3332,25 +3048,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_6 EndGetOrderHistory_6(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_6 EndGetOrderHistory_6(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_6)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_6Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public void GetOrderHistory_6Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         this.GetOrderHistory_6Async(Login, Password, AccountID, FrDate, ToDate, OrderStatus, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_6Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState)
-    {
-        if ((this.GetOrderHistory_6OperationCompleted == null))
-        {
+    public void GetOrderHistory_6Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState) {
+        if ((this.GetOrderHistory_6OperationCompleted == null)) {
             this.GetOrderHistory_6OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderHistory_6OperationCompleted);
         }
         this.InvokeAsync("GetOrderHistory_6", new object[] {
@@ -3361,55 +3073,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, this.GetOrderHistory_6OperationCompleted, userState);
     }
-
-    private void OnGetOrderHistory_6OperationCompleted(object arg)
-    {
-        if ((this.GetOrderHistory_6Completed != null))
-        {
+    
+    private void OnGetOrderHistory_6OperationCompleted(object arg) {
+        if ((this.GetOrderHistory_6Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderHistory_6Completed(this, new GetOrderHistory_6CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_6", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_6(string Login, string Password, TBookOrder_6 BookOrder)
-    {
+    public int SaveBookOrder_6(string Login, string Password, TBookOrder_6 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_6", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_6(string Login, string Password, TBookOrder_6 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_6(string Login, string Password, TBookOrder_6 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_6", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_6(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_6(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_6Async(string Login, string Password, TBookOrder_6 BookOrder)
-    {
+    public void SaveBookOrder_6Async(string Login, string Password, TBookOrder_6 BookOrder) {
         this.SaveBookOrder_6Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_6Async(string Login, string Password, TBookOrder_6 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_6OperationCompleted == null))
-        {
+    public void SaveBookOrder_6Async(string Login, string Password, TBookOrder_6 BookOrder, object userState) {
+        if ((this.SaveBookOrder_6OperationCompleted == null)) {
             this.SaveBookOrder_6OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_6OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_6", new object[] {
@@ -3417,55 +3121,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_6OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_6OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_6Completed != null))
-        {
+    
+    private void OnSaveBookOrder_6OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_6Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_6Completed(this, new SaveBookOrder_6CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelRun", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelRun", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int CancelRun(string Login, string Password, int RunID)
-    {
+    public int CancelRun(string Login, string Password, int RunID) {
         object[] results = this.Invoke("CancelRun", new object[] {
                     Login,
                     Password,
                     RunID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginCancelRun(string Login, string Password, int RunID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginCancelRun(string Login, string Password, int RunID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("CancelRun", new object[] {
                     Login,
                     Password,
                     RunID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndCancelRun(System.IAsyncResult asyncResult)
-    {
+    public int EndCancelRun(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void CancelRunAsync(string Login, string Password, int RunID)
-    {
+    public void CancelRunAsync(string Login, string Password, int RunID) {
         this.CancelRunAsync(Login, Password, RunID, null);
     }
-
+    
     /// <remarks/>
-    public void CancelRunAsync(string Login, string Password, int RunID, object userState)
-    {
-        if ((this.CancelRunOperationCompleted == null))
-        {
+    public void CancelRunAsync(string Login, string Password, int RunID, object userState) {
+        if ((this.CancelRunOperationCompleted == null)) {
             this.CancelRunOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCancelRunOperationCompleted);
         }
         this.InvokeAsync("CancelRun", new object[] {
@@ -3473,55 +3169,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     RunID}, this.CancelRunOperationCompleted, userState);
     }
-
-    private void OnCancelRunOperationCompleted(object arg)
-    {
-        if ((this.CancelRunCompleted != null))
-        {
+    
+    private void OnCancelRunOperationCompleted(object arg) {
+        if ((this.CancelRunCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.CancelRunCompleted(this, new CancelRunCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelSROrder", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#CancelSROrder", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int CancelSROrder(string Login, string Password, int OrderID)
-    {
+    public int CancelSROrder(string Login, string Password, int OrderID) {
         object[] results = this.Invoke("CancelSROrder", new object[] {
                     Login,
                     Password,
                     OrderID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginCancelSROrder(string Login, string Password, int OrderID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginCancelSROrder(string Login, string Password, int OrderID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("CancelSROrder", new object[] {
                     Login,
                     Password,
                     OrderID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndCancelSROrder(System.IAsyncResult asyncResult)
-    {
+    public int EndCancelSROrder(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void CancelSROrderAsync(string Login, string Password, int OrderID)
-    {
+    public void CancelSROrderAsync(string Login, string Password, int OrderID) {
         this.CancelSROrderAsync(Login, Password, OrderID, null);
     }
-
+    
     /// <remarks/>
-    public void CancelSROrderAsync(string Login, string Password, int OrderID, object userState)
-    {
-        if ((this.CancelSROrderOperationCompleted == null))
-        {
+    public void CancelSROrderAsync(string Login, string Password, int OrderID, object userState) {
+        if ((this.CancelSROrderOperationCompleted == null)) {
             this.CancelSROrderOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCancelSROrderOperationCompleted);
         }
         this.InvokeAsync("CancelSROrder", new object[] {
@@ -3529,21 +3217,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderID}, this.CancelSROrderOperationCompleted, userState);
     }
-
-    private void OnCancelSROrderOperationCompleted(object arg)
-    {
-        if ((this.CancelSROrderCompleted != null))
-        {
+    
+    private void OnCancelSROrderOperationCompleted(object arg) {
+        if ((this.CancelSROrderCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.CancelSROrderCompleted(this, new CancelSROrderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TVehiclePosition[] GetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
-    {
+    public TVehiclePosition[] GetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count) {
         object[] results = this.Invoke("GetAvailableVehicles", new object[] {
                     Login,
                     Password,
@@ -3553,10 +3238,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     count});
         return ((TVehiclePosition[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAvailableVehicles", new object[] {
                     Login,
                     Password,
@@ -3565,25 +3249,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     maxRadius,
                     count}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition[] EndGetAvailableVehicles(System.IAsyncResult asyncResult)
-    {
+    public TVehiclePosition[] EndGetAvailableVehicles(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TVehiclePosition[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
-    {
+    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count) {
         this.GetAvailableVehiclesAsync(Login, Password, Lon, Lat, maxRadius, count, null);
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count, object userState)
-    {
-        if ((this.GetAvailableVehiclesOperationCompleted == null))
-        {
+    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count, object userState) {
+        if ((this.GetAvailableVehiclesOperationCompleted == null)) {
             this.GetAvailableVehiclesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehiclesOperationCompleted);
         }
         this.InvokeAsync("GetAvailableVehicles", new object[] {
@@ -3594,21 +3274,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     maxRadius,
                     count}, this.GetAvailableVehiclesOperationCompleted, userState);
     }
-
-    private void OnGetAvailableVehiclesOperationCompleted(object arg)
-    {
-        if ((this.GetAvailableVehiclesCompleted != null))
-        {
+    
+    private void OnGetAvailableVehiclesOperationCompleted(object arg) {
+        if ((this.GetAvailableVehiclesCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetAvailableVehiclesCompleted(this, new GetAvailableVehiclesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TVehiclePosition_2[] GetAvailableVehicles_2(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
-    {
+    public TVehiclePosition_2[] GetAvailableVehicles_2(string Login, string Password, double Lon, double Lat, double maxRadius, int count) {
         object[] results = this.Invoke("GetAvailableVehicles_2", new object[] {
                     Login,
                     Password,
@@ -3618,10 +3295,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     count});
         return ((TVehiclePosition_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetAvailableVehicles_2(string Login, string Password, double Lon, double Lat, double maxRadius, int count, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetAvailableVehicles_2(string Login, string Password, double Lon, double Lat, double maxRadius, int count, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAvailableVehicles_2", new object[] {
                     Login,
                     Password,
@@ -3630,25 +3306,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     maxRadius,
                     count}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_2[] EndGetAvailableVehicles_2(System.IAsyncResult asyncResult)
-    {
+    public TVehiclePosition_2[] EndGetAvailableVehicles_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TVehiclePosition_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_2Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
-    {
+    public void GetAvailableVehicles_2Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count) {
         this.GetAvailableVehicles_2Async(Login, Password, Lon, Lat, maxRadius, count, null);
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_2Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, object userState)
-    {
-        if ((this.GetAvailableVehicles_2OperationCompleted == null))
-        {
+    public void GetAvailableVehicles_2Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, object userState) {
+        if ((this.GetAvailableVehicles_2OperationCompleted == null)) {
             this.GetAvailableVehicles_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehicles_2OperationCompleted);
         }
         this.InvokeAsync("GetAvailableVehicles_2", new object[] {
@@ -3659,21 +3331,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     maxRadius,
                     count}, this.GetAvailableVehicles_2OperationCompleted, userState);
     }
-
-    private void OnGetAvailableVehicles_2OperationCompleted(object arg)
-    {
-        if ((this.GetAvailableVehicles_2Completed != null))
-        {
+    
+    private void OnGetAvailableVehicles_2OperationCompleted(object arg) {
+        if ((this.GetAvailableVehicles_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetAvailableVehicles_2Completed(this, new GetAvailableVehicles_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TVehiclePosition_2[] GetAvailableVehicles_3(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly)
-    {
+    public TVehiclePosition_2[] GetAvailableVehicles_3(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly) {
         object[] results = this.Invoke("GetAvailableVehicles_3", new object[] {
                     Login,
                     Password,
@@ -3684,10 +3353,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookedOnly});
         return ((TVehiclePosition_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetAvailableVehicles_3(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetAvailableVehicles_3(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAvailableVehicles_3", new object[] {
                     Login,
                     Password,
@@ -3697,25 +3365,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     count,
                     BookedOnly}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_2[] EndGetAvailableVehicles_3(System.IAsyncResult asyncResult)
-    {
+    public TVehiclePosition_2[] EndGetAvailableVehicles_3(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TVehiclePosition_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_3Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly)
-    {
+    public void GetAvailableVehicles_3Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly) {
         this.GetAvailableVehicles_3Async(Login, Password, Lon, Lat, maxRadius, count, BookedOnly, null);
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_3Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, object userState)
-    {
-        if ((this.GetAvailableVehicles_3OperationCompleted == null))
-        {
+    public void GetAvailableVehicles_3Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, object userState) {
+        if ((this.GetAvailableVehicles_3OperationCompleted == null)) {
             this.GetAvailableVehicles_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehicles_3OperationCompleted);
         }
         this.InvokeAsync("GetAvailableVehicles_3", new object[] {
@@ -3727,21 +3391,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     count,
                     BookedOnly}, this.GetAvailableVehicles_3OperationCompleted, userState);
     }
-
-    private void OnGetAvailableVehicles_3OperationCompleted(object arg)
-    {
-        if ((this.GetAvailableVehicles_3Completed != null))
-        {
+    
+    private void OnGetAvailableVehicles_3OperationCompleted(object arg) {
+        if ((this.GetAvailableVehicles_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetAvailableVehicles_3Completed(this, new GetAvailableVehicles_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TVehiclePosition_4[] GetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes)
-    {
+    public TVehiclePosition_4[] GetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes) {
         object[] results = this.Invoke("GetAvailableVehicles_4", new object[] {
                     Login,
                     Password,
@@ -3753,10 +3414,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     VehicleTypes});
         return ((TVehiclePosition_4[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetAvailableVehicles_4(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAvailableVehicles_4", new object[] {
                     Login,
                     Password,
@@ -3767,25 +3427,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookedOnly,
                     VehicleTypes}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_4[] EndGetAvailableVehicles_4(System.IAsyncResult asyncResult)
-    {
+    public TVehiclePosition_4[] EndGetAvailableVehicles_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TVehiclePosition_4[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes)
-    {
+    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes) {
         this.GetAvailableVehicles_4Async(Login, Password, Lon, Lat, maxRadius, count, BookedOnly, VehicleTypes, null);
     }
-
+    
     /// <remarks/>
-    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, object userState)
-    {
-        if ((this.GetAvailableVehicles_4OperationCompleted == null))
-        {
+    public void GetAvailableVehicles_4Async(string Login, string Password, double Lon, double Lat, double maxRadius, int count, bool BookedOnly, TVehicleTypeItem[] VehicleTypes, object userState) {
+        if ((this.GetAvailableVehicles_4OperationCompleted == null)) {
             this.GetAvailableVehicles_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehicles_4OperationCompleted);
         }
         this.InvokeAsync("GetAvailableVehicles_4", new object[] {
@@ -3798,21 +3454,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookedOnly,
                     VehicleTypes}, this.GetAvailableVehicles_4OperationCompleted, userState);
     }
-
-    private void OnGetAvailableVehicles_4OperationCompleted(object arg)
-    {
-        if ((this.GetAvailableVehicles_4Completed != null))
-        {
+    
+    private void OnGetAvailableVehicles_4OperationCompleted(object arg) {
+        if ((this.GetAvailableVehicles_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetAvailableVehicles_4Completed(this, new GetAvailableVehicles_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_7", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrderByConfirmationNo_7", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_7 GetBookOrderByConfirmationNo_7(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public TBookOrderList_7 GetBookOrderByConfirmationNo_7(string Login, string Password, int ConfirmationNo, int AccountID) {
         object[] results = this.Invoke("GetBookOrderByConfirmationNo_7", new object[] {
                     Login,
                     Password,
@@ -3820,35 +3473,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrderList_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_7(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrderByConfirmationNo_7(string Login, string Password, int ConfirmationNo, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrderByConfirmationNo_7", new object[] {
                     Login,
                     Password,
                     ConfirmationNo,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_7 EndGetBookOrderByConfirmationNo_7(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_7 EndGetBookOrderByConfirmationNo_7(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_7Async(string Login, string Password, int ConfirmationNo, int AccountID)
-    {
+    public void GetBookOrderByConfirmationNo_7Async(string Login, string Password, int ConfirmationNo, int AccountID) {
         this.GetBookOrderByConfirmationNo_7Async(Login, Password, ConfirmationNo, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrderByConfirmationNo_7Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState)
-    {
-        if ((this.GetBookOrderByConfirmationNo_7OperationCompleted == null))
-        {
+    public void GetBookOrderByConfirmationNo_7Async(string Login, string Password, int ConfirmationNo, int AccountID, object userState) {
+        if ((this.GetBookOrderByConfirmationNo_7OperationCompleted == null)) {
             this.GetBookOrderByConfirmationNo_7OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrderByConfirmationNo_7OperationCompleted);
         }
         this.InvokeAsync("GetBookOrderByConfirmationNo_7", new object[] {
@@ -3857,21 +3505,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ConfirmationNo,
                     AccountID}, this.GetBookOrderByConfirmationNo_7OperationCompleted, userState);
     }
-
-    private void OnGetBookOrderByConfirmationNo_7OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrderByConfirmationNo_7Completed != null))
-        {
+    
+    private void OnGetBookOrderByConfirmationNo_7OperationCompleted(object arg) {
+        if ((this.GetBookOrderByConfirmationNo_7Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrderByConfirmationNo_7Completed(this, new GetBookOrderByConfirmationNo_7CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_7", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetBookOrder_7", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrder_7 GetBookOrder_7(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TBookOrder_7 GetBookOrder_7(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetBookOrder_7", new object[] {
                     Login,
                     Password,
@@ -3881,10 +3526,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TBookOrder_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetBookOrder_7(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetBookOrder_7(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetBookOrder_7", new object[] {
                     Login,
                     Password,
@@ -3893,25 +3537,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrder_7 EndGetBookOrder_7(System.IAsyncResult asyncResult)
-    {
+    public TBookOrder_7 EndGetBookOrder_7(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrder_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_7Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetBookOrder_7Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetBookOrder_7Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetBookOrder_7Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetBookOrder_7OperationCompleted == null))
-        {
+    public void GetBookOrder_7Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetBookOrder_7OperationCompleted == null)) {
             this.GetBookOrder_7OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBookOrder_7OperationCompleted);
         }
         this.InvokeAsync("GetBookOrder_7", new object[] {
@@ -3922,21 +3562,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetBookOrder_7OperationCompleted, userState);
     }
-
-    private void OnGetBookOrder_7OperationCompleted(object arg)
-    {
-        if ((this.GetBookOrder_7Completed != null))
-        {
+    
+    private void OnGetBookOrder_7OperationCompleted(object arg) {
+        if ((this.GetBookOrder_7Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetBookOrder_7Completed(this, new GetBookOrder_7CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_7", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderHistory_7", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderList_7 GetOrderHistory_7(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public TBookOrderList_7 GetOrderHistory_7(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         object[] results = this.Invoke("GetOrderHistory_7", new object[] {
                     Login,
                     Password,
@@ -3946,10 +3583,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderStatus});
         return ((TBookOrderList_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderHistory_7(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderHistory_7(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderHistory_7", new object[] {
                     Login,
                     Password,
@@ -3958,25 +3594,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_7 EndGetOrderHistory_7(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderList_7 EndGetOrderHistory_7(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderList_7)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_7Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus)
-    {
+    public void GetOrderHistory_7Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus) {
         this.GetOrderHistory_7Async(Login, Password, AccountID, FrDate, ToDate, OrderStatus, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderHistory_7Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState)
-    {
-        if ((this.GetOrderHistory_7OperationCompleted == null))
-        {
+    public void GetOrderHistory_7Async(string Login, string Password, int AccountID, TWEBTimeStamp FrDate, TWEBTimeStamp ToDate, int OrderStatus, object userState) {
+        if ((this.GetOrderHistory_7OperationCompleted == null)) {
             this.GetOrderHistory_7OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderHistory_7OperationCompleted);
         }
         this.InvokeAsync("GetOrderHistory_7", new object[] {
@@ -3987,21 +3619,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ToDate,
                     OrderStatus}, this.GetOrderHistory_7OperationCompleted, userState);
     }
-
-    private void OnGetOrderHistory_7OperationCompleted(object arg)
-    {
-        if ((this.GetOrderHistory_7Completed != null))
-        {
+    
+    private void OnGetOrderHistory_7OperationCompleted(object arg) {
+        if ((this.GetOrderHistory_7Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderHistory_7Completed(this, new GetOrderHistory_7CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TWEBOrderStatusValue GetOrderStatus_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public TWEBOrderStatusValue GetOrderStatus_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         object[] results = this.Invoke("GetOrderStatus_2", new object[] {
                     Login,
                     Password,
@@ -4011,10 +3640,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     AccountID});
         return ((TWEBOrderStatusValue)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrderStatus_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrderStatus_2(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrderStatus_2", new object[] {
                     Login,
                     Password,
@@ -4023,25 +3651,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue EndGetOrderStatus_2(System.IAsyncResult asyncResult)
-    {
+    public TWEBOrderStatusValue EndGetOrderStatus_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TWEBOrderStatusValue)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrderStatus_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID)
-    {
+    public void GetOrderStatus_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID) {
         this.GetOrderStatus_2Async(Login, Password, OrderID, ContactPhone, CCNumber, AccountID, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrderStatus_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState)
-    {
-        if ((this.GetOrderStatus_2OperationCompleted == null))
-        {
+    public void GetOrderStatus_2Async(string Login, string Password, int OrderID, string ContactPhone, string CCNumber, int AccountID, object userState) {
+        if ((this.GetOrderStatus_2OperationCompleted == null)) {
             this.GetOrderStatus_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrderStatus_2OperationCompleted);
         }
         this.InvokeAsync("GetOrderStatus_2", new object[] {
@@ -4052,55 +3676,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CCNumber,
                     AccountID}, this.GetOrderStatus_2OperationCompleted, userState);
     }
-
-    private void OnGetOrderStatus_2OperationCompleted(object arg)
-    {
-        if ((this.GetOrderStatus_2Completed != null))
-        {
+    
+    private void OnGetOrderStatus_2OperationCompleted(object arg) {
+        if ((this.GetOrderStatus_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrderStatus_2Completed(this, new GetOrderStatus_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus[] GetOrdersStatus(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus[] GetOrdersStatus(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus[] EndGetOrdersStatus(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus[] EndGetOrdersStatus(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatusAsync(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatusAsync(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatusAsync(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatusAsync(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatusOperationCompleted == null))
-        {
+    public void GetOrdersStatusAsync(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatusOperationCompleted == null)) {
             this.GetOrdersStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatusOperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus", new object[] {
@@ -4108,55 +3724,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatusOperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatusOperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatusCompleted != null))
-        {
+    
+    private void OnGetOrdersStatusOperationCompleted(object arg) {
+        if ((this.GetOrdersStatusCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatusCompleted(this, new GetOrdersStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus_2[] GetOrdersStatus_2(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus_2[] GetOrdersStatus_2(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus_2", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus_2(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus_2(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus_2", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_2[] EndGetOrdersStatus_2(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus_2[] EndGetOrdersStatus_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus_2[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_2Async(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatus_2Async(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatus_2Async(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_2Async(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatus_2OperationCompleted == null))
-        {
+    public void GetOrdersStatus_2Async(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatus_2OperationCompleted == null)) {
             this.GetOrdersStatus_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatus_2OperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus_2", new object[] {
@@ -4164,55 +3772,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatus_2OperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatus_2OperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatus_2Completed != null))
-        {
+    
+    private void OnGetOrdersStatus_2OperationCompleted(object arg) {
+        if ((this.GetOrdersStatus_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatus_2Completed(this, new GetOrdersStatus_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus_3[] GetOrdersStatus_3(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus_3[] GetOrdersStatus_3(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus_3", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus_3[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus_3(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus_3(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus_3", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_3[] EndGetOrdersStatus_3(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus_3[] EndGetOrdersStatus_3(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus_3[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_3Async(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatus_3Async(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatus_3Async(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_3Async(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatus_3OperationCompleted == null))
-        {
+    public void GetOrdersStatus_3Async(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatus_3OperationCompleted == null)) {
             this.GetOrdersStatus_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatus_3OperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus_3", new object[] {
@@ -4220,55 +3820,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatus_3OperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatus_3OperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatus_3Completed != null))
-        {
+    
+    private void OnGetOrdersStatus_3OperationCompleted(object arg) {
+        if ((this.GetOrdersStatus_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatus_3Completed(this, new GetOrdersStatus_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_4", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_4", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus_4[] GetOrdersStatus_4(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus_4[] GetOrdersStatus_4(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus_4", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus_4[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus_4(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus_4(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus_4", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_4[] EndGetOrdersStatus_4(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus_4[] EndGetOrdersStatus_4(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus_4[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_4Async(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatus_4Async(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatus_4Async(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_4Async(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatus_4OperationCompleted == null))
-        {
+    public void GetOrdersStatus_4Async(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatus_4OperationCompleted == null)) {
             this.GetOrdersStatus_4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatus_4OperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus_4", new object[] {
@@ -4276,55 +3868,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatus_4OperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatus_4OperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatus_4Completed != null))
-        {
+    
+    private void OnGetOrdersStatus_4OperationCompleted(object arg) {
+        if ((this.GetOrdersStatus_4Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatus_4Completed(this, new GetOrdersStatus_4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_5", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_5", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus_5[] GetOrdersStatus_5(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus_5[] GetOrdersStatus_5(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus_5", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus_5[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus_5(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus_5(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus_5", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_5[] EndGetOrdersStatus_5(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus_5[] EndGetOrdersStatus_5(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus_5[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_5Async(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatus_5Async(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatus_5Async(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_5Async(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatus_5OperationCompleted == null))
-        {
+    public void GetOrdersStatus_5Async(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatus_5OperationCompleted == null)) {
             this.GetOrdersStatus_5OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatus_5OperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus_5", new object[] {
@@ -4332,55 +3916,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatus_5OperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatus_5OperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatus_5Completed != null))
-        {
+    
+    private void OnGetOrdersStatus_5OperationCompleted(object arg) {
+        if ((this.GetOrdersStatus_5Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatus_5Completed(this, new GetOrdersStatus_5CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_6", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrdersStatus_6", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TOrderStatus_6[] GetOrdersStatus_6(string Login, string Password, int[] OrderIDList)
-    {
+    public TOrderStatus_6[] GetOrdersStatus_6(string Login, string Password, int[] OrderIDList) {
         object[] results = this.Invoke("GetOrdersStatus_6", new object[] {
                     Login,
                     Password,
                     OrderIDList});
         return ((TOrderStatus_6[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetOrdersStatus_6(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetOrdersStatus_6(string Login, string Password, int[] OrderIDList, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetOrdersStatus_6", new object[] {
                     Login,
                     Password,
                     OrderIDList}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_6[] EndGetOrdersStatus_6(System.IAsyncResult asyncResult)
-    {
+    public TOrderStatus_6[] EndGetOrdersStatus_6(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TOrderStatus_6[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_6Async(string Login, string Password, int[] OrderIDList)
-    {
+    public void GetOrdersStatus_6Async(string Login, string Password, int[] OrderIDList) {
         this.GetOrdersStatus_6Async(Login, Password, OrderIDList, null);
     }
-
+    
     /// <remarks/>
-    public void GetOrdersStatus_6Async(string Login, string Password, int[] OrderIDList, object userState)
-    {
-        if ((this.GetOrdersStatus_6OperationCompleted == null))
-        {
+    public void GetOrdersStatus_6Async(string Login, string Password, int[] OrderIDList, object userState) {
+        if ((this.GetOrdersStatus_6OperationCompleted == null)) {
             this.GetOrdersStatus_6OperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrdersStatus_6OperationCompleted);
         }
         this.InvokeAsync("GetOrdersStatus_6", new object[] {
@@ -4388,55 +3964,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderIDList}, this.GetOrdersStatus_6OperationCompleted, userState);
     }
-
-    private void OnGetOrdersStatus_6OperationCompleted(object arg)
-    {
-        if ((this.GetOrdersStatus_6Completed != null))
-        {
+    
+    private void OnGetOrdersStatus_6OperationCompleted(object arg) {
+        if ((this.GetOrdersStatus_6Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetOrdersStatus_6Completed(this, new GetOrdersStatus_6CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetRun", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetRun", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TRun GetRun(string Login, string Password, int RunID)
-    {
+    public TRun GetRun(string Login, string Password, int RunID) {
         object[] results = this.Invoke("GetRun", new object[] {
                     Login,
                     Password,
                     RunID});
         return ((TRun)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetRun(string Login, string Password, int RunID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetRun(string Login, string Password, int RunID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetRun", new object[] {
                     Login,
                     Password,
                     RunID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TRun EndGetRun(System.IAsyncResult asyncResult)
-    {
+    public TRun EndGetRun(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TRun)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetRunAsync(string Login, string Password, int RunID)
-    {
+    public void GetRunAsync(string Login, string Password, int RunID) {
         this.GetRunAsync(Login, Password, RunID, null);
     }
-
+    
     /// <remarks/>
-    public void GetRunAsync(string Login, string Password, int RunID, object userState)
-    {
-        if ((this.GetRunOperationCompleted == null))
-        {
+    public void GetRunAsync(string Login, string Password, int RunID, object userState) {
+        if ((this.GetRunOperationCompleted == null)) {
             this.GetRunOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetRunOperationCompleted);
         }
         this.InvokeAsync("GetRun", new object[] {
@@ -4444,21 +4012,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     RunID}, this.GetRunOperationCompleted, userState);
     }
-
-    private void OnGetRunOperationCompleted(object arg)
-    {
-        if ((this.GetRunCompleted != null))
-        {
+    
+    private void OnGetRunOperationCompleted(object arg) {
+        if ((this.GetRunCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetRunCompleted(this, new GetRunCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNoComp", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleLocationWithTaxiNoComp", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int GetVehicleLocationWithTaxiNoComp(string Login, string Password, int OrderID, ref double Lon, ref double Lat, ref TWEBTimeStamp LastGPSUpdate, ref string TaxiNo, ref string CompanyID)
-    {
+    public int GetVehicleLocationWithTaxiNoComp(string Login, string Password, int OrderID, ref double Lon, ref double Lat, ref TWEBTimeStamp LastGPSUpdate, ref string TaxiNo, ref string CompanyID) {
         object[] results = this.Invoke("GetVehicleLocationWithTaxiNoComp", new object[] {
                     Login,
                     Password,
@@ -4475,10 +4040,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         CompanyID = ((string)(results[5]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetVehicleLocationWithTaxiNoComp(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetVehicleLocationWithTaxiNoComp(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetVehicleLocationWithTaxiNoComp", new object[] {
                     Login,
                     Password,
@@ -4489,10 +4053,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     TaxiNo,
                     CompanyID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndGetVehicleLocationWithTaxiNoComp(System.IAsyncResult asyncResult, out double Lon, out double Lat, out TWEBTimeStamp LastGPSUpdate, out string TaxiNo, out string CompanyID)
-    {
+    public int EndGetVehicleLocationWithTaxiNoComp(System.IAsyncResult asyncResult, out double Lon, out double Lat, out TWEBTimeStamp LastGPSUpdate, out string TaxiNo, out string CompanyID) {
         object[] results = this.EndInvoke(asyncResult);
         Lon = ((double)(results[1]));
         Lat = ((double)(results[2]));
@@ -4501,18 +4064,15 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         CompanyID = ((string)(results[5]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationWithTaxiNoCompAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID)
-    {
+    public void GetVehicleLocationWithTaxiNoCompAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID) {
         this.GetVehicleLocationWithTaxiNoCompAsync(Login, Password, OrderID, Lon, Lat, LastGPSUpdate, TaxiNo, CompanyID, null);
     }
-
+    
     /// <remarks/>
-    public void GetVehicleLocationWithTaxiNoCompAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID, object userState)
-    {
-        if ((this.GetVehicleLocationWithTaxiNoCompOperationCompleted == null))
-        {
+    public void GetVehicleLocationWithTaxiNoCompAsync(string Login, string Password, int OrderID, double Lon, double Lat, TWEBTimeStamp LastGPSUpdate, string TaxiNo, string CompanyID, object userState) {
+        if ((this.GetVehicleLocationWithTaxiNoCompOperationCompleted == null)) {
             this.GetVehicleLocationWithTaxiNoCompOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetVehicleLocationWithTaxiNoCompOperationCompleted);
         }
         this.InvokeAsync("GetVehicleLocationWithTaxiNoComp", new object[] {
@@ -4525,55 +4085,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     TaxiNo,
                     CompanyID}, this.GetVehicleLocationWithTaxiNoCompOperationCompleted, userState);
     }
-
-    private void OnGetVehicleLocationWithTaxiNoCompOperationCompleted(object arg)
-    {
-        if ((this.GetVehicleLocationWithTaxiNoCompCompleted != null))
-        {
+    
+    private void OnGetVehicleLocationWithTaxiNoCompOperationCompleted(object arg) {
+        if ((this.GetVehicleLocationWithTaxiNoCompCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetVehicleLocationWithTaxiNoCompCompleted(this, new GetVehicleLocationWithTaxiNoCompCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_7", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_7", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_7(string Login, string Password, TBookOrder_7 BookOrder)
-    {
+    public int SaveBookOrder_7(string Login, string Password, TBookOrder_7 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_7", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_7(string Login, string Password, TBookOrder_7 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_7(string Login, string Password, TBookOrder_7 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_7", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_7(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_7(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_7Async(string Login, string Password, TBookOrder_7 BookOrder)
-    {
+    public void SaveBookOrder_7Async(string Login, string Password, TBookOrder_7 BookOrder) {
         this.SaveBookOrder_7Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_7Async(string Login, string Password, TBookOrder_7 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_7OperationCompleted == null))
-        {
+    public void SaveBookOrder_7Async(string Login, string Password, TBookOrder_7 BookOrder, object userState) {
+        if ((this.SaveBookOrder_7OperationCompleted == null)) {
             this.SaveBookOrder_7OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_7OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_7", new object[] {
@@ -4581,55 +4133,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_7OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_7OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_7Completed != null))
-        {
+    
+    private void OnSaveBookOrder_7OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_7Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_7Completed(this, new SaveBookOrder_7CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_8", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_8", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_8(string Login, string Password, TBookOrder_8 BookOrder)
-    {
+    public int SaveBookOrder_8(string Login, string Password, TBookOrder_8 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_8", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_8(string Login, string Password, TBookOrder_8 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_8(string Login, string Password, TBookOrder_8 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_8", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_8(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_8(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_8Async(string Login, string Password, TBookOrder_8 BookOrder)
-    {
+    public void SaveBookOrder_8Async(string Login, string Password, TBookOrder_8 BookOrder) {
         this.SaveBookOrder_8Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_8Async(string Login, string Password, TBookOrder_8 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_8OperationCompleted == null))
-        {
+    public void SaveBookOrder_8Async(string Login, string Password, TBookOrder_8 BookOrder, object userState) {
+        if ((this.SaveBookOrder_8OperationCompleted == null)) {
             this.SaveBookOrder_8OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_8OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_8", new object[] {
@@ -4637,55 +4181,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_8OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_8OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_8Completed != null))
-        {
+    
+    private void OnSaveBookOrder_8OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_8Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_8Completed(this, new SaveBookOrder_8CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveRun", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveRun", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveRun(string Login, string Password, TRun Run)
-    {
+    public int SaveRun(string Login, string Password, TRun Run) {
         object[] results = this.Invoke("SaveRun", new object[] {
                     Login,
                     Password,
                     Run});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveRun(string Login, string Password, TRun Run, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveRun(string Login, string Password, TRun Run, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveRun", new object[] {
                     Login,
                     Password,
                     Run}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveRun(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveRun(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveRunAsync(string Login, string Password, TRun Run)
-    {
+    public void SaveRunAsync(string Login, string Password, TRun Run) {
         this.SaveRunAsync(Login, Password, Run, null);
     }
-
+    
     /// <remarks/>
-    public void SaveRunAsync(string Login, string Password, TRun Run, object userState)
-    {
-        if ((this.SaveRunOperationCompleted == null))
-        {
+    public void SaveRunAsync(string Login, string Password, TRun Run, object userState) {
+        if ((this.SaveRunOperationCompleted == null)) {
             this.SaveRunOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveRunOperationCompleted);
         }
         this.InvokeAsync("SaveRun", new object[] {
@@ -4693,21 +4229,69 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     Run}, this.SaveRunOperationCompleted, userState);
     }
-
-    private void OnSaveRunOperationCompleted(object arg)
-    {
-        if ((this.SaveRunCompleted != null))
-        {
+    
+    private void OnSaveRunOperationCompleted(object arg) {
+        if ((this.SaveRunCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveRunCompleted(this, new SaveRunCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveTripValues", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendDriverMsg_2(string Login, string Password, string CarID, string Msg)
-    {
+    public int SaveTripValues(string Login, string Password, int RideID, double Distance) {
+        object[] results = this.Invoke("SaveTripValues", new object[] {
+                    Login,
+                    Password,
+                    RideID,
+                    Distance});
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginSaveTripValues(string Login, string Password, int RideID, double Distance, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("SaveTripValues", new object[] {
+                    Login,
+                    Password,
+                    RideID,
+                    Distance}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public int EndSaveTripValues(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void SaveTripValuesAsync(string Login, string Password, int RideID, double Distance) {
+        this.SaveTripValuesAsync(Login, Password, RideID, Distance, null);
+    }
+    
+    /// <remarks/>
+    public void SaveTripValuesAsync(string Login, string Password, int RideID, double Distance, object userState) {
+        if ((this.SaveTripValuesOperationCompleted == null)) {
+            this.SaveTripValuesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveTripValuesOperationCompleted);
+        }
+        this.InvokeAsync("SaveTripValues", new object[] {
+                    Login,
+                    Password,
+                    RideID,
+                    Distance}, this.SaveTripValuesOperationCompleted, userState);
+    }
+    
+    private void OnSaveTripValuesOperationCompleted(object arg) {
+        if ((this.SaveTripValuesCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.SaveTripValuesCompleted(this, new SaveTripValuesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int SendDriverMsg_2(string Login, string Password, string CarID, string Msg) {
         object[] results = this.Invoke("SendDriverMsg_2", new object[] {
                     Login,
                     Password,
@@ -4715,35 +4299,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Msg});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendDriverMsg_2(string Login, string Password, string CarID, string Msg, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendDriverMsg_2(string Login, string Password, string CarID, string Msg, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendDriverMsg_2", new object[] {
                     Login,
                     Password,
                     CarID,
                     Msg}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendDriverMsg_2(System.IAsyncResult asyncResult)
-    {
+    public int EndSendDriverMsg_2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg)
-    {
+    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg) {
         this.SendDriverMsg_2Async(Login, Password, CarID, Msg, null);
     }
-
+    
     /// <remarks/>
-    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg, object userState)
-    {
-        if ((this.SendDriverMsg_2OperationCompleted == null))
-        {
+    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg, object userState) {
+        if ((this.SendDriverMsg_2OperationCompleted == null)) {
             this.SendDriverMsg_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendDriverMsg_2OperationCompleted);
         }
         this.InvokeAsync("SendDriverMsg_2", new object[] {
@@ -4752,21 +4331,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CarID,
                     Msg}, this.SendDriverMsg_2OperationCompleted, userState);
     }
-
-    private void OnSendDriverMsg_2OperationCompleted(object arg)
-    {
-        if ((this.SendDriverMsg_2Completed != null))
-        {
+    
+    private void OnSendDriverMsg_2OperationCompleted(object arg) {
+        if ((this.SendDriverMsg_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendDriverMsg_2Completed(this, new SendDriverMsg_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendMsg_3dPartyPaymentAuth(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth)
-    {
+    public int SendMsg_3dPartyPaymentAuth(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth) {
         object[] results = this.Invoke("SendMsg_3dPartyPaymentAuth", new object[] {
                     Login,
                     Password,
@@ -4774,35 +4350,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     PaymentAuth});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendMsg_3dPartyPaymentAuth(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendMsg_3dPartyPaymentAuth(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendMsg_3dPartyPaymentAuth", new object[] {
                     Login,
                     Password,
                     MDTNum,
                     PaymentAuth}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendMsg_3dPartyPaymentAuth(System.IAsyncResult asyncResult)
-    {
+    public int EndSendMsg_3dPartyPaymentAuth(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentAuthAsync(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth)
-    {
+    public void SendMsg_3dPartyPaymentAuthAsync(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth) {
         this.SendMsg_3dPartyPaymentAuthAsync(Login, Password, MDTNum, PaymentAuth, null);
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentAuthAsync(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth, object userState)
-    {
-        if ((this.SendMsg_3dPartyPaymentAuthOperationCompleted == null))
-        {
+    public void SendMsg_3dPartyPaymentAuthAsync(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty PaymentAuth, object userState) {
+        if ((this.SendMsg_3dPartyPaymentAuthOperationCompleted == null)) {
             this.SendMsg_3dPartyPaymentAuthOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendMsg_3dPartyPaymentAuthOperationCompleted);
         }
         this.InvokeAsync("SendMsg_3dPartyPaymentAuth", new object[] {
@@ -4811,21 +4382,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     MDTNum,
                     PaymentAuth}, this.SendMsg_3dPartyPaymentAuthOperationCompleted, userState);
     }
-
-    private void OnSendMsg_3dPartyPaymentAuthOperationCompleted(object arg)
-    {
-        if ((this.SendMsg_3dPartyPaymentAuthCompleted != null))
-        {
+    
+    private void OnSendMsg_3dPartyPaymentAuthOperationCompleted(object arg) {
+        if ((this.SendMsg_3dPartyPaymentAuthCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendMsg_3dPartyPaymentAuthCompleted(this, new SendMsg_3dPartyPaymentAuthCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentNotification", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentNotification", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendMsg_3dPartyPaymentNotification(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText)
-    {
+    public int SendMsg_3dPartyPaymentNotification(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText) {
         object[] results = this.Invoke("SendMsg_3dPartyPaymentNotification", new object[] {
                     Login,
                     Password,
@@ -4835,10 +4403,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     DisplayText});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendMsg_3dPartyPaymentNotification(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendMsg_3dPartyPaymentNotification(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendMsg_3dPartyPaymentNotification", new object[] {
                     Login,
                     Password,
@@ -4847,25 +4414,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     JobNumber,
                     DisplayText}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendMsg_3dPartyPaymentNotification(System.IAsyncResult asyncResult)
-    {
+    public int EndSendMsg_3dPartyPaymentNotification(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentNotificationAsync(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText)
-    {
+    public void SendMsg_3dPartyPaymentNotificationAsync(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText) {
         this.SendMsg_3dPartyPaymentNotificationAsync(Login, Password, MDTNum, Approved, JobNumber, DisplayText, null);
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentNotificationAsync(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText, object userState)
-    {
-        if ((this.SendMsg_3dPartyPaymentNotificationOperationCompleted == null))
-        {
+    public void SendMsg_3dPartyPaymentNotificationAsync(string Login, string Password, string MDTNum, bool Approved, int JobNumber, string DisplayText, object userState) {
+        if ((this.SendMsg_3dPartyPaymentNotificationOperationCompleted == null)) {
             this.SendMsg_3dPartyPaymentNotificationOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendMsg_3dPartyPaymentNotificationOperationCompleted);
         }
         this.InvokeAsync("SendMsg_3dPartyPaymentNotification", new object[] {
@@ -4876,21 +4439,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     JobNumber,
                     DisplayText}, this.SendMsg_3dPartyPaymentNotificationOperationCompleted, userState);
     }
-
-    private void OnSendMsg_3dPartyPaymentNotificationOperationCompleted(object arg)
-    {
-        if ((this.SendMsg_3dPartyPaymentNotificationCompleted != null))
-        {
+    
+    private void OnSendMsg_3dPartyPaymentNotificationOperationCompleted(object arg) {
+        if ((this.SendMsg_3dPartyPaymentNotificationCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendMsg_3dPartyPaymentNotificationCompleted(this, new SendMsg_3dPartyPaymentNotificationCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobPaymentType", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobPaymentType", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int UpdateJobPaymentType(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID)
-    {
+    public int UpdateJobPaymentType(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID) {
         object[] results = this.Invoke("UpdateJobPaymentType", new object[] {
                     Login,
                     Password,
@@ -4899,10 +4459,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     ChargeTypeID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginUpdateJobPaymentType(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginUpdateJobPaymentType(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("UpdateJobPaymentType", new object[] {
                     Login,
                     Password,
@@ -4910,25 +4469,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderID,
                     ChargeTypeID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndUpdateJobPaymentType(System.IAsyncResult asyncResult)
-    {
+    public int EndUpdateJobPaymentType(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void UpdateJobPaymentTypeAsync(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID)
-    {
+    public void UpdateJobPaymentTypeAsync(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID) {
         this.UpdateJobPaymentTypeAsync(Login, Password, AccountID, OrderID, ChargeTypeID, null);
     }
-
+    
     /// <remarks/>
-    public void UpdateJobPaymentTypeAsync(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID, object userState)
-    {
-        if ((this.UpdateJobPaymentTypeOperationCompleted == null))
-        {
+    public void UpdateJobPaymentTypeAsync(string Login, string Password, int AccountID, int OrderID, int ChargeTypeID, object userState) {
+        if ((this.UpdateJobPaymentTypeOperationCompleted == null)) {
             this.UpdateJobPaymentTypeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateJobPaymentTypeOperationCompleted);
         }
         this.InvokeAsync("UpdateJobPaymentType", new object[] {
@@ -4938,21 +4493,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderID,
                     ChargeTypeID}, this.UpdateJobPaymentTypeOperationCompleted, userState);
     }
-
-    private void OnUpdateJobPaymentTypeOperationCompleted(object arg)
-    {
-        if ((this.UpdateJobPaymentTypeCompleted != null))
-        {
+    
+    private void OnUpdateJobPaymentTypeOperationCompleted(object arg) {
+        if ((this.UpdateJobPaymentTypeCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateJobPaymentTypeCompleted(this, new UpdateJobPaymentTypeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("ATotalFare")]
-    public double EstimateFare(string Login, string Password, TBookOrder_7 ABookOrder, out double AFare, out double ATolls, out double ADistance)
-    {
+    public double EstimateFare(string Login, string Password, TBookOrder_7 ABookOrder, out double AFare, out double ATolls, out double ADistance) {
         object[] results = this.Invoke("EstimateFare", new object[] {
                     Login,
                     Password,
@@ -4962,37 +4514,32 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         ADistance = ((double)(results[3]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateFare(string Login, string Password, TBookOrder_7 ABookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateFare(string Login, string Password, TBookOrder_7 ABookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateFare", new object[] {
                     Login,
                     Password,
                     ABookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public double EndEstimateFare(System.IAsyncResult asyncResult, out double AFare, out double ATolls, out double ADistance)
-    {
+    public double EndEstimateFare(System.IAsyncResult asyncResult, out double AFare, out double ATolls, out double ADistance) {
         object[] results = this.EndInvoke(asyncResult);
         AFare = ((double)(results[1]));
         ATolls = ((double)(results[2]));
         ADistance = ((double)(results[3]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateFareAsync(string Login, string Password, TBookOrder_7 ABookOrder)
-    {
+    public void EstimateFareAsync(string Login, string Password, TBookOrder_7 ABookOrder) {
         this.EstimateFareAsync(Login, Password, ABookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateFareAsync(string Login, string Password, TBookOrder_7 ABookOrder, object userState)
-    {
-        if ((this.EstimateFareOperationCompleted == null))
-        {
+    public void EstimateFareAsync(string Login, string Password, TBookOrder_7 ABookOrder, object userState) {
+        if ((this.EstimateFareOperationCompleted == null)) {
             this.EstimateFareOperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFareOperationCompleted);
         }
         this.InvokeAsync("EstimateFare", new object[] {
@@ -5000,21 +4547,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     ABookOrder}, this.EstimateFareOperationCompleted, userState);
     }
-
-    private void OnEstimateFareOperationCompleted(object arg)
-    {
-        if ((this.EstimateFareCompleted != null))
-        {
+    
+    private void OnEstimateFareOperationCompleted(object arg) {
+        if ((this.EstimateFareCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateFareCompleted(this, new EstimateFareCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_8", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_8", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("ATotalFare")]
-    public double EstimateFare_8(string Login, string Password, TBookOrder_8 ABookOrder, out double AFare, out double ATolls, out double ADistance, out double TripTime)
-    {
+    public double EstimateFare_8(string Login, string Password, TBookOrder_8 ABookOrder, out double AFare, out double ATolls, out double ADistance, out double TripTime) {
         object[] results = this.Invoke("EstimateFare_8", new object[] {
                     Login,
                     Password,
@@ -5025,19 +4569,17 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         TripTime = ((double)(results[4]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateFare_8(string Login, string Password, TBookOrder_8 ABookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateFare_8(string Login, string Password, TBookOrder_8 ABookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateFare_8", new object[] {
                     Login,
                     Password,
                     ABookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public double EndEstimateFare_8(System.IAsyncResult asyncResult, out double AFare, out double ATolls, out double ADistance, out double TripTime)
-    {
+    public double EndEstimateFare_8(System.IAsyncResult asyncResult, out double AFare, out double ATolls, out double ADistance, out double TripTime) {
         object[] results = this.EndInvoke(asyncResult);
         AFare = ((double)(results[1]));
         ATolls = ((double)(results[2]));
@@ -5045,18 +4587,15 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         TripTime = ((double)(results[4]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_8Async(string Login, string Password, TBookOrder_8 ABookOrder)
-    {
+    public void EstimateFare_8Async(string Login, string Password, TBookOrder_8 ABookOrder) {
         this.EstimateFare_8Async(Login, Password, ABookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_8Async(string Login, string Password, TBookOrder_8 ABookOrder, object userState)
-    {
-        if ((this.EstimateFare_8OperationCompleted == null))
-        {
+    public void EstimateFare_8Async(string Login, string Password, TBookOrder_8 ABookOrder, object userState) {
+        if ((this.EstimateFare_8OperationCompleted == null)) {
             this.EstimateFare_8OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFare_8OperationCompleted);
         }
         this.InvokeAsync("EstimateFare_8", new object[] {
@@ -5064,21 +4603,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     ABookOrder}, this.EstimateFare_8OperationCompleted, userState);
     }
-
-    private void OnEstimateFare_8OperationCompleted(object arg)
-    {
-        if ((this.EstimateFare_8Completed != null))
-        {
+    
+    private void OnEstimateFare_8OperationCompleted(object arg) {
+        if ((this.EstimateFare_8Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateFare_8Completed(this, new EstimateFare_8CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_9", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_9", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken)
-    {
+    public int SaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken) {
         object[] results = this.Invoke("SaveBookOrder_9", new object[] {
                     Login,
                     Password,
@@ -5086,35 +4622,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     APBToken});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_9", new object[] {
                     Login,
                     Password,
                     BookOrder,
                     APBToken}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_9(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_9(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken)
-    {
+    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken) {
         this.SaveBookOrder_9Async(Login, Password, BookOrder, APBToken, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, object userState)
-    {
-        if ((this.SaveBookOrder_9OperationCompleted == null))
-        {
+    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, object userState) {
+        if ((this.SaveBookOrder_9OperationCompleted == null)) {
             this.SaveBookOrder_9OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_9OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_9", new object[] {
@@ -5123,21 +4654,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookOrder,
                     APBToken}, this.SaveBookOrder_9OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_9OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_9Completed != null))
-        {
+    
+    private void OnSaveBookOrder_9OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_9Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_9Completed(this, new SaveBookOrder_9CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_9", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_9", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("aTotalFare")]
-    public double EstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken)
-    {
+    public double EstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken) {
         object[] results = this.Invoke("EstimateFare_9", new object[] {
                     Login,
                     Password,
@@ -5149,19 +4677,17 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         aPBToken = ((int)(results[5]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateFare_9", new object[] {
                     Login,
                     Password,
                     aBookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public double EndEstimateFare_9(System.IAsyncResult asyncResult, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken)
-    {
+    public double EndEstimateFare_9(System.IAsyncResult asyncResult, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken) {
         object[] results = this.EndInvoke(asyncResult);
         aFare = ((double)(results[1]));
         aTolls = ((double)(results[2]));
@@ -5170,18 +4696,15 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         aPBToken = ((int)(results[5]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder)
-    {
+    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder) {
         this.EstimateFare_9Async(Login, Password, aBookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState)
-    {
-        if ((this.EstimateFare_9OperationCompleted == null))
-        {
+    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState) {
+        if ((this.EstimateFare_9OperationCompleted == null)) {
             this.EstimateFare_9OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFare_9OperationCompleted);
         }
         this.InvokeAsync("EstimateFare_9", new object[] {
@@ -5189,55 +4712,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     aBookOrder}, this.EstimateFare_9OperationCompleted, userState);
     }
-
-    private void OnEstimateFare_9OperationCompleted(object arg)
-    {
-        if ((this.EstimateFare_9Completed != null))
-        {
+    
+    private void OnEstimateFare_9OperationCompleted(object arg) {
+        if ((this.EstimateFare_9Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateFare_9Completed(this, new EstimateFare_9CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_10", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_10", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TEstimateFare_10Result EstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder)
-    {
+    public TEstimateFare_10Result EstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder) {
         object[] results = this.Invoke("EstimateFare_10", new object[] {
                     Login,
                     Password,
                     aBookOrder});
         return ((TEstimateFare_10Result)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateFare_10(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateFare_10", new object[] {
                     Login,
                     Password,
                     aBookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TEstimateFare_10Result EndEstimateFare_10(System.IAsyncResult asyncResult)
-    {
+    public TEstimateFare_10Result EndEstimateFare_10(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TEstimateFare_10Result)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder)
-    {
+    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder) {
         this.EstimateFare_10Async(Login, Password, aBookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState)
-    {
-        if ((this.EstimateFare_10OperationCompleted == null))
-        {
+    public void EstimateFare_10Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState) {
+        if ((this.EstimateFare_10OperationCompleted == null)) {
             this.EstimateFare_10OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFare_10OperationCompleted);
         }
         this.InvokeAsync("EstimateFare_10", new object[] {
@@ -5245,21 +4760,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     aBookOrder}, this.EstimateFare_10OperationCompleted, userState);
     }
-
-    private void OnEstimateFare_10OperationCompleted(object arg)
-    {
-        if ((this.EstimateFare_10Completed != null))
-        {
+    
+    private void OnEstimateFare_10OperationCompleted(object arg) {
+        if ((this.EstimateFare_10Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateFare_10Completed(this, new EstimateFare_10CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("TotalFare")]
-    public double EstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, out int TripTime, out int @return)
-    {
+    public double EstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, out int TripTime, out int @return) {
         object[] results = this.Invoke("EstimateDistance", new object[] {
                     Login,
                     Password,
@@ -5275,10 +4787,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         @return = ((int)(results[2]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateDistance(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateDistance", new object[] {
                     Login,
                     Password,
@@ -5291,27 +4802,23 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CustomerNum,
                     CabType}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public double EndEstimateDistance(System.IAsyncResult asyncResult, out int TripTime, out int @return)
-    {
+    public double EndEstimateDistance(System.IAsyncResult asyncResult, out int TripTime, out int @return) {
         object[] results = this.EndInvoke(asyncResult);
         TripTime = ((int)(results[1]));
         @return = ((int)(results[2]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType)
-    {
+    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType) {
         this.EstimateDistanceAsync(Login, Password, Distance, WaitTime, StopCount, PassengerCount, FrDate, AccountNum, CustomerNum, CabType, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, object userState)
-    {
-        if ((this.EstimateDistanceOperationCompleted == null))
-        {
+    public void EstimateDistanceAsync(string Login, string Password, double Distance, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, object userState) {
+        if ((this.EstimateDistanceOperationCompleted == null)) {
             this.EstimateDistanceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateDistanceOperationCompleted);
         }
         this.InvokeAsync("EstimateDistance", new object[] {
@@ -5326,21 +4833,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CustomerNum,
                     CabType}, this.EstimateDistanceOperationCompleted, userState);
     }
-
-    private void OnEstimateDistanceOperationCompleted(object arg)
-    {
-        if ((this.EstimateDistanceCompleted != null))
-        {
+    
+    private void OnEstimateDistanceOperationCompleted(object arg) {
+        if ((this.EstimateDistanceCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateDistanceCompleted(this, new EstimateDistanceCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("ParamO")]
-    public TEstimateDistance_2_ParamO EstimateDistance_2(string Login, string Password, TEstimateDistance_2_ParamI ParamI, out int @return)
-    {
+    public TEstimateDistance_2_ParamO EstimateDistance_2(string Login, string Password, TEstimateDistance_2_ParamI ParamI, out int @return) {
         object[] results = this.Invoke("EstimateDistance_2", new object[] {
                     Login,
                     Password,
@@ -5348,35 +4852,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         @return = ((int)(results[1]));
         return ((TEstimateDistance_2_ParamO)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateDistance_2(string Login, string Password, TEstimateDistance_2_ParamI ParamI, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateDistance_2(string Login, string Password, TEstimateDistance_2_ParamI ParamI, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateDistance_2", new object[] {
                     Login,
                     Password,
                     ParamI}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TEstimateDistance_2_ParamO EndEstimateDistance_2(System.IAsyncResult asyncResult, out int @return)
-    {
+    public TEstimateDistance_2_ParamO EndEstimateDistance_2(System.IAsyncResult asyncResult, out int @return) {
         object[] results = this.EndInvoke(asyncResult);
         @return = ((int)(results[1]));
         return ((TEstimateDistance_2_ParamO)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateDistance_2Async(string Login, string Password, TEstimateDistance_2_ParamI ParamI)
-    {
+    public void EstimateDistance_2Async(string Login, string Password, TEstimateDistance_2_ParamI ParamI) {
         this.EstimateDistance_2Async(Login, Password, ParamI, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateDistance_2Async(string Login, string Password, TEstimateDistance_2_ParamI ParamI, object userState)
-    {
-        if ((this.EstimateDistance_2OperationCompleted == null))
-        {
+    public void EstimateDistance_2Async(string Login, string Password, TEstimateDistance_2_ParamI ParamI, object userState) {
+        if ((this.EstimateDistance_2OperationCompleted == null)) {
             this.EstimateDistance_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateDistance_2OperationCompleted);
         }
         this.InvokeAsync("EstimateDistance_2", new object[] {
@@ -5384,21 +4883,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     ParamI}, this.EstimateDistance_2OperationCompleted, userState);
     }
-
-    private void OnEstimateDistance_2OperationCompleted(object arg)
-    {
-        if ((this.EstimateDistance_2Completed != null))
-        {
+    
+    private void OnEstimateDistance_2OperationCompleted(object arg) {
+        if ((this.EstimateDistance_2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateDistance_2Completed(this, new EstimateDistance_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_3", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateDistance_3", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int EstimateDistance_3(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, ref double OutTotalFare, ref int OutTripTime)
-    {
+    public int EstimateDistance_3(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, ref double OutTotalFare, ref int OutTripTime) {
         object[] results = this.Invoke("EstimateDistance_3", new object[] {
                     Login,
                     Password,
@@ -5417,10 +4913,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         OutTripTime = ((int)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginEstimateDistance_3(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginEstimateDistance_3(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("EstimateDistance_3", new object[] {
                     Login,
                     Password,
@@ -5436,27 +4931,23 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OutTotalFare,
                     OutTripTime}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndEstimateDistance_3(System.IAsyncResult asyncResult, out double OutTotalFare, out int OutTripTime)
-    {
+    public int EndEstimateDistance_3(System.IAsyncResult asyncResult, out double OutTotalFare, out int OutTripTime) {
         object[] results = this.EndInvoke(asyncResult);
         OutTotalFare = ((double)(results[1]));
         OutTripTime = ((int)(results[2]));
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void EstimateDistance_3Async(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime)
-    {
+    public void EstimateDistance_3Async(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime) {
         this.EstimateDistance_3Async(Login, Password, Distance, TripTime, WaitTime, StopCount, PassengerCount, FrDate, AccountNum, CustomerNum, CabType, OutTotalFare, OutTripTime, null);
     }
-
+    
     /// <remarks/>
-    public void EstimateDistance_3Async(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime, object userState)
-    {
-        if ((this.EstimateDistance_3OperationCompleted == null))
-        {
+    public void EstimateDistance_3Async(string Login, string Password, double Distance, int TripTime, int WaitTime, int StopCount, int PassengerCount, TWEBTimeStamp FrDate, string AccountNum, int CustomerNum, int CabType, double OutTotalFare, int OutTripTime, object userState) {
+        if ((this.EstimateDistance_3OperationCompleted == null)) {
             this.EstimateDistance_3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateDistance_3OperationCompleted);
         }
         this.InvokeAsync("EstimateDistance_3", new object[] {
@@ -5474,21 +4965,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OutTotalFare,
                     OutTripTime}, this.EstimateDistance_3OperationCompleted, userState);
     }
-
-    private void OnEstimateDistance_3OperationCompleted(object arg)
-    {
-        if ((this.EstimateDistance_3Completed != null))
-        {
+    
+    private void OnEstimateDistance_3OperationCompleted(object arg) {
+        if ((this.EstimateDistance_3Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.EstimateDistance_3Completed(this, new EstimateDistance_3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#RideCurrentFare", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#RideCurrentFare", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("TotalFare")]
-    public double RideCurrentFare(string Login, string Password, int RideID, out int @return)
-    {
+    public double RideCurrentFare(string Login, string Password, int RideID, out int @return) {
         object[] results = this.Invoke("RideCurrentFare", new object[] {
                     Login,
                     Password,
@@ -5496,35 +4984,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         @return = ((int)(results[1]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginRideCurrentFare(string Login, string Password, int RideID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginRideCurrentFare(string Login, string Password, int RideID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("RideCurrentFare", new object[] {
                     Login,
                     Password,
                     RideID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public double EndRideCurrentFare(System.IAsyncResult asyncResult, out int @return)
-    {
+    public double EndRideCurrentFare(System.IAsyncResult asyncResult, out int @return) {
         object[] results = this.EndInvoke(asyncResult);
         @return = ((int)(results[1]));
         return ((double)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void RideCurrentFareAsync(string Login, string Password, int RideID)
-    {
+    public void RideCurrentFareAsync(string Login, string Password, int RideID) {
         this.RideCurrentFareAsync(Login, Password, RideID, null);
     }
-
+    
     /// <remarks/>
-    public void RideCurrentFareAsync(string Login, string Password, int RideID, object userState)
-    {
-        if ((this.RideCurrentFareOperationCompleted == null))
-        {
+    public void RideCurrentFareAsync(string Login, string Password, int RideID, object userState) {
+        if ((this.RideCurrentFareOperationCompleted == null)) {
             this.RideCurrentFareOperationCompleted = new System.Threading.SendOrPostCallback(this.OnRideCurrentFareOperationCompleted);
         }
         this.InvokeAsync("RideCurrentFare", new object[] {
@@ -5532,21 +5015,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     RideID}, this.RideCurrentFareOperationCompleted, userState);
     }
-
-    private void OnRideCurrentFareOperationCompleted(object arg)
-    {
-        if ((this.RideCurrentFareCompleted != null))
-        {
+    
+    private void OnRideCurrentFareOperationCompleted(object arg) {
+        if ((this.RideCurrentFareCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.RideCurrentFareCompleted(this, new RideCurrentFareCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendP2DCall", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendP2DCall", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendP2DCall(string Login, string Password, string CarID, int OrderID)
-    {
+    public int SendP2DCall(string Login, string Password, string CarID, int OrderID) {
         object[] results = this.Invoke("SendP2DCall", new object[] {
                     Login,
                     Password,
@@ -5554,35 +5034,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderID});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendP2DCall(string Login, string Password, string CarID, int OrderID, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendP2DCall(string Login, string Password, string CarID, int OrderID, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendP2DCall", new object[] {
                     Login,
                     Password,
                     CarID,
                     OrderID}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendP2DCall(System.IAsyncResult asyncResult)
-    {
+    public int EndSendP2DCall(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendP2DCallAsync(string Login, string Password, string CarID, int OrderID)
-    {
+    public void SendP2DCallAsync(string Login, string Password, string CarID, int OrderID) {
         this.SendP2DCallAsync(Login, Password, CarID, OrderID, null);
     }
-
+    
     /// <remarks/>
-    public void SendP2DCallAsync(string Login, string Password, string CarID, int OrderID, object userState)
-    {
-        if ((this.SendP2DCallOperationCompleted == null))
-        {
+    public void SendP2DCallAsync(string Login, string Password, string CarID, int OrderID, object userState) {
+        if ((this.SendP2DCallOperationCompleted == null)) {
             this.SendP2DCallOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendP2DCallOperationCompleted);
         }
         this.InvokeAsync("SendP2DCall", new object[] {
@@ -5591,55 +5066,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     CarID,
                     OrderID}, this.SendP2DCallOperationCompleted, userState);
     }
-
-    private void OnSendP2DCallOperationCompleted(object arg)
-    {
-        if ((this.SendP2DCallCompleted != null))
-        {
+    
+    private void OnSendP2DCallOperationCompleted(object arg) {
+        if ((this.SendP2DCallCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendP2DCallCompleted(this, new SendP2DCallCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_10", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_10", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_10(string Login, string Password, TBookOrder_10 BookOrder)
-    {
+    public int SaveBookOrder_10(string Login, string Password, TBookOrder_10 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_10", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_10(string Login, string Password, TBookOrder_10 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_10(string Login, string Password, TBookOrder_10 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_10", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_10(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_10(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_10Async(string Login, string Password, TBookOrder_10 BookOrder)
-    {
+    public void SaveBookOrder_10Async(string Login, string Password, TBookOrder_10 BookOrder) {
         this.SaveBookOrder_10Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_10Async(string Login, string Password, TBookOrder_10 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_10OperationCompleted == null))
-        {
+    public void SaveBookOrder_10Async(string Login, string Password, TBookOrder_10 BookOrder, object userState) {
+        if ((this.SaveBookOrder_10OperationCompleted == null)) {
             this.SaveBookOrder_10OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_10OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_10", new object[] {
@@ -5647,55 +5114,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_10OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_10OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_10Completed != null))
-        {
+    
+    private void OnSaveBookOrder_10OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_10Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_10Completed(this, new SaveBookOrder_10CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_11", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_11", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SaveBookOrder_11(string Login, string Password, TBookOrder_11 BookOrder)
-    {
+    public int SaveBookOrder_11(string Login, string Password, TBookOrder_11 BookOrder) {
         object[] results = this.Invoke("SaveBookOrder_11", new object[] {
                     Login,
                     Password,
                     BookOrder});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_11(string Login, string Password, TBookOrder_11 BookOrder, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_11(string Login, string Password, TBookOrder_11 BookOrder, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_11", new object[] {
                     Login,
                     Password,
                     BookOrder}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSaveBookOrder_11(System.IAsyncResult asyncResult)
-    {
+    public int EndSaveBookOrder_11(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_11Async(string Login, string Password, TBookOrder_11 BookOrder)
-    {
+    public void SaveBookOrder_11Async(string Login, string Password, TBookOrder_11 BookOrder) {
         this.SaveBookOrder_11Async(Login, Password, BookOrder, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_11Async(string Login, string Password, TBookOrder_11 BookOrder, object userState)
-    {
-        if ((this.SaveBookOrder_11OperationCompleted == null))
-        {
+    public void SaveBookOrder_11Async(string Login, string Password, TBookOrder_11 BookOrder, object userState) {
+        if ((this.SaveBookOrder_11OperationCompleted == null)) {
             this.SaveBookOrder_11OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_11OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_11", new object[] {
@@ -5703,21 +5162,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     BookOrder}, this.SaveBookOrder_11OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_11OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_11Completed != null))
-        {
+    
+    private void OnSaveBookOrder_11OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_11Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_11Completed(this, new SaveBookOrder_11CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_12", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_12", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderKey SaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public TBookOrderKey SaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles) {
         object[] results = this.Invoke("SaveBookOrder_12", new object[] {
                     Login,
                     Password,
@@ -5725,35 +5181,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Vehicles});
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_12(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_12", new object[] {
                     Login,
                     Password,
                     BookOrder,
                     Vehicles}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey EndSaveBookOrder_12(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderKey EndSaveBookOrder_12(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles) {
         this.SaveBookOrder_12Async(Login, Password, BookOrder, Vehicles, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, object userState)
-    {
-        if ((this.SaveBookOrder_12OperationCompleted == null))
-        {
+    public void SaveBookOrder_12Async(string Login, string Password, TBookOrder_12 BookOrder, TVehicleComp[] Vehicles, object userState) {
+        if ((this.SaveBookOrder_12OperationCompleted == null)) {
             this.SaveBookOrder_12OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_12OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_12", new object[] {
@@ -5762,55 +5213,47 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookOrder,
                     Vehicles}, this.SaveBookOrder_12OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_12OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_12Completed != null))
-        {
+    
+    private void OnSaveBookOrder_12OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_12Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_12Completed(this, new SaveBookOrder_12CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleCandidates", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetVehicleCandidates", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TVehicleComp[] GetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey)
-    {
+    public TVehicleComp[] GetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey) {
         object[] results = this.Invoke("GetVehicleCandidates", new object[] {
                     Login,
                     Password,
                     OrderKey});
         return ((TVehicleComp[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginGetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginGetVehicleCandidates(string Login, string Password, TBookOrderKey OrderKey, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetVehicleCandidates", new object[] {
                     Login,
                     Password,
                     OrderKey}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TVehicleComp[] EndGetVehicleCandidates(System.IAsyncResult asyncResult)
-    {
+    public TVehicleComp[] EndGetVehicleCandidates(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TVehicleComp[])(results[0]));
     }
-
+    
     /// <remarks/>
-    public void GetVehicleCandidatesAsync(string Login, string Password, TBookOrderKey OrderKey)
-    {
+    public void GetVehicleCandidatesAsync(string Login, string Password, TBookOrderKey OrderKey) {
         this.GetVehicleCandidatesAsync(Login, Password, OrderKey, null);
     }
-
+    
     /// <remarks/>
-    public void GetVehicleCandidatesAsync(string Login, string Password, TBookOrderKey OrderKey, object userState)
-    {
-        if ((this.GetVehicleCandidatesOperationCompleted == null))
-        {
+    public void GetVehicleCandidatesAsync(string Login, string Password, TBookOrderKey OrderKey, object userState) {
+        if ((this.GetVehicleCandidatesOperationCompleted == null)) {
             this.GetVehicleCandidatesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetVehicleCandidatesOperationCompleted);
         }
         this.InvokeAsync("GetVehicleCandidates", new object[] {
@@ -5818,21 +5261,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Password,
                     OrderKey}, this.GetVehicleCandidatesOperationCompleted, userState);
     }
-
-    private void OnGetVehicleCandidatesOperationCompleted(object arg)
-    {
-        if ((this.GetVehicleCandidatesCompleted != null))
-        {
+    
+    private void OnGetVehicleCandidatesOperationCompleted(object arg) {
+        if ((this.GetVehicleCandidatesCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.GetVehicleCandidatesCompleted(this, new GetVehicleCandidatesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobToVehicle", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateJobToVehicle", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int UpdateJobToVehicle(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle)
-    {
+    public int UpdateJobToVehicle(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle) {
         object[] results = this.Invoke("UpdateJobToVehicle", new object[] {
                     Login,
                     Password,
@@ -5840,35 +5280,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Vehicle});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginUpdateJobToVehicle(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginUpdateJobToVehicle(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("UpdateJobToVehicle", new object[] {
                     Login,
                     Password,
                     OrderKey,
                     Vehicle}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndUpdateJobToVehicle(System.IAsyncResult asyncResult)
-    {
+    public int EndUpdateJobToVehicle(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void UpdateJobToVehicleAsync(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle)
-    {
+    public void UpdateJobToVehicleAsync(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle) {
         this.UpdateJobToVehicleAsync(Login, Password, OrderKey, Vehicle, null);
     }
-
+    
     /// <remarks/>
-    public void UpdateJobToVehicleAsync(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle, object userState)
-    {
-        if ((this.UpdateJobToVehicleOperationCompleted == null))
-        {
+    public void UpdateJobToVehicleAsync(string Login, string Password, TBookOrderKey OrderKey, TVehicleComp Vehicle, object userState) {
+        if ((this.UpdateJobToVehicleOperationCompleted == null)) {
             this.UpdateJobToVehicleOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateJobToVehicleOperationCompleted);
         }
         this.InvokeAsync("UpdateJobToVehicle", new object[] {
@@ -5877,21 +5312,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     OrderKey,
                     Vehicle}, this.UpdateJobToVehicleOperationCompleted, userState);
     }
-
-    private void OnUpdateJobToVehicleOperationCompleted(object arg)
-    {
-        if ((this.UpdateJobToVehicleCompleted != null))
-        {
+    
+    private void OnUpdateJobToVehicleOperationCompleted(object arg) {
+        if ((this.UpdateJobToVehicleCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateJobToVehicleCompleted(this, new UpdateJobToVehicleCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth2", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendMsg_3dPartyPaymentAuth2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int SendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth)
-    {
+    public int SendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth) {
         object[] results = this.Invoke("SendMsg_3dPartyPaymentAuth2", new object[] {
                     Login,
                     Password,
@@ -5899,35 +5331,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     PaymentAuth});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSendMsg_3dPartyPaymentAuth2(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SendMsg_3dPartyPaymentAuth2", new object[] {
                     Login,
                     Password,
                     MDTNum,
                     PaymentAuth}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndSendMsg_3dPartyPaymentAuth2(System.IAsyncResult asyncResult)
-    {
+    public int EndSendMsg_3dPartyPaymentAuth2(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth)
-    {
+    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth) {
         this.SendMsg_3dPartyPaymentAuth2Async(Login, Password, MDTNum, PaymentAuth, null);
     }
-
+    
     /// <remarks/>
-    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, object userState)
-    {
-        if ((this.SendMsg_3dPartyPaymentAuth2OperationCompleted == null))
-        {
+    public void SendMsg_3dPartyPaymentAuth2Async(string Login, string Password, string MDTNum, TPaymentAuthorization3dParty2 PaymentAuth, object userState) {
+        if ((this.SendMsg_3dPartyPaymentAuth2OperationCompleted == null)) {
             this.SendMsg_3dPartyPaymentAuth2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendMsg_3dPartyPaymentAuth2OperationCompleted);
         }
         this.InvokeAsync("SendMsg_3dPartyPaymentAuth2", new object[] {
@@ -5936,21 +5363,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     MDTNum,
                     PaymentAuth}, this.SendMsg_3dPartyPaymentAuth2OperationCompleted, userState);
     }
-
-    private void OnSendMsg_3dPartyPaymentAuth2OperationCompleted(object arg)
-    {
-        if ((this.SendMsg_3dPartyPaymentAuth2Completed != null))
-        {
+    
+    private void OnSendMsg_3dPartyPaymentAuth2OperationCompleted(object arg) {
+        if ((this.SendMsg_3dPartyPaymentAuth2Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SendMsg_3dPartyPaymentAuth2Completed(this, new SendMsg_3dPartyPaymentAuth2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateDestinationAddress", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#UpdateDestinationAddress", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public int UpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address)
-    {
+    public int UpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address) {
         object[] results = this.Invoke("UpdateDestinationAddress", new object[] {
                     Login,
                     Password,
@@ -5960,10 +5384,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     address});
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginUpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginUpdateDestinationAddress(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("UpdateDestinationAddress", new object[] {
                     Login,
                     Password,
@@ -5972,25 +5395,21 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     GUID,
                     address}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public int EndUpdateDestinationAddress(System.IAsyncResult asyncResult)
-    {
+    public int EndUpdateDestinationAddress(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((int)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address)
-    {
+    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address) {
         this.UpdateDestinationAddressAsync(Login, Password, ProviderID, OrderID, GUID, address, null);
     }
-
+    
     /// <remarks/>
-    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, object userState)
-    {
-        if ((this.UpdateDestinationAddressOperationCompleted == null))
-        {
+    public void UpdateDestinationAddressAsync(string Login, string Password, int ProviderID, int OrderID, string GUID, TWEBAddress address, object userState) {
+        if ((this.UpdateDestinationAddressOperationCompleted == null)) {
             this.UpdateDestinationAddressOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateDestinationAddressOperationCompleted);
         }
         this.InvokeAsync("UpdateDestinationAddress", new object[] {
@@ -6001,21 +5420,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     GUID,
                     address}, this.UpdateDestinationAddressOperationCompleted, userState);
     }
-
-    private void OnUpdateDestinationAddressOperationCompleted(object arg)
-    {
-        if ((this.UpdateDestinationAddressCompleted != null))
-        {
+    
+    private void OnUpdateDestinationAddressOperationCompleted(object arg) {
+        if ((this.UpdateDestinationAddressCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateDestinationAddressCompleted(this, new UpdateDestinationAddressCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_13", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_13", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderKey SaveBookOrder_13(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public TBookOrderKey SaveBookOrder_13(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles) {
         object[] results = this.Invoke("SaveBookOrder_13", new object[] {
                     Login,
                     Password,
@@ -6023,35 +5439,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Vehicles});
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_13(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_13(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_13", new object[] {
                     Login,
                     Password,
                     BookOrder,
                     Vehicles}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey EndSaveBookOrder_13(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderKey EndSaveBookOrder_13(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_13Async(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public void SaveBookOrder_13Async(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles) {
         this.SaveBookOrder_13Async(Login, Password, BookOrder, Vehicles, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_13Async(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles, object userState)
-    {
-        if ((this.SaveBookOrder_13OperationCompleted == null))
-        {
+    public void SaveBookOrder_13Async(string Login, string Password, TBookOrder_13 BookOrder, TVehicleComp[] Vehicles, object userState) {
+        if ((this.SaveBookOrder_13OperationCompleted == null)) {
             this.SaveBookOrder_13OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_13OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_13", new object[] {
@@ -6060,21 +5471,18 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookOrder,
                     Vehicles}, this.SaveBookOrder_13OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_13OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_13Completed != null))
-        {
+    
+    private void OnSaveBookOrder_13OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_13Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_13Completed(this, new SaveBookOrder_13CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_14", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_14", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderKey SaveBookOrder_14(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public TBookOrderKey SaveBookOrder_14(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles) {
         object[] results = this.Invoke("SaveBookOrder_14", new object[] {
                     Login,
                     Password,
@@ -6082,35 +5490,30 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     Vehicles});
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_14(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState)
-    {
+    public System.IAsyncResult BeginSaveBookOrder_14(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("SaveBookOrder_14", new object[] {
                     Login,
                     Password,
                     BookOrder,
                     Vehicles}, callback, asyncState);
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey EndSaveBookOrder_14(System.IAsyncResult asyncResult)
-    {
+    public TBookOrderKey EndSaveBookOrder_14(System.IAsyncResult asyncResult) {
         object[] results = this.EndInvoke(asyncResult);
         return ((TBookOrderKey)(results[0]));
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_14Async(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles)
-    {
+    public void SaveBookOrder_14Async(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles) {
         this.SaveBookOrder_14Async(Login, Password, BookOrder, Vehicles, null);
     }
-
+    
     /// <remarks/>
-    public void SaveBookOrder_14Async(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles, object userState)
-    {
-        if ((this.SaveBookOrder_14OperationCompleted == null))
-        {
+    public void SaveBookOrder_14Async(string Login, string Password, TBookOrder_14 BookOrder, TVehicleComp[] Vehicles, object userState) {
+        if ((this.SaveBookOrder_14OperationCompleted == null)) {
             this.SaveBookOrder_14OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_14OperationCompleted);
         }
         this.InvokeAsync("SaveBookOrder_14", new object[] {
@@ -6119,78 +5522,16 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
                     BookOrder,
                     Vehicles}, this.SaveBookOrder_14OperationCompleted, userState);
     }
-
-    private void OnSaveBookOrder_14OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_14Completed != null))
-        {
+    
+    private void OnSaveBookOrder_14OperationCompleted(object arg) {
+        if ((this.SaveBookOrder_14Completed != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.SaveBookOrder_14Completed(this, new SaveBookOrder_14CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
+    
     /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_15", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
-    [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public TBookOrderKey SaveBookOrder_15(string Login, string Password, TBookOrder_15 BookOrder, TVehicleComp[] Vehicles)
-    {
-        object[] results = this.Invoke("SaveBookOrder_15", new object[] {
-                    Login,
-                    Password,
-                    BookOrder,
-                    Vehicles});
-        return ((TBookOrderKey)(results[0]));
-    }
-
-    /// <remarks/>
-    public System.IAsyncResult BeginSaveBookOrder_15(string Login, string Password, TBookOrder_15 BookOrder, TVehicleComp[] Vehicles, System.AsyncCallback callback, object asyncState)
-    {
-        return this.BeginInvoke("SaveBookOrder_15", new object[] {
-                    Login,
-                    Password,
-                    BookOrder,
-                    Vehicles}, callback, asyncState);
-    }
-
-    /// <remarks/>
-    public TBookOrderKey EndSaveBookOrder_15(System.IAsyncResult asyncResult)
-    {
-        object[] results = this.EndInvoke(asyncResult);
-        return ((TBookOrderKey)(results[0]));
-    }
-
-    /// <remarks/>
-    public void SaveBookOrder_15Async(string Login, string Password, TBookOrder_15 BookOrder, TVehicleComp[] Vehicles)
-    {
-        this.SaveBookOrder_15Async(Login, Password, BookOrder, Vehicles, null);
-    }
-
-    /// <remarks/>
-    public void SaveBookOrder_15Async(string Login, string Password, TBookOrder_15 BookOrder, TVehicleComp[] Vehicles, object userState)
-    {
-        if ((this.SaveBookOrder_15OperationCompleted == null))
-        {
-            this.SaveBookOrder_15OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_15OperationCompleted);
-        }
-        this.InvokeAsync("SaveBookOrder_15", new object[] {
-                    Login,
-                    Password,
-                    BookOrder,
-                    Vehicles}, this.SaveBookOrder_15OperationCompleted, userState);
-    }
-
-    private void OnSaveBookOrder_15OperationCompleted(object arg)
-    {
-        if ((this.SaveBookOrder_15Completed != null))
-        {
-            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-            this.SaveBookOrder_15Completed(this, new SaveBookOrder_15CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-        }
-    }
-
-    /// <remarks/>
-    public new void CancelAsync(object userState)
-    {
+    public new void CancelAsync(object userState) {
         base.CancelAsync(userState);
     }
 }
@@ -6198,124 +5539,123 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeWEB")]
-public enum TWEBOrderStatusValue
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeWEB")]
+public enum TWEBOrderStatusValue {
+    
     /// <remarks/>
     wosNone,
-
+    
     /// <remarks/>
     wosAddrValidQry,
-
+    
     /// <remarks/>
     wosAddrValidating,
-
+    
     /// <remarks/>
     wosAddrValidatingTimeout,
-
+    
     /// <remarks/>
     wosAddrNotValid,
-
+    
     /// <remarks/>
     wosAddrValid,
-
+    
     /// <remarks/>
     wosSCHED,
-
+    
     /// <remarks/>
     wosCANCELLED,
-
+    
     /// <remarks/>
     wosPost,
-
+    
     /// <remarks/>
     wosMove,
-
+    
     /// <remarks/>
     wosMoved,
-
+    
     /// <remarks/>
     wosDONE,
-
+    
     /// <remarks/>
     wosWAITING,
-
+    
     /// <remarks/>
     wosASSIGNED,
-
+    
     /// <remarks/>
     wosARRIVED,
-
+    
     /// <remarks/>
     wosLOADED,
-
+    
     /// <remarks/>
     wosNOSHOW,
-
+    
     /// <remarks/>
     wosAddrPostalValidQry,
-
+    
     /// <remarks/>
     wosCANCELLED_DONE,
-
+    
     /// <remarks/>
     wosCCPreauthQry,
-
+    
     /// <remarks/>
     wosCCSaleQry,
-
+    
     /// <remarks/>
     wosCCProcessing,
-
+    
     /// <remarks/>
     wosCCProcDone,
-
+    
     /// <remarks/>
     wosPriceQry,
-
+    
     /// <remarks/>
     wosPriceCalculating,
-
+    
     /// <remarks/>
     wosPriceDone,
-
+    
     /// <remarks/>
     wosReportQry,
-
+    
     /// <remarks/>
     wosReportProcessing,
-
+    
     /// <remarks/>
     wosReportDone,
-
+    
     /// <remarks/>
     wosCCEncryptCCInfo,
-
+    
     /// <remarks/>
     wosCCEncryptCCInfoDone,
-
+    
     /// <remarks/>
     wosTIMEOUT,
-
+    
     /// <remarks/>
     wosDoneNotPayed,
-
+    
     /// <remarks/>
     wosBAILED,
-
+    
     /// <remarks/>
     wosUNLOAD,
-
+    
     /// <remarks/>
     wosAccountQry,
-
+    
     /// <remarks/>
     wosAccountProcessing,
-
+    
     /// <remarks/>
     wosAccountDone,
-
+    
     /// <remarks/>
     wosAccountFailed,
 }
@@ -6334,506 +5674,405 @@ public enum TWEBOrderStatusValue
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder {
+    
     private int serviceProviderIDField;
-
+    
     private int confirmationIDField;
-
+    
     private int accountIDField;
-
+    
     private string customerField;
-
+    
     private string phoneField;
-
+    
     private TWEBTimeStamp pickupDateField;
-
+    
     private TWEBTimeStamp pickupTimeField;
-
+    
     private TWEBAddress pickupAddressField;
-
+    
     private TWEBAddress dropoffAddressField;
-
+    
     private int passengersField;
-
+    
     private string vehicleTypeNameField;
-
+    
     private int vehicleTypeIDField;
-
+    
     private string noteField;
-
+    
     private string contactPhoneField;
-
+    
     private double fareField;
-
+    
     private double tollsField;
-
+    
     private double estDistanceField;
-
+    
     private string cCNumberField;
-
+    
     private string cCExpMonthField;
-
+    
     private string cCExpYearField;
-
+    
     private int cCTransIDField;
-
+    
     private string cCHolderField;
-
+    
     private string cCStartMonthField;
-
+    
     private string cCStartYearField;
-
+    
     private string cCSecurityCodeField;
-
+    
     private string cCIssueNumberField;
-
+    
     private string cCTransDateField;
-
+    
     private TCCTransResult cCTransResultField;
-
+    
     private string cCRespondTextField;
-
+    
     private string cCAuthField;
-
+    
     private TWEBOrderStatusValue orderStatusField;
-
+    
     private int orderIDField;
-
+    
     private TWEBTimeStamp orderDateField;
-
+    
     /// <remarks/>
-    public int ServiceProviderID
-    {
-        get
-        {
+    public int ServiceProviderID {
+        get {
             return this.serviceProviderIDField;
         }
-        set
-        {
+        set {
             this.serviceProviderIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int ConfirmationID
-    {
-        get
-        {
+    public int ConfirmationID {
+        get {
             return this.confirmationIDField;
         }
-        set
-        {
+        set {
             this.confirmationIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int AccountID
-    {
-        get
-        {
+    public int AccountID {
+        get {
             return this.accountIDField;
         }
-        set
-        {
+        set {
             this.accountIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Customer
-    {
-        get
-        {
+    public string Customer {
+        get {
             return this.customerField;
         }
-        set
-        {
+        set {
             this.customerField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Phone
-    {
-        get
-        {
+    public string Phone {
+        get {
             return this.phoneField;
         }
-        set
-        {
+        set {
             this.phoneField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp PickupDate
-    {
-        get
-        {
+    public TWEBTimeStamp PickupDate {
+        get {
             return this.pickupDateField;
         }
-        set
-        {
+        set {
             this.pickupDateField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp PickupTime
-    {
-        get
-        {
+    public TWEBTimeStamp PickupTime {
+        get {
             return this.pickupTimeField;
         }
-        set
-        {
+        set {
             this.pickupTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBAddress PickupAddress
-    {
-        get
-        {
+    public TWEBAddress PickupAddress {
+        get {
             return this.pickupAddressField;
         }
-        set
-        {
+        set {
             this.pickupAddressField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBAddress DropoffAddress
-    {
-        get
-        {
+    public TWEBAddress DropoffAddress {
+        get {
             return this.dropoffAddressField;
         }
-        set
-        {
+        set {
             this.dropoffAddressField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Passengers
-    {
-        get
-        {
+    public int Passengers {
+        get {
             return this.passengersField;
         }
-        set
-        {
+        set {
             this.passengersField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleTypeName
-    {
-        get
-        {
+    public string VehicleTypeName {
+        get {
             return this.vehicleTypeNameField;
         }
-        set
-        {
+        set {
             this.vehicleTypeNameField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int VehicleTypeID
-    {
-        get
-        {
+    public int VehicleTypeID {
+        get {
             return this.vehicleTypeIDField;
         }
-        set
-        {
+        set {
             this.vehicleTypeIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Note
-    {
-        get
-        {
+    public string Note {
+        get {
             return this.noteField;
         }
-        set
-        {
+        set {
             this.noteField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ContactPhone
-    {
-        get
-        {
+    public string ContactPhone {
+        get {
             return this.contactPhoneField;
         }
-        set
-        {
+        set {
             this.contactPhoneField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Fare
-    {
-        get
-        {
+    public double Fare {
+        get {
             return this.fareField;
         }
-        set
-        {
+        set {
             this.fareField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tolls
-    {
-        get
-        {
+    public double Tolls {
+        get {
             return this.tollsField;
         }
-        set
-        {
+        set {
             this.tollsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double EstDistance
-    {
-        get
-        {
+    public double EstDistance {
+        get {
             return this.estDistanceField;
         }
-        set
-        {
+        set {
             this.estDistanceField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCNumber
-    {
-        get
-        {
+    public string CCNumber {
+        get {
             return this.cCNumberField;
         }
-        set
-        {
+        set {
             this.cCNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCExpMonth
-    {
-        get
-        {
+    public string CCExpMonth {
+        get {
             return this.cCExpMonthField;
         }
-        set
-        {
+        set {
             this.cCExpMonthField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCExpYear
-    {
-        get
-        {
+    public string CCExpYear {
+        get {
             return this.cCExpYearField;
         }
-        set
-        {
+        set {
             this.cCExpYearField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CCTransID
-    {
-        get
-        {
+    public int CCTransID {
+        get {
             return this.cCTransIDField;
         }
-        set
-        {
+        set {
             this.cCTransIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCHolder
-    {
-        get
-        {
+    public string CCHolder {
+        get {
             return this.cCHolderField;
         }
-        set
-        {
+        set {
             this.cCHolderField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCStartMonth
-    {
-        get
-        {
+    public string CCStartMonth {
+        get {
             return this.cCStartMonthField;
         }
-        set
-        {
+        set {
             this.cCStartMonthField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCStartYear
-    {
-        get
-        {
+    public string CCStartYear {
+        get {
             return this.cCStartYearField;
         }
-        set
-        {
+        set {
             this.cCStartYearField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCSecurityCode
-    {
-        get
-        {
+    public string CCSecurityCode {
+        get {
             return this.cCSecurityCodeField;
         }
-        set
-        {
+        set {
             this.cCSecurityCodeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCIssueNumber
-    {
-        get
-        {
+    public string CCIssueNumber {
+        get {
             return this.cCIssueNumberField;
         }
-        set
-        {
+        set {
             this.cCIssueNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCTransDate
-    {
-        get
-        {
+    public string CCTransDate {
+        get {
             return this.cCTransDateField;
         }
-        set
-        {
+        set {
             this.cCTransDateField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TCCTransResult CCTransResult
-    {
-        get
-        {
+    public TCCTransResult CCTransResult {
+        get {
             return this.cCTransResultField;
         }
-        set
-        {
+        set {
             this.cCTransResultField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCRespondText
-    {
-        get
-        {
+    public string CCRespondText {
+        get {
             return this.cCRespondTextField;
         }
-        set
-        {
+        set {
             this.cCRespondTextField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCAuth
-    {
-        get
-        {
+    public string CCAuth {
+        get {
             return this.cCAuthField;
         }
-        set
-        {
+        set {
             this.cCAuthField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue OrderStatus
-    {
-        get
-        {
+    public TWEBOrderStatusValue OrderStatus {
+        get {
             return this.orderStatusField;
         }
-        set
-        {
+        set {
             this.orderStatusField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int OrderID
-    {
-        get
-        {
+    public int OrderID {
+        get {
             return this.orderIDField;
         }
-        set
-        {
+        set {
             this.orderIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp OrderDate
-    {
-        get
-        {
+    public TWEBTimeStamp OrderDate {
+        get {
             return this.orderDateField;
         }
-        set
-        {
+        set {
             this.orderDateField = value;
         }
     }
@@ -6844,111 +6083,89 @@ public partial class TBookOrder
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TWEBTimeStamp
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TWEBTimeStamp {
+    
     private int yearField;
-
+    
     private int monthField;
-
+    
     private int dayField;
-
+    
     private int hourField;
-
+    
     private int minuteField;
-
+    
     private int secondField;
-
+    
     private int fractionsField;
-
+    
     /// <remarks/>
-    public int Year
-    {
-        get
-        {
+    public int Year {
+        get {
             return this.yearField;
         }
-        set
-        {
+        set {
             this.yearField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Month
-    {
-        get
-        {
+    public int Month {
+        get {
             return this.monthField;
         }
-        set
-        {
+        set {
             this.monthField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Day
-    {
-        get
-        {
+    public int Day {
+        get {
             return this.dayField;
         }
-        set
-        {
+        set {
             this.dayField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Hour
-    {
-        get
-        {
+    public int Hour {
+        get {
             return this.hourField;
         }
-        set
-        {
+        set {
             this.hourField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Minute
-    {
-        get
-        {
+    public int Minute {
+        get {
             return this.minuteField;
         }
-        set
-        {
+        set {
             this.minuteField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Second
-    {
-        get
-        {
+    public int Second {
+        get {
             return this.secondField;
         }
-        set
-        {
+        set {
             this.secondField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int Fractions
-    {
-        get
-        {
+    public int Fractions {
+        get {
             return this.fractionsField;
         }
-        set
-        {
+        set {
             this.fractionsField = value;
         }
     }
@@ -6959,36 +6176,29 @@ public partial class TWEBTimeStamp
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderKey
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderKey {
+    
     private string gUIDField;
-
+    
     private int orderIDField;
-
+    
     /// <remarks/>
-    public string GUID
-    {
-        get
-        {
+    public string GUID {
+        get {
             return this.gUIDField;
         }
-        set
-        {
+        set {
             this.gUIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int OrderID
-    {
-        get
-        {
+    public int OrderID {
+        get {
             return this.orderIDField;
         }
-        set
-        {
+        set {
             this.orderIDField = value;
         }
     }
@@ -6999,81 +6209,65 @@ public partial class TBookOrderKey
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeVehicle")]
-public partial class TVehicleComp
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeVehicle")]
+public partial class TVehicleComp {
+    
     private TVehicleCompType vehicleCompTypeField;
-
+    
     private string vehicleIDField;
-
+    
     private int eTADistanceField;
-
+    
     private int eTATimeField;
-
+    
     private string ratingField;
-
+    
     /// <remarks/>
-    public TVehicleCompType VehicleCompType
-    {
-        get
-        {
+    public TVehicleCompType VehicleCompType {
+        get {
             return this.vehicleCompTypeField;
         }
-        set
-        {
+        set {
             this.vehicleCompTypeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleID
-    {
-        get
-        {
+    public string VehicleID {
+        get {
             return this.vehicleIDField;
         }
-        set
-        {
+        set {
             this.vehicleIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int ETADistance
-    {
-        get
-        {
+    public int ETADistance {
+        get {
             return this.eTADistanceField;
         }
-        set
-        {
+        set {
             this.eTADistanceField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int ETATime
-    {
-        get
-        {
+    public int ETATime {
+        get {
             return this.eTATimeField;
         }
-        set
-        {
+        set {
             this.eTATimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Rating
-    {
-        get
-        {
+    public string Rating {
+        get {
             return this.ratingField;
         }
-        set
-        {
+        set {
             this.ratingField = value;
         }
     }
@@ -7082,16 +6276,15 @@ public partial class TVehicleComp
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeVehicle")]
-public enum TVehicleCompType
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeVehicle")]
+public enum TVehicleCompType {
+    
     /// <remarks/>
     vctNumber,
-
+    
     /// <remarks/>
     vctPimID,
-
+    
     /// <remarks/>
     vctMedallion,
 }
@@ -7101,36 +6294,29 @@ public enum TVehicleCompType
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TEstimateDistance_2_ParamO
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TEstimateDistance_2_ParamO {
+    
     private double totalFareField;
-
+    
     private int tripTimeField;
-
+    
     /// <remarks/>
-    public double TotalFare
-    {
-        get
-        {
+    public double TotalFare {
+        get {
             return this.totalFareField;
         }
-        set
-        {
+        set {
             this.totalFareField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int TripTime
-    {
-        get
-        {
+    public int TripTime {
+        get {
             return this.tripTimeField;
         }
-        set
-        {
+        set {
             this.tripTimeField = value;
         }
     }
@@ -7141,141 +6327,113 @@ public partial class TEstimateDistance_2_ParamO
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TEstimateDistance_2_ParamI
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TEstimateDistance_2_ParamI {
+    
     private double distanceField;
-
+    
     private int tripTimeField;
-
+    
     private int waitTimeField;
-
+    
     private int stopCountField;
-
+    
     private int passengerCountField;
-
+    
     private TWEBTimeStamp frDateField;
-
+    
     private string accountNumField;
-
+    
     private int customerNumField;
-
+    
     private int cabTypeField;
-
+    
     /// <remarks/>
-    public double Distance
-    {
-        get
-        {
+    public double Distance {
+        get {
             return this.distanceField;
         }
-        set
-        {
+        set {
             this.distanceField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int TripTime
-    {
-        get
-        {
+    public int TripTime {
+        get {
             return this.tripTimeField;
         }
-        set
-        {
+        set {
             this.tripTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int WaitTime
-    {
-        get
-        {
+    public int WaitTime {
+        get {
             return this.waitTimeField;
         }
-        set
-        {
+        set {
             this.waitTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int StopCount
-    {
-        get
-        {
+    public int StopCount {
+        get {
             return this.stopCountField;
         }
-        set
-        {
+        set {
             this.stopCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int PassengerCount
-    {
-        get
-        {
+    public int PassengerCount {
+        get {
             return this.passengerCountField;
         }
-        set
-        {
+        set {
             this.passengerCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp FrDate
-    {
-        get
-        {
+    public TWEBTimeStamp FrDate {
+        get {
             return this.frDateField;
         }
-        set
-        {
+        set {
             this.frDateField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string AccountNum
-    {
-        get
-        {
+    public string AccountNum {
+        get {
             return this.accountNumField;
         }
-        set
-        {
+        set {
             this.accountNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CustomerNum
-    {
-        get
-        {
+    public int CustomerNum {
+        get {
             return this.customerNumField;
         }
-        set
-        {
+        set {
             this.customerNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CabType
-    {
-        get
-        {
+    public int CabType {
+        get {
             return this.cabTypeField;
         }
-        set
-        {
+        set {
             this.cabTypeField = value;
         }
     }
@@ -7286,171 +6444,137 @@ public partial class TEstimateDistance_2_ParamI
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TEstimateFare_10Result
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TEstimateFare_10Result {
+    
     private double fareField;
-
+    
     private double extrasField;
-
+    
     private double taxField;
-
+    
     private double tipField;
-
+    
     private double tollsField;
-
+    
     private double vATField;
-
+    
     private double totalField;
-
+    
     private double distanceField;
-
+    
     private double tripTimeField;
-
+    
     private int pBTokenField;
-
+    
     private string cabTypeField;
-
+    
     /// <remarks/>
-    public double Fare
-    {
-        get
-        {
+    public double Fare {
+        get {
             return this.fareField;
         }
-        set
-        {
+        set {
             this.fareField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Extras
-    {
-        get
-        {
+    public double Extras {
+        get {
             return this.extrasField;
         }
-        set
-        {
+        set {
             this.extrasField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tax
-    {
-        get
-        {
+    public double Tax {
+        get {
             return this.taxField;
         }
-        set
-        {
+        set {
             this.taxField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tip
-    {
-        get
-        {
+    public double Tip {
+        get {
             return this.tipField;
         }
-        set
-        {
+        set {
             this.tipField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tolls
-    {
-        get
-        {
+    public double Tolls {
+        get {
             return this.tollsField;
         }
-        set
-        {
+        set {
             this.tollsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double VAT
-    {
-        get
-        {
+    public double VAT {
+        get {
             return this.vATField;
         }
-        set
-        {
+        set {
             this.vATField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Total
-    {
-        get
-        {
+    public double Total {
+        get {
             return this.totalField;
         }
-        set
-        {
+        set {
             this.totalField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Distance
-    {
-        get
-        {
+    public double Distance {
+        get {
             return this.distanceField;
         }
-        set
-        {
+        set {
             this.distanceField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double TripTime
-    {
-        get
-        {
+    public double TripTime {
+        get {
             return this.tripTimeField;
         }
-        set
-        {
+        set {
             this.tripTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int PBToken
-    {
-        get
-        {
+    public int PBToken {
+        get {
             return this.pBTokenField;
         }
-        set
-        {
+        set {
             this.pBTokenField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CabType
-    {
-        get
-        {
+    public string CabType {
+        get {
             return this.cabTypeField;
         }
-        set
-        {
+        set {
             this.cabTypeField = value;
         }
     }
@@ -7462,306 +6586,245 @@ public partial class TEstimateFare_10Result
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TPaymentAuthorization3dParty
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TPaymentAuthorization3dParty {
+    
     private string authorizationNumberField;
-
+    
     private string cardTypeField;
-
+    
     private string cardNumberField;
-
+    
     private string expiryDateField;
-
+    
     private string transactionDateField;
-
+    
     private string transactionTimeField;
-
+    
     private string cCSequenceNumberField;
-
+    
     private string approvedAmountField;
-
+    
     private string approvalTextField;
-
+    
     private string collectAmountField;
-
+    
     private string extrasAmountField;
-
+    
     private string fareAmountField;
-
+    
     private string taxAmountField;
-
+    
     private string tipAmountField;
-
+    
     private string tollsAmountField;
-
+    
     private string surchargeAmountField;
-
+    
     private string discountAmountField;
-
+    
     private int payTypeField;
-
+    
     private bool approvedField;
-
+    
     private int jobNumberField;
-
+    
     /// <remarks/>
-    public string AuthorizationNumber
-    {
-        get
-        {
+    public string AuthorizationNumber {
+        get {
             return this.authorizationNumberField;
         }
-        set
-        {
+        set {
             this.authorizationNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CardType
-    {
-        get
-        {
+    public string CardType {
+        get {
             return this.cardTypeField;
         }
-        set
-        {
+        set {
             this.cardTypeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CardNumber
-    {
-        get
-        {
+    public string CardNumber {
+        get {
             return this.cardNumberField;
         }
-        set
-        {
+        set {
             this.cardNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ExpiryDate
-    {
-        get
-        {
+    public string ExpiryDate {
+        get {
             return this.expiryDateField;
         }
-        set
-        {
+        set {
             this.expiryDateField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TransactionDate
-    {
-        get
-        {
+    public string TransactionDate {
+        get {
             return this.transactionDateField;
         }
-        set
-        {
+        set {
             this.transactionDateField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TransactionTime
-    {
-        get
-        {
+    public string TransactionTime {
+        get {
             return this.transactionTimeField;
         }
-        set
-        {
+        set {
             this.transactionTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCSequenceNumber
-    {
-        get
-        {
+    public string CCSequenceNumber {
+        get {
             return this.cCSequenceNumberField;
         }
-        set
-        {
+        set {
             this.cCSequenceNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ApprovedAmount
-    {
-        get
-        {
+    public string ApprovedAmount {
+        get {
             return this.approvedAmountField;
         }
-        set
-        {
+        set {
             this.approvedAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ApprovalText
-    {
-        get
-        {
+    public string ApprovalText {
+        get {
             return this.approvalTextField;
         }
-        set
-        {
+        set {
             this.approvalTextField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CollectAmount
-    {
-        get
-        {
+    public string CollectAmount {
+        get {
             return this.collectAmountField;
         }
-        set
-        {
+        set {
             this.collectAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ExtrasAmount
-    {
-        get
-        {
+    public string ExtrasAmount {
+        get {
             return this.extrasAmountField;
         }
-        set
-        {
+        set {
             this.extrasAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string FareAmount
-    {
-        get
-        {
+    public string FareAmount {
+        get {
             return this.fareAmountField;
         }
-        set
-        {
+        set {
             this.fareAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TaxAmount
-    {
-        get
-        {
+    public string TaxAmount {
+        get {
             return this.taxAmountField;
         }
-        set
-        {
+        set {
             this.taxAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TipAmount
-    {
-        get
-        {
+    public string TipAmount {
+        get {
             return this.tipAmountField;
         }
-        set
-        {
+        set {
             this.tipAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TollsAmount
-    {
-        get
-        {
+    public string TollsAmount {
+        get {
             return this.tollsAmountField;
         }
-        set
-        {
+        set {
             this.tollsAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string SurchargeAmount
-    {
-        get
-        {
+    public string SurchargeAmount {
+        get {
             return this.surchargeAmountField;
         }
-        set
-        {
+        set {
             this.surchargeAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string DiscountAmount
-    {
-        get
-        {
+    public string DiscountAmount {
+        get {
             return this.discountAmountField;
         }
-        set
-        {
+        set {
             this.discountAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int PayType
-    {
-        get
-        {
+    public int PayType {
+        get {
             return this.payTypeField;
         }
-        set
-        {
+        set {
             this.payTypeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public bool Approved
-    {
-        get
-        {
+    public bool Approved {
+        get {
             return this.approvedField;
         }
-        set
-        {
+        set {
             this.approvedField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int JobNumber
-    {
-        get
-        {
+    public int JobNumber {
+        get {
             return this.jobNumberField;
         }
-        set
-        {
+        set {
             this.jobNumberField = value;
         }
     }
@@ -7772,21 +6835,17 @@ public partial class TPaymentAuthorization3dParty
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TPaymentAuthorization3dParty2 : TPaymentAuthorization3dParty
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TPaymentAuthorization3dParty2 : TPaymentAuthorization3dParty {
+    
     private string cardBalanceRemainingField;
-
+    
     /// <remarks/>
-    public string CardBalanceRemaining
-    {
-        get
-        {
+    public string CardBalanceRemaining {
+        get {
             return this.cardBalanceRemainingField;
         }
-        set
-        {
+        set {
             this.cardBalanceRemainingField = value;
         }
     }
@@ -7802,246 +6861,209 @@ public partial class TPaymentAuthorization3dParty2 : TPaymentAuthorization3dPart
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus {
+    
     private int orderIDField;
-
+    
     private TWEBOrderStatusValue orderStatusField;
-
+    
     private string vehicleNumberField;
-
+    
     private double vehicleCoordinateLatField;
-
+    
     private double vehicleCoordinateLongField;
-
+    
     private string vehicleMakeField;
-
+    
     private string vehicleModelField;
-
+    
     private string vehicleColorField;
-
+    
     private string vehicleRegistrationField;
-
+    
     private string driverFirstNameField;
-
+    
     private string driverLastNameField;
-
+    
     private string driverMobilePhoneField;
-
+    
     private double fareField;
-
+    
     private double tollsField;
-
+    
     private double tipsField;
-
+    
+    private double vATField;
+    
     private TWEBTimeStamp eTATimeField;
-
+    
     /// <remarks/>
-    public int OrderID
-    {
-        get
-        {
+    public int OrderID {
+        get {
             return this.orderIDField;
         }
-        set
-        {
+        set {
             this.orderIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue OrderStatus
-    {
-        get
-        {
+    public TWEBOrderStatusValue OrderStatus {
+        get {
             return this.orderStatusField;
         }
-        set
-        {
+        set {
             this.orderStatusField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleNumber
-    {
-        get
-        {
+    public string VehicleNumber {
+        get {
             return this.vehicleNumberField;
         }
-        set
-        {
+        set {
             this.vehicleNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double VehicleCoordinateLat
-    {
-        get
-        {
+    public double VehicleCoordinateLat {
+        get {
             return this.vehicleCoordinateLatField;
         }
-        set
-        {
+        set {
             this.vehicleCoordinateLatField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double VehicleCoordinateLong
-    {
-        get
-        {
+    public double VehicleCoordinateLong {
+        get {
             return this.vehicleCoordinateLongField;
         }
-        set
-        {
+        set {
             this.vehicleCoordinateLongField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleMake
-    {
-        get
-        {
+    public string VehicleMake {
+        get {
             return this.vehicleMakeField;
         }
-        set
-        {
+        set {
             this.vehicleMakeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleModel
-    {
-        get
-        {
+    public string VehicleModel {
+        get {
             return this.vehicleModelField;
         }
-        set
-        {
+        set {
             this.vehicleModelField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleColor
-    {
-        get
-        {
+    public string VehicleColor {
+        get {
             return this.vehicleColorField;
         }
-        set
-        {
+        set {
             this.vehicleColorField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string VehicleRegistration
-    {
-        get
-        {
+    public string VehicleRegistration {
+        get {
             return this.vehicleRegistrationField;
         }
-        set
-        {
+        set {
             this.vehicleRegistrationField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string DriverFirstName
-    {
-        get
-        {
+    public string DriverFirstName {
+        get {
             return this.driverFirstNameField;
         }
-        set
-        {
+        set {
             this.driverFirstNameField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string DriverLastName
-    {
-        get
-        {
+    public string DriverLastName {
+        get {
             return this.driverLastNameField;
         }
-        set
-        {
+        set {
             this.driverLastNameField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string DriverMobilePhone
-    {
-        get
-        {
+    public string DriverMobilePhone {
+        get {
             return this.driverMobilePhoneField;
         }
-        set
-        {
+        set {
             this.driverMobilePhoneField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Fare
-    {
-        get
-        {
+    public double Fare {
+        get {
             return this.fareField;
         }
-        set
-        {
+        set {
             this.fareField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tolls
-    {
-        get
-        {
+    public double Tolls {
+        get {
             return this.tollsField;
         }
-        set
-        {
+        set {
             this.tollsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Tips
-    {
-        get
-        {
+    public double Tips {
+        get {
             return this.tipsField;
         }
-        set
-        {
+        set {
             this.tipsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp ETATime
-    {
-        get
-        {
+    public double VAT {
+        get {
+            return this.vATField;
+        }
+        set {
+            this.vATField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public TWEBTimeStamp ETATime {
+        get {
             return this.eTATimeField;
         }
-        set
-        {
+        set {
             this.eTATimeField = value;
         }
     }
@@ -8050,61 +7072,55 @@ public partial class TOrderStatus
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_3))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_4))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_5))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_6))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus_2 : TOrderStatus
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus_2 : TOrderStatus {
+    
     private string callNumberField;
-
+    
     private string referenceNumberField;
-
+    
     private string terminalIdField;
 
     private double vatField;
-
-    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
+    public double VAT {
+        get {
+            return this.vatField;
+        }
+        set {
+            this.vatField = value;
+        }
+    }
 
     /// <remarks/>
-    public string CallNumber
-    {
-        get
-        {
+    public string CallNumber {
+        get {
             return this.callNumberField;
         }
-        set
-        {
+        set {
             this.callNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ReferenceNumber
-    {
-        get
-        {
+    public string ReferenceNumber {
+        get {
             return this.referenceNumberField;
         }
-        set
-        {
+        set {
             this.referenceNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TerminalId
-    {
-        get
-        {
+    public string TerminalId {
+        get {
             return this.terminalIdField;
         }
-        set
-        {
+        set {
             this.terminalIdField = value;
         }
     }
@@ -8112,114 +7128,90 @@ public partial class TOrderStatus_2 : TOrderStatus
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_4))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_5))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_6))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus_3 : TOrderStatus_2
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus_3 : TOrderStatus_2 {
+    
     private string pairingCodeField;
-
+    
     private double surchargeField;
-
+    
     /// <remarks/>
-    public string PairingCode
-    {
-        get
-        {
+    public string PairingCode {
+        get {
             return this.pairingCodeField;
         }
-        set
-        {
+        set {
             this.pairingCodeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Surcharge
-    {
-        get
-        {
+    public double Surcharge {
+        get {
             return this.surchargeField;
         }
-        set
-        {
+        set {
             this.surchargeField = value;
         }
     }
 }
 
 /// <remarks/>
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_5))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus_6))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus_4 : TOrderStatus_3
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus_4 : TOrderStatus_3 {
+    
     private int driverNumberField;
-
+    
     private string originalImgField;
-
+    
     private string thumbnailImgField;
-
+    
     private string webImgField;
-
+    
     /// <remarks/>
-    public int DriverNumber
-    {
-        get
-        {
+    public int DriverNumber {
+        get {
             return this.driverNumberField;
         }
-        set
-        {
+        set {
             this.driverNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string OriginalImg
-    {
-        get
-        {
+    public string OriginalImg {
+        get {
             return this.originalImgField;
         }
-        set
-        {
+        set {
             this.originalImgField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ThumbnailImg
-    {
-        get
-        {
+    public string ThumbnailImg {
+        get {
             return this.thumbnailImgField;
         }
-        set
-        {
+        set {
             this.thumbnailImgField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string WebImg
-    {
-        get
-        {
+    public string WebImg {
+        get {
             return this.webImgField;
         }
-        set
-        {
+        set {
             this.webImgField = value;
         }
     }
@@ -8231,36 +7223,29 @@ public partial class TOrderStatus_4 : TOrderStatus_3
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus_5 : TOrderStatus_4
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus_5 : TOrderStatus_4 {
+    
     private double extrasField;
-
+    
     private double discountField;
-
+    
     /// <remarks/>
-    public double Extras
-    {
-        get
-        {
+    public double Extras {
+        get {
             return this.extrasField;
         }
-        set
-        {
+        set {
             this.extrasField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Discount
-    {
-        get
-        {
+    public double Discount {
+        get {
             return this.discountField;
         }
-        set
-        {
+        set {
             this.discountField = value;
         }
     }
@@ -8271,21 +7256,17 @@ public partial class TOrderStatus_5 : TOrderStatus_4
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TOrderStatus_6 : TOrderStatus_5
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TOrderStatus_6 : TOrderStatus_5 {
+    
     private TVehicleTypeItem vehicleTypeField;
-
+    
     /// <remarks/>
-    public TVehicleTypeItem VehicleType
-    {
-        get
-        {
+    public TVehicleTypeItem VehicleType {
+        get {
             return this.vehicleTypeField;
         }
-        set
-        {
+        set {
             this.vehicleTypeField = value;
         }
     }
@@ -8296,36 +7277,86 @@ public partial class TOrderStatus_6 : TOrderStatus_5
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderList_7
-{
-
-    private int orderCountField;
-
-    private TBookOrder_7[] orderListField;
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:StaticDataIntf")]
+public partial class TVehicleTypeItem {
+    
+    private string nameField;
+    
+    private int capacityField;
+    
+    private int idField;
+    
+    private bool isDefaultField;
+    
     /// <remarks/>
-    public int OrderCount
-    {
-        get
-        {
+    public string Name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public int Capacity {
+        get {
+            return this.capacityField;
+        }
+        set {
+            this.capacityField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public int ID {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public bool isDefault {
+        get {
+            return this.isDefaultField;
+        }
+        set {
+            this.isDefaultField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderList_7 {
+    
+    private int orderCountField;
+    
+    private TBookOrder_7[] orderListField;
+    
+    /// <remarks/>
+    public int OrderCount {
+        get {
             return this.orderCountField;
         }
-        set
-        {
+        set {
             this.orderCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_7[] OrderList
-    {
-        get
-        {
+    public TBookOrder_7[] OrderList {
+        get {
             return this.orderListField;
         }
-        set
-        {
+        set {
             this.orderListField = value;
         }
     }
@@ -8338,31 +7369,35 @@ public partial class TBookOrderList_7
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_7 : TBookOrder_6
-{
-
-    private double vatField;
-
-    public double VAT { get { return this.vatField; } set { this.vatField = value; } }
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_7 : TBookOrder_6 {
+    
     private double tipsField;
+    
+    private double vATField;
+
 
     /// <remarks/>
-    public double Tips
-    {
-        get
-        {
+    public double Tips {
+        get {
             return this.tipsField;
         }
-        set
-        {
+        set {
             this.tipsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double VAT {
+        get {
+            return this.vATField;
+        }
+        set {
+            this.vATField = value;
         }
     }
 }
@@ -8375,26 +7410,21 @@ public partial class TBookOrder_7 : TBookOrder_6
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_6 : TBookOrder_5
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_6 : TBookOrder_5 {
+    
     private int priorityField;
-
+    
     /// <remarks/>
-    public int Priority
-    {
-        get
-        {
+    public int Priority {
+        get {
             return this.priorityField;
         }
-        set
-        {
+        set {
             this.priorityField = value;
         }
     }
@@ -8409,146 +7439,117 @@ public partial class TBookOrder_6 : TBookOrder_5
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_5 : TBookOrder_4
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_5 : TBookOrder_4 {
+    
     private int chargeTypeIDField;
-
+    
     private TException[] rideExceptionsField;
-
+    
     private string cabNoField;
-
+    
     private string callNumberField;
-
+    
     private bool dispByAutoField;
-
+    
     private string frCityField;
-
+    
     private string frRegionField;
-
+    
     private string toCityField;
-
+    
     private string toRegionField;
-
+    
     /// <remarks/>
-    public int ChargeTypeID
-    {
-        get
-        {
+    public int ChargeTypeID {
+        get {
             return this.chargeTypeIDField;
         }
-        set
-        {
+        set {
             this.chargeTypeIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TException[] RideExceptions
-    {
-        get
-        {
+    public TException[] RideExceptions {
+        get {
             return this.rideExceptionsField;
         }
-        set
-        {
+        set {
             this.rideExceptionsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CabNo
-    {
-        get
-        {
+    public string CabNo {
+        get {
             return this.cabNoField;
         }
-        set
-        {
+        set {
             this.cabNoField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CallNumber
-    {
-        get
-        {
+    public string CallNumber {
+        get {
             return this.callNumberField;
         }
-        set
-        {
+        set {
             this.callNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public bool DispByAuto
-    {
-        get
-        {
+    public bool DispByAuto {
+        get {
             return this.dispByAutoField;
         }
-        set
-        {
+        set {
             this.dispByAutoField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string FrCity
-    {
-        get
-        {
+    public string FrCity {
+        get {
             return this.frCityField;
         }
-        set
-        {
+        set {
             this.frCityField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string FrRegion
-    {
-        get
-        {
+    public string FrRegion {
+        get {
             return this.frRegionField;
         }
-        set
-        {
+        set {
             this.frRegionField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ToCity
-    {
-        get
-        {
+    public string ToCity {
+        get {
             return this.toCityField;
         }
-        set
-        {
+        set {
             this.toCityField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ToRegion
-    {
-        get
-        {
+    public string ToRegion {
+        get {
             return this.toRegionField;
         }
-        set
-        {
+        set {
             this.toRegionField = value;
         }
     }
@@ -8559,36 +7560,29 @@ public partial class TBookOrder_5 : TBookOrder_4
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TException
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TException {
+    
     private int exIDField;
-
+    
     private string exNameField;
-
+    
     /// <remarks/>
-    public int ExID
-    {
-        get
-        {
+    public int ExID {
+        get {
             return this.exIDField;
         }
-        set
-        {
+        set {
             this.exIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ExName
-    {
-        get
-        {
+    public string ExName {
+        get {
             return this.exNameField;
         }
-        set
-        {
+        set {
             this.exNameField = value;
         }
     }
@@ -8604,86 +7598,69 @@ public partial class TException
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_4 : TBookOrder_3
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_4 : TBookOrder_3 {
+    
     private string ccTypeField;
-
+    
     private string ccFirstField;
-
+    
     private string ccLastField;
-
+    
     private string ccCityField;
-
+    
     private string ccStateField;
-
+    
     /// <remarks/>
-    public string ccType
-    {
-        get
-        {
+    public string ccType {
+        get {
             return this.ccTypeField;
         }
-        set
-        {
+        set {
             this.ccTypeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ccFirst
-    {
-        get
-        {
+    public string ccFirst {
+        get {
             return this.ccFirstField;
         }
-        set
-        {
+        set {
             this.ccFirstField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ccLast
-    {
-        get
-        {
+    public string ccLast {
+        get {
             return this.ccLastField;
         }
-        set
-        {
+        set {
             this.ccLastField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ccCity
-    {
-        get
-        {
+    public string ccCity {
+        get {
             return this.ccCityField;
         }
-        set
-        {
+        set {
             this.ccCityField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string ccState
-    {
-        get
-        {
+    public string ccState {
+        get {
             return this.ccStateField;
         }
-        set
-        {
+        set {
             this.ccStateField = value;
         }
     }
@@ -8700,401 +7677,321 @@ public partial class TBookOrder_4 : TBookOrder_3
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_3 : TBookOrder_2
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_3 : TBookOrder_2 {
+    
     private TWEBAddress[] rideStopsField;
-
+    
     private bool txtBackField;
-
+    
     private bool emailBackField;
-
+    
     private bool callBackField;
-
+    
     private string prompt1Field;
-
+    
     private string prompt2Field;
-
+    
     private string prompt3Field;
-
+    
     private string prompt4Field;
-
+    
     private string prompt5Field;
-
+    
     private string prompt6Field;
-
+    
     private string prompt7Field;
-
+    
     private string prompt8Field;
-
+    
     private string field1Field;
-
+    
     private string field2Field;
-
+    
     private string field3Field;
-
+    
     private string field4Field;
-
+    
     private string field5Field;
-
+    
     private string field6Field;
-
+    
     private string field7Field;
-
+    
     private string field8Field;
-
+    
     private string txtBackAddField;
-
+    
     private string emailBackAddField;
-
+    
     private string callBackNoField;
-
+    
     private string cCAddressField;
-
+    
     private string cCPostCodeField;
-
+    
     private int rideIDField;
-
+    
     /// <remarks/>
-    public TWEBAddress[] RideStops
-    {
-        get
-        {
+    public TWEBAddress[] RideStops {
+        get {
             return this.rideStopsField;
         }
-        set
-        {
+        set {
             this.rideStopsField = value;
         }
     }
-
+    
     /// <remarks/>
-    public bool TxtBack
-    {
-        get
-        {
+    public bool TxtBack {
+        get {
             return this.txtBackField;
         }
-        set
-        {
+        set {
             this.txtBackField = value;
         }
     }
-
+    
     /// <remarks/>
-    public bool EmailBack
-    {
-        get
-        {
+    public bool EmailBack {
+        get {
             return this.emailBackField;
         }
-        set
-        {
+        set {
             this.emailBackField = value;
         }
     }
-
+    
     /// <remarks/>
-    public bool CallBack
-    {
-        get
-        {
+    public bool CallBack {
+        get {
             return this.callBackField;
         }
-        set
-        {
+        set {
             this.callBackField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt1
-    {
-        get
-        {
+    public string Prompt1 {
+        get {
             return this.prompt1Field;
         }
-        set
-        {
+        set {
             this.prompt1Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt2
-    {
-        get
-        {
+    public string Prompt2 {
+        get {
             return this.prompt2Field;
         }
-        set
-        {
+        set {
             this.prompt2Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt3
-    {
-        get
-        {
+    public string Prompt3 {
+        get {
             return this.prompt3Field;
         }
-        set
-        {
+        set {
             this.prompt3Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt4
-    {
-        get
-        {
+    public string Prompt4 {
+        get {
             return this.prompt4Field;
         }
-        set
-        {
+        set {
             this.prompt4Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt5
-    {
-        get
-        {
+    public string Prompt5 {
+        get {
             return this.prompt5Field;
         }
-        set
-        {
+        set {
             this.prompt5Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt6
-    {
-        get
-        {
+    public string Prompt6 {
+        get {
             return this.prompt6Field;
         }
-        set
-        {
+        set {
             this.prompt6Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt7
-    {
-        get
-        {
+    public string Prompt7 {
+        get {
             return this.prompt7Field;
         }
-        set
-        {
+        set {
             this.prompt7Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Prompt8
-    {
-        get
-        {
+    public string Prompt8 {
+        get {
             return this.prompt8Field;
         }
-        set
-        {
+        set {
             this.prompt8Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field1
-    {
-        get
-        {
+    public string Field1 {
+        get {
             return this.field1Field;
         }
-        set
-        {
+        set {
             this.field1Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field2
-    {
-        get
-        {
+    public string Field2 {
+        get {
             return this.field2Field;
         }
-        set
-        {
+        set {
             this.field2Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field3
-    {
-        get
-        {
+    public string Field3 {
+        get {
             return this.field3Field;
         }
-        set
-        {
+        set {
             this.field3Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field4
-    {
-        get
-        {
+    public string Field4 {
+        get {
             return this.field4Field;
         }
-        set
-        {
+        set {
             this.field4Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field5
-    {
-        get
-        {
+    public string Field5 {
+        get {
             return this.field5Field;
         }
-        set
-        {
+        set {
             this.field5Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field6
-    {
-        get
-        {
+    public string Field6 {
+        get {
             return this.field6Field;
         }
-        set
-        {
+        set {
             this.field6Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field7
-    {
-        get
-        {
+    public string Field7 {
+        get {
             return this.field7Field;
         }
-        set
-        {
+        set {
             this.field7Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Field8
-    {
-        get
-        {
+    public string Field8 {
+        get {
             return this.field8Field;
         }
-        set
-        {
+        set {
             this.field8Field = value;
         }
     }
-
+    
     /// <remarks/>
-    public string TxtBackAdd
-    {
-        get
-        {
+    public string TxtBackAdd {
+        get {
             return this.txtBackAddField;
         }
-        set
-        {
+        set {
             this.txtBackAddField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string EmailBackAdd
-    {
-        get
-        {
+    public string EmailBackAdd {
+        get {
             return this.emailBackAddField;
         }
-        set
-        {
+        set {
             this.emailBackAddField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CallBackNo
-    {
-        get
-        {
+    public string CallBackNo {
+        get {
             return this.callBackNoField;
         }
-        set
-        {
+        set {
             this.callBackNoField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCAddress
-    {
-        get
-        {
+    public string CCAddress {
+        get {
             return this.cCAddressField;
         }
-        set
-        {
+        set {
             this.cCAddressField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CCPostCode
-    {
-        get
-        {
+    public string CCPostCode {
+        get {
             return this.cCPostCodeField;
         }
-        set
-        {
+        set {
             this.cCPostCodeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int RideID
-    {
-        get
-        {
+    public int RideID {
+        get {
             return this.rideIDField;
         }
-        set
-        {
+        set {
             this.rideIDField = value;
         }
     }
@@ -9106,201 +8003,161 @@ public partial class TBookOrder_3 : TBookOrder_2
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TWEBAddress
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TWEBAddress {
+    
     private string streetPlaceField;
-
+    
     private string aptBazField;
-
+    
     private string postalField;
-
+    
     private int cityIDField;
-
+    
     private int regionIDField;
-
+    
     private int countryIDField;
-
+    
     private double longitudeField;
-
+    
     private double latitudeField;
-
+    
     private int addressIDField;
-
+    
     private TWEBTimeStamp stopTimeField;
-
+    
     private int stopOrderField;
-
+    
     private int runOrderField;
-
+    
     private int stopPassField;
-
+    
     /// <remarks/>
-    public string StreetPlace
-    {
-        get
-        {
+    public string StreetPlace {
+        get {
             return this.streetPlaceField;
         }
-        set
-        {
+        set {
             this.streetPlaceField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string AptBaz
-    {
-        get
-        {
+    public string AptBaz {
+        get {
             return this.aptBazField;
         }
-        set
-        {
+        set {
             this.aptBazField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Postal
-    {
-        get
-        {
+    public string Postal {
+        get {
             return this.postalField;
         }
-        set
-        {
+        set {
             this.postalField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CityID
-    {
-        get
-        {
+    public int CityID {
+        get {
             return this.cityIDField;
         }
-        set
-        {
+        set {
             this.cityIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int RegionID
-    {
-        get
-        {
+    public int RegionID {
+        get {
             return this.regionIDField;
         }
-        set
-        {
+        set {
             this.regionIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CountryID
-    {
-        get
-        {
+    public int CountryID {
+        get {
             return this.countryIDField;
         }
-        set
-        {
+        set {
             this.countryIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Longitude
-    {
-        get
-        {
+    public double Longitude {
+        get {
             return this.longitudeField;
         }
-        set
-        {
+        set {
             this.longitudeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Latitude
-    {
-        get
-        {
+    public double Latitude {
+        get {
             return this.latitudeField;
         }
-        set
-        {
+        set {
             this.latitudeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int AddressID
-    {
-        get
-        {
+    public int AddressID {
+        get {
             return this.addressIDField;
         }
-        set
-        {
+        set {
             this.addressIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp StopTime
-    {
-        get
-        {
+    public TWEBTimeStamp StopTime {
+        get {
             return this.stopTimeField;
         }
-        set
-        {
+        set {
             this.stopTimeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int StopOrder
-    {
-        get
-        {
+    public int StopOrder {
+        get {
             return this.stopOrderField;
         }
-        set
-        {
+        set {
             this.stopOrderField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int RunOrder
-    {
-        get
-        {
+    public int RunOrder {
+        get {
             return this.runOrderField;
         }
-        set
-        {
+        set {
             this.runOrderField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int StopPass
-    {
-        get
-        {
+    public int StopPass {
+        get {
             return this.stopPassField;
         }
-        set
-        {
+        set {
             this.stopPassField = value;
         }
     }
@@ -9311,21 +8168,17 @@ public partial class TWEBAddress
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TWEBFavotiteAddress : TWEBAddress
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TWEBFavotiteAddress : TWEBAddress {
+    
     private string addressAliasField;
-
+    
     /// <remarks/>
-    public string AddressAlias
-    {
-        get
-        {
+    public string AddressAlias {
+        get {
             return this.addressAliasField;
         }
-        set
-        {
+        set {
             this.addressAliasField = value;
         }
     }
@@ -9343,146 +8196,117 @@ public partial class TWEBFavotiteAddress : TWEBAddress
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_2 : TBookOrder
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_2 : TBookOrder {
+    
     private string orderedByField;
-
+    
     private string majorIntersectField;
-
+    
     private int cancelNumField;
-
+    
     private string airlineField;
-
+    
     private string flightField;
-
+    
     private TWEBTimeStamp arrivalField;
-
+    
     private string airportCodeField;
-
+    
     private string crewAuthorizField;
-
+    
     private string permanentRemField;
-
+    
     /// <remarks/>
-    public string OrderedBy
-    {
-        get
-        {
+    public string OrderedBy {
+        get {
             return this.orderedByField;
         }
-        set
-        {
+        set {
             this.orderedByField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string MajorIntersect
-    {
-        get
-        {
+    public string MajorIntersect {
+        get {
             return this.majorIntersectField;
         }
-        set
-        {
+        set {
             this.majorIntersectField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CancelNum
-    {
-        get
-        {
+    public int CancelNum {
+        get {
             return this.cancelNumField;
         }
-        set
-        {
+        set {
             this.cancelNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Airline
-    {
-        get
-        {
+    public string Airline {
+        get {
             return this.airlineField;
         }
-        set
-        {
+        set {
             this.airlineField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string Flight
-    {
-        get
-        {
+    public string Flight {
+        get {
             return this.flightField;
         }
-        set
-        {
+        set {
             this.flightField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp Arrival
-    {
-        get
-        {
+    public TWEBTimeStamp Arrival {
+        get {
             return this.arrivalField;
         }
-        set
-        {
+        set {
             this.arrivalField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string AirportCode
-    {
-        get
-        {
+    public string AirportCode {
+        get {
             return this.airportCodeField;
         }
-        set
-        {
+        set {
             this.airportCodeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string CrewAuthoriz
-    {
-        get
-        {
+    public string CrewAuthoriz {
+        get {
             return this.crewAuthorizField;
         }
-        set
-        {
+        set {
             this.crewAuthorizField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string PermanentRem
-    {
-        get
-        {
+    public string PermanentRem {
+        get {
             return this.permanentRemField;
         }
-        set
-        {
+        set {
             this.permanentRemField = value;
         }
     }
@@ -9494,56 +8318,45 @@ public partial class TBookOrder_2 : TBookOrder
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_8 : TBookOrder_7
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_8 : TBookOrder_7 {
+    
     private string accountNumField;
-
+    
     private int customerNumField;
-
+    
     private int waitTimeField;
-
+    
     /// <remarks/>
-    public string AccountNum
-    {
-        get
-        {
+    public string AccountNum {
+        get {
             return this.accountNumField;
         }
-        set
-        {
+        set {
             this.accountNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int CustomerNum
-    {
-        get
-        {
+    public int CustomerNum {
+        get {
             return this.customerNumField;
         }
-        set
-        {
+        set {
             this.customerNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int WaitTime
-    {
-        get
-        {
+    public int WaitTime {
+        get {
             return this.waitTimeField;
         }
-        set
-        {
+        set {
             this.waitTimeField = value;
         }
     }
@@ -9554,71 +8367,57 @@ public partial class TBookOrder_8 : TBookOrder_7
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_10 : TBookOrder_8
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_10 : TBookOrder_8 {
+    
     private string jobOfferPromptField;
-
+    
     private string assignDriverField;
-
+    
     private string assignCabField;
-
+    
     private int expirySecField;
-
+    
     /// <remarks/>
-    public string JobOfferPrompt
-    {
-        get
-        {
+    public string JobOfferPrompt {
+        get {
             return this.jobOfferPromptField;
         }
-        set
-        {
+        set {
             this.jobOfferPromptField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string AssignDriver
-    {
-        get
-        {
+    public string AssignDriver {
+        get {
             return this.assignDriverField;
         }
-        set
-        {
+        set {
             this.assignDriverField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string AssignCab
-    {
-        get
-        {
+    public string AssignCab {
+        get {
             return this.assignCabField;
         }
-        set
-        {
+        set {
             this.assignCabField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int ExpirySec
-    {
-        get
-        {
+    public int ExpirySec {
+        get {
             return this.expirySecField;
         }
-        set
-        {
+        set {
             this.expirySecField = value;
         }
     }
@@ -9628,71 +8427,57 @@ public partial class TBookOrder_10 : TBookOrder_8
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_12))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_11 : TBookOrder_10
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_11 : TBookOrder_10 {
+    
     private string gUIDField;
-
+    
     private int tipAmountField;
-
+    
     private int tipPercentField;
-
+    
     private int pBTokenField;
-
+    
     /// <remarks/>
-    public string GUID
-    {
-        get
-        {
+    public string GUID {
+        get {
             return this.gUIDField;
         }
-        set
-        {
+        set {
             this.gUIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int TipAmount
-    {
-        get
-        {
+    public int TipAmount {
+        get {
             return this.tipAmountField;
         }
-        set
-        {
+        set {
             this.tipAmountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int TipPercent
-    {
-        get
-        {
+    public int TipPercent {
+        get {
             return this.tipPercentField;
         }
-        set
-        {
+        set {
             this.tipPercentField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int PBToken
-    {
-        get
-        {
+    public int PBToken {
+        get {
             return this.pBTokenField;
         }
-        set
-        {
+        set {
             this.pBTokenField = value;
         }
     }
@@ -9701,56 +8486,45 @@ public partial class TBookOrder_11 : TBookOrder_10
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_13))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_12 : TBookOrder_11
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_12 : TBookOrder_11 {
+    
     private int jobOfferAcceptTimeoutField;
-
+    
     private int jobProviderField;
-
+    
     private double tipIncentiveField;
-
+    
     /// <remarks/>
-    public int JobOfferAcceptTimeout
-    {
-        get
-        {
+    public int JobOfferAcceptTimeout {
+        get {
             return this.jobOfferAcceptTimeoutField;
         }
-        set
-        {
+        set {
             this.jobOfferAcceptTimeoutField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int JobProvider
-    {
-        get
-        {
+    public int JobProvider {
+        get {
             return this.jobProviderField;
         }
-        set
-        {
+        set {
             this.jobProviderField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double TipIncentive
-    {
-        get
-        {
+    public double TipIncentive {
+        get {
             return this.tipIncentiveField;
         }
-        set
-        {
+        set {
             this.tipIncentiveField = value;
         }
     }
@@ -9758,93 +8532,55 @@ public partial class TBookOrder_12 : TBookOrder_11
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_14))]
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_13 : TBookOrder_12
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_13 : TBookOrder_12 {
+    
     private bool isSharedRideField;
-
+    
     private string runNumField;
-
+    
     /// <remarks/>
-    public bool IsSharedRide
-    {
-        get
-        {
+    public bool IsSharedRide {
+        get {
             return this.isSharedRideField;
         }
-        set
-        {
+        set {
             this.isSharedRideField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string RunNum
-    {
-        get
-        {
+    public string RunNum {
+        get {
             return this.runNumField;
         }
-        set
-        {
+        set {
             this.runNumField = value;
         }
     }
 }
 
 /// <remarks/>
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_15))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_14 : TBookOrder_13
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrder_14 : TBookOrder_13 {
+    
     private string contactEmailField;
-
+    
     /// <remarks/>
-    public string ContactEmail
-    {
-        get
-        {
+    public string ContactEmail {
+        get {
             return this.contactEmailField;
         }
-        set
-        {
+        set {
             this.contactEmailField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrder_15 : TBookOrder_14
-{
-
-    private string vIPNumberField;
-
-    /// <remarks/>
-    public string VIPNumber
-    {
-        get
-        {
-            return this.vIPNumberField;
-        }
-        set
-        {
-            this.vIPNumberField = value;
         }
     }
 }
@@ -9856,66 +8592,53 @@ public partial class TBookOrder_15 : TBookOrder_14
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TVehiclePosition
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TVehiclePosition {
+    
     private string vehicleNumberField;
-
+    
     private double longitudeField;
-
+    
     private double latitudeField;
-
+    
     private TWEBTimeStamp gPSLastUpdatedField;
-
+    
     /// <remarks/>
-    public string VehicleNumber
-    {
-        get
-        {
+    public string VehicleNumber {
+        get {
             return this.vehicleNumberField;
         }
-        set
-        {
+        set {
             this.vehicleNumberField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Longitude
-    {
-        get
-        {
+    public double Longitude {
+        get {
             return this.longitudeField;
         }
-        set
-        {
+        set {
             this.longitudeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public double Latitude
-    {
-        get
-        {
+    public double Latitude {
+        get {
             return this.latitudeField;
         }
-        set
-        {
+        set {
             this.latitudeField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp GPSLastUpdated
-    {
-        get
-        {
+    public TWEBTimeStamp GPSLastUpdated {
+        get {
             return this.gPSLastUpdatedField;
         }
-        set
-        {
+        set {
             this.gPSLastUpdatedField = value;
         }
     }
@@ -9926,21 +8649,17 @@ public partial class TVehiclePosition
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TVehiclePosition_2 : TVehiclePosition
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TVehiclePosition_2 : TVehiclePosition {
+    
     private string driverIDField;
-
+    
     /// <remarks/>
-    public string DriverID
-    {
-        get
-        {
+    public string DriverID {
+        get {
             return this.driverIDField;
         }
-        set
-        {
+        set {
             this.driverIDField = value;
         }
     }
@@ -9951,21 +8670,17 @@ public partial class TVehiclePosition_2 : TVehiclePosition
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TVehiclePosition_4 : TVehiclePosition
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TVehiclePosition_4 : TVehiclePosition {
+    
     private TVehicleTypeItem vehicleTypeField;
-
+    
     /// <remarks/>
-    public TVehicleTypeItem VehicleType
-    {
-        get
-        {
+    public TVehicleTypeItem VehicleType {
+        get {
             return this.vehicleTypeField;
         }
-        set
-        {
+        set {
             this.vehicleTypeField = value;
         }
     }
@@ -9976,36 +8691,29 @@ public partial class TVehiclePosition_4 : TVehiclePosition
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderList_6
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderList_6 {
+    
     private int orderCountField;
-
+    
     private TBookOrder_6[] orderListField;
-
+    
     /// <remarks/>
-    public int OrderCount
-    {
-        get
-        {
+    public int OrderCount {
+        get {
             return this.orderCountField;
         }
-        set
-        {
+        set {
             this.orderCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_6[] OrderList
-    {
-        get
-        {
+    public TBookOrder_6[] OrderList {
+        get {
             return this.orderListField;
         }
-        set
-        {
+        set {
             this.orderListField = value;
         }
     }
@@ -10016,66 +8724,53 @@ public partial class TBookOrderList_6
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeZone")]
-public partial class TBannedZone
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeZone")]
+public partial class TBannedZone {
+    
     private string zoneField;
-
+    
     private int zoneIDField;
-
+    
     private string[] vehiclesField;
-
+    
     private string[] driversField;
-
+    
     /// <remarks/>
-    public string Zone
-    {
-        get
-        {
+    public string Zone {
+        get {
             return this.zoneField;
         }
-        set
-        {
+        set {
             this.zoneField = value;
         }
     }
-
+    
     /// <remarks/>
-    public int ZoneID
-    {
-        get
-        {
+    public int ZoneID {
+        get {
             return this.zoneIDField;
         }
-        set
-        {
+        set {
             this.zoneIDField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string[] Vehicles
-    {
-        get
-        {
+    public string[] Vehicles {
+        get {
             return this.vehiclesField;
         }
-        set
-        {
+        set {
             this.vehiclesField = value;
         }
     }
-
+    
     /// <remarks/>
-    public string[] Drivers
-    {
-        get
-        {
+    public string[] Drivers {
+        get {
             return this.driversField;
         }
-        set
-        {
+        set {
             this.driversField = value;
         }
     }
@@ -10086,36 +8781,29 @@ public partial class TBannedZone
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderList_5
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderList_5 {
+    
     private int orderCountField;
-
+    
     private TBookOrder_5[] orderListField;
-
+    
     /// <remarks/>
-    public int OrderCount
-    {
-        get
-        {
+    public int OrderCount {
+        get {
             return this.orderCountField;
         }
-        set
-        {
+        set {
             this.orderCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_5[] OrderList
-    {
-        get
-        {
+    public TBookOrder_5[] OrderList {
+        get {
             return this.orderListField;
         }
-        set
-        {
+        set {
             this.orderListField = value;
         }
     }
@@ -10126,36 +8814,29 @@ public partial class TBookOrderList_5
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderList_4
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderList_4 {
+    
     private int orderCountField;
-
+    
     private TBookOrder_4[] orderListField;
-
+    
     /// <remarks/>
-    public int OrderCount
-    {
-        get
-        {
+    public int OrderCount {
+        get {
             return this.orderCountField;
         }
-        set
-        {
+        set {
             this.orderCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_4[] OrderList
-    {
-        get
-        {
+    public TBookOrder_4[] OrderList {
+        get {
             return this.orderListField;
         }
-        set
-        {
+        set {
             this.orderListField = value;
         }
     }
@@ -10166,36 +8847,29 @@ public partial class TBookOrderList_4
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TBookOrderList_3
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TBookOrderList_3 {
+    
     private int orderCountField;
-
+    
     private TBookOrder_3[] orderListField;
-
+    
     /// <remarks/>
-    public int OrderCount
-    {
-        get
-        {
+    public int OrderCount {
+        get {
             return this.orderCountField;
         }
-        set
-        {
+        set {
             this.orderCountField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_3[] OrderList
-    {
-        get
-        {
+    public TBookOrder_3[] OrderList {
+        get {
             return this.orderListField;
         }
-        set
-        {
+        set {
             this.orderListField = value;
         }
     }
@@ -10204,19 +8878,18 @@ public partial class TBookOrderList_3
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.SerializableAttribute()]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeWEB")]
-public enum TCCTransResult
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeWEB")]
+public enum TCCTransResult {
+    
     /// <remarks/>
     ctrNone,
-
+    
     /// <remarks/>
     ctrDeclined,
-
+    
     /// <remarks/>
     ctrApproved,
-
+    
     /// <remarks/>
     ctrTimeout,
 }
@@ -10226,36 +8899,29 @@ public enum TCCTransResult
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TRun : TBookOrder
-{
-
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TRun : TBookOrder {
+    
     private string runNumField;
-
+    
     private TBookOrder_6[] runRidesField;
-
+    
     /// <remarks/>
-    public string RunNum
-    {
-        get
-        {
+    public string RunNum {
+        get {
             return this.runNumField;
         }
-        set
-        {
+        set {
             this.runNumField = value;
         }
     }
-
+    
     /// <remarks/>
-    public TBookOrder_6[] RunRides
-    {
-        get
-        {
+    public TBookOrder_6[] RunRides {
+        get {
             return this.runRidesField;
         }
-        set
-        {
+        set {
             this.runRidesField = value;
         }
     }
@@ -10269,22 +8935,18 @@ public delegate void GetOrderStatusCompletedEventHandler(object sender, GetOrder
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue Result
-    {
-        get
-        {
+    public TWEBOrderStatusValue Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBOrderStatusValue)(this.results[0]));
         }
@@ -10299,22 +8961,18 @@ public delegate void GetBookOrderCompletedEventHandler(object sender, GetBookOrd
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder Result
-    {
-        get
-        {
+    public TBookOrder Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder)(this.results[0]));
         }
@@ -10329,22 +8987,18 @@ public delegate void SaveBookOrderCompletedEventHandler(object sender, SaveBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10359,22 +9013,18 @@ public delegate void SaveBookOrderWrapperCompletedEventHandler(object sender, Sa
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrderWrapperCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrderWrapperCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrderWrapperCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrderWrapperCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10389,22 +9039,18 @@ public delegate void CancelBookOrderCompletedEventHandler(object sender, CancelB
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class CancelBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class CancelBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal CancelBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal CancelBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10419,22 +9065,18 @@ public delegate void GetHeartBeatCompletedEventHandler(object sender, GetHeartBe
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetHeartBeatCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetHeartBeatCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetHeartBeatCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetHeartBeatCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp Result
-    {
-        get
-        {
+    public TWEBTimeStamp Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBTimeStamp)(this.results[0]));
         }
@@ -10449,22 +9091,18 @@ public delegate void DeleteBookOrderCompletedEventHandler(object sender, DeleteB
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class DeleteBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class DeleteBookOrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal DeleteBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal DeleteBookOrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10479,52 +9117,42 @@ public delegate void GetFareTollsDistanceCompletedEventHandler(object sender, Ge
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetFareTollsDistanceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetFareTollsDistanceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetFareTollsDistanceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetFareTollsDistanceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double Fare
-    {
-        get
-        {
+    public double Fare {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double Tolls
-    {
-        get
-        {
+    public double Tolls {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public double Distance
-    {
-        get
-        {
+    public double Distance {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[3]));
         }
@@ -10539,42 +9167,34 @@ public delegate void GetVehicleLocationCompletedEventHandler(object sender, GetV
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetVehicleLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetVehicleLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetVehicleLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetVehicleLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lon
-    {
-        get
-        {
+    public double Lon {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lat
-    {
-        get
-        {
+    public double Lat {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
@@ -10589,42 +9209,34 @@ public delegate void GetDriverLocationCompletedEventHandler(object sender, GetDr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetDriverLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetDriverLocationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetDriverLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetDriverLocationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lon
-    {
-        get
-        {
+    public double Lon {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lat
-    {
-        get
-        {
+    public double Lat {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
@@ -10639,22 +9251,18 @@ public delegate void SendDriverMsgCompletedEventHandler(object sender, SendDrive
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendDriverMsgCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendDriverMsgCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendDriverMsgCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendDriverMsgCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10669,22 +9277,18 @@ public delegate void SaveExtrPaymentCompletedEventHandler(object sender, SaveExt
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveExtrPaymentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveExtrPaymentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveExtrPaymentCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveExtrPaymentCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10699,22 +9303,18 @@ public delegate void SaveExtrPayment_2CompletedEventHandler(object sender, SaveE
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveExtrPayment_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveExtrPayment_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveExtrPayment_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveExtrPayment_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10729,22 +9329,18 @@ public delegate void SaveExtrPayment_3CompletedEventHandler(object sender, SaveE
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveExtrPayment_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveExtrPayment_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveExtrPayment_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveExtrPayment_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10759,22 +9355,18 @@ public delegate void GetBookOrder_2CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_2 Result
-    {
-        get
-        {
+    public TBookOrder_2 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_2)(this.results[0]));
         }
@@ -10789,22 +9381,18 @@ public delegate void SaveBookOrder_2CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10819,22 +9407,18 @@ public delegate void GetBookOrderByConfirmationNoCompletedEventHandler(object se
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderByConfirmationNoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderByConfirmationNoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderByConfirmationNoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderByConfirmationNoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_3 Result
-    {
-        get
-        {
+    public TBookOrderList_3 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_3)(this.results[0]));
         }
@@ -10849,22 +9433,18 @@ public delegate void GetBookOrder_3CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_3 Result
-    {
-        get
-        {
+    public TBookOrder_3 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_3)(this.results[0]));
         }
@@ -10879,22 +9459,18 @@ public delegate void GetOrderHistoryCompletedEventHandler(object sender, GetOrde
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderHistoryCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderHistoryCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderHistoryCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderHistoryCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_3 Result
-    {
-        get
-        {
+    public TBookOrderList_3 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_3)(this.results[0]));
         }
@@ -10909,22 +9485,18 @@ public delegate void SaveBookOrderWithCarCompletedEventHandler(object sender, Sa
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrderWithCarCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrderWithCarCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrderWithCarCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrderWithCarCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10939,22 +9511,18 @@ public delegate void SaveBookOrder_3CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -10969,22 +9537,18 @@ public delegate void AddressCorrelationCompletedEventHandler(object sender, Addr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class AddressCorrelationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class AddressCorrelationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal AddressCorrelationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal AddressCorrelationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TWEBFavotiteAddress[] Result
-    {
-        get
-        {
+    public TWEBFavotiteAddress[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBFavotiteAddress[])(this.results[0]));
         }
@@ -10999,22 +9563,18 @@ public delegate void GetBookOrderByConfirmationNo_4CompletedEventHandler(object 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderByConfirmationNo_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderByConfirmationNo_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderByConfirmationNo_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderByConfirmationNo_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_4 Result
-    {
-        get
-        {
+    public TBookOrderList_4 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_4)(this.results[0]));
         }
@@ -11029,22 +9589,18 @@ public delegate void GetBookOrder_4CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_4 Result
-    {
-        get
-        {
+    public TBookOrder_4 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_4)(this.results[0]));
         }
@@ -11059,22 +9615,18 @@ public delegate void GetOrderHistory_4CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderHistory_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderHistory_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderHistory_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderHistory_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_4 Result
-    {
-        get
-        {
+    public TBookOrderList_4 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_4)(this.results[0]));
         }
@@ -11089,62 +9641,50 @@ public delegate void GetVehicleLocationWithTaxiNoCompletedEventHandler(object se
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetVehicleLocationWithTaxiNoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetVehicleLocationWithTaxiNoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetVehicleLocationWithTaxiNoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetVehicleLocationWithTaxiNoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lon
-    {
-        get
-        {
+    public double Lon {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lat
-    {
-        get
-        {
+    public double Lat {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp LastGPSUpdate
-    {
-        get
-        {
+    public TWEBTimeStamp LastGPSUpdate {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBTimeStamp)(this.results[3]));
         }
     }
-
+    
     /// <remarks/>
-    public string TaxiNo
-    {
-        get
-        {
+    public string TaxiNo {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((string)(this.results[4]));
         }
@@ -11159,22 +9699,18 @@ public delegate void SaveBookOrder_4CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11189,22 +9725,18 @@ public delegate void CancelBookOrder_2CompletedEventHandler(object sender, Cance
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class CancelBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class CancelBookOrder_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal CancelBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal CancelBookOrder_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11219,22 +9751,18 @@ public delegate void GetBookOrderByConfirmationNo_5CompletedEventHandler(object 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderByConfirmationNo_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderByConfirmationNo_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderByConfirmationNo_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderByConfirmationNo_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_5 Result
-    {
-        get
-        {
+    public TBookOrderList_5 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_5)(this.results[0]));
         }
@@ -11249,22 +9777,18 @@ public delegate void GetBookOrder_5CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_5 Result
-    {
-        get
-        {
+    public TBookOrder_5 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_5)(this.results[0]));
         }
@@ -11279,22 +9803,18 @@ public delegate void GetOrderHistory_5CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderHistory_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderHistory_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderHistory_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderHistory_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_5 Result
-    {
-        get
-        {
+    public TBookOrderList_5 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_5)(this.results[0]));
         }
@@ -11309,22 +9829,18 @@ public delegate void SaveBookOrder_5CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11339,22 +9855,18 @@ public delegate void GetBannedZonesCompletedEventHandler(object sender, GetBanne
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBannedZonesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBannedZonesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBannedZonesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBannedZonesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBannedZone[] Result
-    {
-        get
-        {
+    public TBannedZone[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBannedZone[])(this.results[0]));
         }
@@ -11369,22 +9881,18 @@ public delegate void GetBookOrderByConfirmationNo_6CompletedEventHandler(object 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderByConfirmationNo_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderByConfirmationNo_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderByConfirmationNo_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderByConfirmationNo_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_6 Result
-    {
-        get
-        {
+    public TBookOrderList_6 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_6)(this.results[0]));
         }
@@ -11399,22 +9907,18 @@ public delegate void GetBookOrder_6CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_6 Result
-    {
-        get
-        {
+    public TBookOrder_6 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_6)(this.results[0]));
         }
@@ -11429,22 +9933,18 @@ public delegate void GetOrderHistory_6CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderHistory_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderHistory_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderHistory_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderHistory_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_6 Result
-    {
-        get
-        {
+    public TBookOrderList_6 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_6)(this.results[0]));
         }
@@ -11459,22 +9959,18 @@ public delegate void SaveBookOrder_6CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11489,22 +9985,18 @@ public delegate void CancelRunCompletedEventHandler(object sender, CancelRunComp
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class CancelRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class CancelRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal CancelRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal CancelRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11519,22 +10011,18 @@ public delegate void CancelSROrderCompletedEventHandler(object sender, CancelSRO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class CancelSROrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class CancelSROrderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal CancelSROrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal CancelSROrderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -11549,22 +10037,18 @@ public delegate void GetAvailableVehiclesCompletedEventHandler(object sender, Ge
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetAvailableVehiclesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetAvailableVehiclesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetAvailableVehiclesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetAvailableVehiclesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition[] Result
-    {
-        get
-        {
+    public TVehiclePosition[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition[])(this.results[0]));
         }
@@ -11579,22 +10063,18 @@ public delegate void GetAvailableVehicles_2CompletedEventHandler(object sender, 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetAvailableVehicles_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetAvailableVehicles_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetAvailableVehicles_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetAvailableVehicles_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_2[] Result
-    {
-        get
-        {
+    public TVehiclePosition_2[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition_2[])(this.results[0]));
         }
@@ -11609,22 +10089,18 @@ public delegate void GetAvailableVehicles_3CompletedEventHandler(object sender, 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetAvailableVehicles_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetAvailableVehicles_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetAvailableVehicles_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetAvailableVehicles_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_2[] Result
-    {
-        get
-        {
+    public TVehiclePosition_2[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition_2[])(this.results[0]));
         }
@@ -11639,22 +10115,18 @@ public delegate void GetAvailableVehicles_4CompletedEventHandler(object sender, 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetAvailableVehicles_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetAvailableVehicles_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetAvailableVehicles_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetAvailableVehicles_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TVehiclePosition_4[] Result
-    {
-        get
-        {
+    public TVehiclePosition_4[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition_4[])(this.results[0]));
         }
@@ -11669,22 +10141,18 @@ public delegate void GetBookOrderByConfirmationNo_7CompletedEventHandler(object 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrderByConfirmationNo_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrderByConfirmationNo_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrderByConfirmationNo_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrderByConfirmationNo_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_7 Result
-    {
-        get
-        {
+    public TBookOrderList_7 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_7)(this.results[0]));
         }
@@ -11699,22 +10167,18 @@ public delegate void GetBookOrder_7CompletedEventHandler(object sender, GetBookO
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetBookOrder_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetBookOrder_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetBookOrder_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetBookOrder_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrder_7 Result
-    {
-        get
-        {
+    public TBookOrder_7 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrder_7)(this.results[0]));
         }
@@ -11729,22 +10193,18 @@ public delegate void GetOrderHistory_7CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderHistory_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderHistory_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderHistory_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderHistory_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderList_7 Result
-    {
-        get
-        {
+    public TBookOrderList_7 Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderList_7)(this.results[0]));
         }
@@ -11759,22 +10219,18 @@ public delegate void GetOrderStatus_2CompletedEventHandler(object sender, GetOrd
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrderStatus_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrderStatus_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrderStatus_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrderStatus_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TWEBOrderStatusValue Result
-    {
-        get
-        {
+    public TWEBOrderStatusValue Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBOrderStatusValue)(this.results[0]));
         }
@@ -11789,22 +10245,18 @@ public delegate void GetOrdersStatusCompletedEventHandler(object sender, GetOrde
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus[] Result
-    {
-        get
-        {
+    public TOrderStatus[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus[])(this.results[0]));
         }
@@ -11819,22 +10271,18 @@ public delegate void GetOrdersStatus_2CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatus_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatus_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatus_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatus_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_2[] Result
-    {
-        get
-        {
+    public TOrderStatus_2[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus_2[])(this.results[0]));
         }
@@ -11849,22 +10297,18 @@ public delegate void GetOrdersStatus_3CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatus_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatus_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatus_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatus_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_3[] Result
-    {
-        get
-        {
+    public TOrderStatus_3[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus_3[])(this.results[0]));
         }
@@ -11879,22 +10323,18 @@ public delegate void GetOrdersStatus_4CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatus_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatus_4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatus_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatus_4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_4[] Result
-    {
-        get
-        {
+    public TOrderStatus_4[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus_4[])(this.results[0]));
         }
@@ -11909,22 +10349,18 @@ public delegate void GetOrdersStatus_5CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatus_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatus_5CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatus_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatus_5CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_5[] Result
-    {
-        get
-        {
+    public TOrderStatus_5[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus_5[])(this.results[0]));
         }
@@ -11939,22 +10375,18 @@ public delegate void GetOrdersStatus_6CompletedEventHandler(object sender, GetOr
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetOrdersStatus_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetOrdersStatus_6CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetOrdersStatus_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetOrdersStatus_6CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TOrderStatus_6[] Result
-    {
-        get
-        {
+    public TOrderStatus_6[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus_6[])(this.results[0]));
         }
@@ -11969,22 +10401,18 @@ public delegate void GetRunCompletedEventHandler(object sender, GetRunCompletedE
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TRun Result
-    {
-        get
-        {
+    public TRun Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TRun)(this.results[0]));
         }
@@ -11999,72 +10427,58 @@ public delegate void GetVehicleLocationWithTaxiNoCompCompletedEventHandler(objec
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetVehicleLocationWithTaxiNoCompCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetVehicleLocationWithTaxiNoCompCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetVehicleLocationWithTaxiNoCompCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetVehicleLocationWithTaxiNoCompCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lon
-    {
-        get
-        {
+    public double Lon {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double Lat
-    {
-        get
-        {
+    public double Lat {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public TWEBTimeStamp LastGPSUpdate
-    {
-        get
-        {
+    public TWEBTimeStamp LastGPSUpdate {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TWEBTimeStamp)(this.results[3]));
         }
     }
-
+    
     /// <remarks/>
-    public string TaxiNo
-    {
-        get
-        {
+    public string TaxiNo {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((string)(this.results[4]));
         }
     }
-
+    
     /// <remarks/>
-    public string CompanyID
-    {
-        get
-        {
+    public string CompanyID {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((string)(this.results[5]));
         }
@@ -12079,22 +10493,18 @@ public delegate void SaveBookOrder_7CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_7CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_7CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12109,22 +10519,18 @@ public delegate void SaveBookOrder_8CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_8CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_8CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_8CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_8CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12139,22 +10545,44 @@ public delegate void SaveRunCompletedEventHandler(object sender, SaveRunComplete
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveRunCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveRunCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
+public delegate void SaveTripValuesCompletedEventHandler(object sender, SaveTripValuesCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class SaveTripValuesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal SaveTripValuesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12169,22 +10597,18 @@ public delegate void SendDriverMsg_2CompletedEventHandler(object sender, SendDri
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendDriverMsg_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendDriverMsg_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendDriverMsg_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendDriverMsg_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12199,22 +10623,18 @@ public delegate void SendMsg_3dPartyPaymentAuthCompletedEventHandler(object send
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendMsg_3dPartyPaymentAuthCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendMsg_3dPartyPaymentAuthCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendMsg_3dPartyPaymentAuthCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendMsg_3dPartyPaymentAuthCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12229,22 +10649,18 @@ public delegate void SendMsg_3dPartyPaymentNotificationCompletedEventHandler(obj
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendMsg_3dPartyPaymentNotificationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendMsg_3dPartyPaymentNotificationCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendMsg_3dPartyPaymentNotificationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendMsg_3dPartyPaymentNotificationCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12259,22 +10675,18 @@ public delegate void UpdateJobPaymentTypeCompletedEventHandler(object sender, Up
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class UpdateJobPaymentTypeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class UpdateJobPaymentTypeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal UpdateJobPaymentTypeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal UpdateJobPaymentTypeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12289,52 +10701,42 @@ public delegate void EstimateFareCompletedEventHandler(object sender, EstimateFa
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateFareCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateFareCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateFareCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateFareCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public double Result
-    {
-        get
-        {
+    public double Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double AFare
-    {
-        get
-        {
+    public double AFare {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double ATolls
-    {
-        get
-        {
+    public double ATolls {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public double ADistance
-    {
-        get
-        {
+    public double ADistance {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[3]));
         }
@@ -12349,62 +10751,50 @@ public delegate void EstimateFare_8CompletedEventHandler(object sender, Estimate
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateFare_8CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateFare_8CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateFare_8CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateFare_8CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public double Result
-    {
-        get
-        {
+    public double Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double AFare
-    {
-        get
-        {
+    public double AFare {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double ATolls
-    {
-        get
-        {
+    public double ATolls {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public double ADistance
-    {
-        get
-        {
+    public double ADistance {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[3]));
         }
     }
-
+    
     /// <remarks/>
-    public double TripTime
-    {
-        get
-        {
+    public double TripTime {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[4]));
         }
@@ -12419,22 +10809,18 @@ public delegate void SaveBookOrder_9CompletedEventHandler(object sender, SaveBoo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12449,72 +10835,58 @@ public delegate void EstimateFare_9CompletedEventHandler(object sender, Estimate
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateFare_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateFare_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateFare_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateFare_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public double Result
-    {
-        get
-        {
+    public double Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double aFare
-    {
-        get
-        {
+    public double aFare {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public double aTolls
-    {
-        get
-        {
+    public double aTolls {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[2]));
         }
     }
-
+    
     /// <remarks/>
-    public double aDistance
-    {
-        get
-        {
+    public double aDistance {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[3]));
         }
     }
-
+    
     /// <remarks/>
-    public double aTripTime
-    {
-        get
-        {
+    public double aTripTime {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[4]));
         }
     }
-
+    
     /// <remarks/>
-    public int aPBToken
-    {
-        get
-        {
+    public int aPBToken {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[5]));
         }
@@ -12529,22 +10901,18 @@ public delegate void EstimateFare_10CompletedEventHandler(object sender, Estimat
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateFare_10CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateFare_10CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateFare_10CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateFare_10CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TEstimateFare_10Result Result
-    {
-        get
-        {
+    public TEstimateFare_10Result Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TEstimateFare_10Result)(this.results[0]));
         }
@@ -12559,42 +10927,34 @@ public delegate void EstimateDistanceCompletedEventHandler(object sender, Estima
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateDistanceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateDistanceCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateDistanceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateDistanceCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public double Result
-    {
-        get
-        {
+    public double Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public int TripTime
-    {
-        get
-        {
+    public int TripTime {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public int @return
-    {
-        get
-        {
+    public int @return {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[2]));
         }
@@ -12609,32 +10969,26 @@ public delegate void EstimateDistance_2CompletedEventHandler(object sender, Esti
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateDistance_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateDistance_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateDistance_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateDistance_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TEstimateDistance_2_ParamO Result
-    {
-        get
-        {
+    public TEstimateDistance_2_ParamO Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TEstimateDistance_2_ParamO)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public int @return
-    {
-        get
-        {
+    public int @return {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[1]));
         }
@@ -12649,42 +11003,34 @@ public delegate void EstimateDistance_3CompletedEventHandler(object sender, Esti
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class EstimateDistance_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class EstimateDistance_3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal EstimateDistance_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal EstimateDistance_3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public double OutTotalFare
-    {
-        get
-        {
+    public double OutTotalFare {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[1]));
         }
     }
-
+    
     /// <remarks/>
-    public int OutTripTime
-    {
-        get
-        {
+    public int OutTripTime {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[2]));
         }
@@ -12699,32 +11045,26 @@ public delegate void RideCurrentFareCompletedEventHandler(object sender, RideCur
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class RideCurrentFareCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class RideCurrentFareCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal RideCurrentFareCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal RideCurrentFareCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public double Result
-    {
-        get
-        {
+    public double Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((double)(this.results[0]));
         }
     }
-
+    
     /// <remarks/>
-    public int @return
-    {
-        get
-        {
+    public int @return {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[1]));
         }
@@ -12739,22 +11079,18 @@ public delegate void SendP2DCallCompletedEventHandler(object sender, SendP2DCall
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendP2DCallCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendP2DCallCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendP2DCallCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendP2DCallCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12769,22 +11105,18 @@ public delegate void SaveBookOrder_10CompletedEventHandler(object sender, SaveBo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_10CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_10CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_10CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_10CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12799,22 +11131,18 @@ public delegate void SaveBookOrder_11CompletedEventHandler(object sender, SaveBo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_11CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_11CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_11CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_11CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12829,22 +11157,18 @@ public delegate void SaveBookOrder_12CompletedEventHandler(object sender, SaveBo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_12CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_12CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey Result
-    {
-        get
-        {
+    public TBookOrderKey Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderKey)(this.results[0]));
         }
@@ -12859,22 +11183,18 @@ public delegate void GetVehicleCandidatesCompletedEventHandler(object sender, Ge
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetVehicleCandidatesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class GetVehicleCandidatesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal GetVehicleCandidatesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal GetVehicleCandidatesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TVehicleComp[] Result
-    {
-        get
-        {
+    public TVehicleComp[] Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TVehicleComp[])(this.results[0]));
         }
@@ -12889,22 +11209,18 @@ public delegate void UpdateJobToVehicleCompletedEventHandler(object sender, Upda
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class UpdateJobToVehicleCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class UpdateJobToVehicleCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal UpdateJobToVehicleCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal UpdateJobToVehicleCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12919,22 +11235,18 @@ public delegate void SendMsg_3dPartyPaymentAuth2CompletedEventHandler(object sen
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SendMsg_3dPartyPaymentAuth2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SendMsg_3dPartyPaymentAuth2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SendMsg_3dPartyPaymentAuth2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SendMsg_3dPartyPaymentAuth2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12949,22 +11261,18 @@ public delegate void UpdateDestinationAddressCompletedEventHandler(object sender
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class UpdateDestinationAddressCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class UpdateDestinationAddressCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal UpdateDestinationAddressCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal UpdateDestinationAddressCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public int Result
-    {
-        get
-        {
+    public int Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
         }
@@ -12979,22 +11287,18 @@ public delegate void SaveBookOrder_13CompletedEventHandler(object sender, SaveBo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_13CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_13CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_13CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_13CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey Result
-    {
-        get
-        {
+    public TBookOrderKey Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderKey)(this.results[0]));
         }
@@ -13009,52 +11313,18 @@ public delegate void SaveBookOrder_14CompletedEventHandler(object sender, SaveBo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_14CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
+public partial class SaveBookOrder_14CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
     private object[] results;
-
-    internal SaveBookOrder_14CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
+    
+    internal SaveBookOrder_14CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
         this.results = results;
     }
-
+    
     /// <remarks/>
-    public TBookOrderKey Result
-    {
-        get
-        {
-            this.RaiseExceptionIfNecessary();
-            return ((TBookOrderKey)(this.results[0]));
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
-public delegate void SaveBookOrder_15CompletedEventHandler(object sender, SaveBookOrder_15CompletedEventArgs e);
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1055.0")]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class SaveBookOrder_15CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
-    private object[] results;
-
-    internal SaveBookOrder_15CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-            base(exception, cancelled, userState)
-    {
-        this.results = results;
-    }
-
-    /// <remarks/>
-    public TBookOrderKey Result
-    {
-        get
-        {
+    public TBookOrderKey Result {
+        get {
             this.RaiseExceptionIfNecessary();
             return ((TBookOrderKey)(this.results[0]));
         }
