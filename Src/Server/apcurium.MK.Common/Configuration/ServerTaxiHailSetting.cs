@@ -151,6 +151,10 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Configuration - Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Send Order Cancellation Notifications", Description = "Controls whether cancellation emails and push notifications can be sent. Note, the push notification has to also be enabled for push notifications to go out")]
+        public bool SendOrderCancellationNotifications{ get; private set; }
+
         [Display(Name = "Configuration - Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
         public bool DisableNewerVersionPopup { get; private set; }
 
