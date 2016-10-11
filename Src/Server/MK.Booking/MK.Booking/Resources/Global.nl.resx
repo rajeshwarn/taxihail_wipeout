@@ -217,6 +217,10 @@
     <value>{{ ApplicationName }} - Annuleringskosten</value>
     <comment>{{ ApplicationName }} - Cancellation Fees</comment>
   </data>
+  <data name="Email_Subject_CancellationConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Bevestiging van de annulering</value>
+    <comment>{{ ApplicationName }} - Cancellation Confirmation</comment>
+  </data>
   <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
     <value>{{ ApplicationName }} - No Show Kosten</value>
     <comment>{{ ApplicationName }} - No Show Fees</comment>
@@ -822,6 +826,10 @@
     <value>Chauffeurs Id #</value>
     <comment>Driver #</comment>
   </data>
+  <data name="Email_Body_CancellationConfirmation" xml:space="preserve">
+    <value>Uw rit  #{{IbsOrderId}} is geannuleerd.</value>
+    <comment>Your ride #{{IbsOrderId}} has been successfully cancelled.</comment>
+  </data>
   <data name="Email_Body_CancellationFee" xml:space="preserve">
     <value>U wordt belast voor het betalen van een vergoeding a {{FeeAmount}} voor de rit # {{IbsOrderId}}, omdat deze te laat geannuleerd werd.</value>
     <comment>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled.</comment>
@@ -829,6 +837,10 @@
   <data name="Email_Body_NoShowFee" xml:space="preserve">
     <value>U moet een vergoeding betalen van {{FeeAmount}} voor de rit #{{IbsOrderId}} omdat u niet aanwezig was toen de chauffeur u kwam ophalen op {{Ophaaladres}}.</value>
     <comment>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because you were absent when the driver tried to pick you up at {{PickUpAddress}}.</comment>
+  </data>
+  <data name="Email_Body_Cancellation_Conclusion" xml:space="preserve">
+    <value>Dank u voor het kiezen van {{ApplicationName}}.</value>
+    <comment>Thank you for choosing {{ApplicationName}}.</comment>
   </data>
   <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
     <value>Dit bedrag wordt automatisch afgeschreven van uw creditcard eindigend met {{Last4Digits}}.</value>
@@ -910,12 +922,15 @@
     <value>You must provide a country code, ex: CA, US, ...</value>
   </data>
   <data name="OrderCancelledAlertMessage" xml:space="preserve">
-    <value>Your order was cancelled.</value>
+    <value>{0} - Uw bestelling is geannuleerd.</value>
+    <comment>{0} - Your order was cancelled.</comment>
   </data>
   <data name="Email_Subject_Cancellation" xml:space="preserve">
-    <value>{{ ApplicationName }} - Order cancelled </value>
+    <value>{{ ApplicationName }} - bestelling geannuleerd </value>
+    <comment>{{ ApplicationName }} - Order cancelled </comment>
   </data>
   <data name="Email_Body_OrderCancelled" xml:space="preserve">
-    <value>Your order done on {{ OrderCreationDate }} was cancelled.</value>
+    <value>Uw bestelling gedaan op {{ OrderCreationDate }} werd geannuleerd.</value>
+    <comment>Your order done on {{ OrderCreationDate }} was cancelled.</comment>
   </data>
 </root>

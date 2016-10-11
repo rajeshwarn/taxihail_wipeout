@@ -784,16 +784,28 @@
 	<data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
     <value>{{ ApplicationName }} - Cargos de cancelación</value>
   </data>
-	<data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+  <data name="Email_Subject_CancellationConfirmation" xml:space="preserve">
+    <value>{{ ApplicationName }} - Confirmación de cancelación</value>
+    <comment>{{ ApplicationName }} - Cancellation Confirmation</comment>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
     <value>{{ ApplicationName }} - Cargos por no presentarse</value>
   </data>
-	<data name="Email_Body_CancellationFee" xml:space="preserve">
+  <data name="Email_Body_CancellationConfirmation" xml:space="preserve">
+    <value>El viaje #{{IbsOrderId}} ha sido cancelado.</value>
+    <comment>Your ride #{{IbsOrderId}} has been successfully cancelled.</comment>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
     <value>Le ha sido cargado un monto de {{FeeAmount}} por el viaje #{{IbsOrderId}} porque fue cancelado.</value>
   </data>
 	<data name="Email_Body_NoShowFee" xml:space="preserve">
     <value>Le ha sido cargado un monto de {{FeeAmount}} por el viaje #{{IbsOrderId}} porque se encontraba ausente cuando el conductor llego a recogerlo a {{PickUpAddress}}.</value>
   </data>
-	<data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+  <data name="Email_Body_Cancellation_Conclusion" xml:space="preserve">
+    <value>Gracias por elegir a {{ApplicationName}}.</value>
+    <comment>Thank you for choosing {{ApplicationName}}.</comment>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
     <value>Este monto será automáticamente cargado de su tarjeta con terminación {{Last4Digits}}.</value>
   </data>
 	<data name="Email_Body_BookingFees" xml:space="preserve">
@@ -854,12 +866,15 @@
     <value>You must provide a country code, ex: CA, US, ...</value>
   </data>
   <data name="OrderCancelledAlertMessage" xml:space="preserve">
-    <value>{0} - Your order was cancelled.</value>
+    <value>{0} - Su orden fue cancelada.</value>
+    <comment>{0} - Your order was cancelled.</comment>
   </data>
   <data name="Email_Subject_Cancellation" xml:space="preserve">
-    <value>{{ ApplicationName }} - Order cancelled </value>
+    <value>{{ ApplicationName }} - Orden cancelada </value>
+    <comment>{{ ApplicationName }} - Order cancelled </comment>
   </data>
   <data name="Email_Body_OrderCancelled" xml:space="preserve">
-    <value>Your order done on {{ OrderCreationDate }} was cancelled.</value>
+    <value>Su pedido realizado el {{ OrderCreationDate }} fue cancelado.</value>
+    <comment>Your order done on {{ OrderCreationDate }} was cancelled.</comment>
   </data>
 </root>
