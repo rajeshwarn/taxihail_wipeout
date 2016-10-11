@@ -802,3 +802,11 @@
 3.6.11
 	Thursday October 6, 2016
 	TAX-174 Moneris payment issues, needed to update IBSCab.dll on IBS server, and update compiled projects / web service proxy to latest version.
+	
+3.6.12
+	TAX-195 Order cancellation emails are sent out with the wrong working, saying no show fees will be charged.
+	New server settings:
+	Configuration - Send Order Cancellation Notifications
+	Controls whether cancellation emails and push notifications can be sent. Note, the push notification has to also be enabled for push notifications to go out
+	Push Notification Setting: Order Cancellation Confirmation Push, controls whether push notifications for order cancellations are sent out. 
+	Requires the server configuration setting for sending order cancellation notifications to be enabled.
