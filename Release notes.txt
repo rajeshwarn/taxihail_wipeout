@@ -810,3 +810,6 @@
 	Controls whether cancellation emails and push notifications can be sent. Note, the push notification has to also be enabled for push notifications to go out
 	Push Notification Setting: Order Cancellation Confirmation Push, controls whether push notifications for order cancellations are sent out. 
 	Requires the server configuration setting for sending order cancellation notifications to be enabled.
+	
+3.6.13
+	Added the 2G Java Heap size to the release configuration in the TaxiHail.csproj for android.
