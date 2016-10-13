@@ -104,3 +104,7 @@
 	Additional Gratuity changes TAX-164
 	PushSharp update to 4.0.1
 	NewtonsoftJson update to 7.0.10
+	
+0.5.10
+	Thursday October 13, 2016
+	Java Heap size set to 2G for android projects.
