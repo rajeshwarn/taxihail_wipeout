@@ -813,3 +813,7 @@
 	
 3.6.13
 	Added the 2G Java Heap size to the release configuration in the TaxiHail.csproj for android.
+
+3.6.14
+	TAX-197 Moneris extra security fields for street number, street name and email address have formatting issues, and only allow numbers.
+	The street number field now also allows text (so an apartment number like 1-705 can be entered).

@@ -273,7 +273,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        local:MvxBind="Visibility PaymentSettings.EnableAddressVerification"
+                        local:MvxBind="Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility"
                         android:layout_marginBottom="4dp">
                         <TextView
                             style="@style/BlackTextLabel"
@@ -308,7 +308,7 @@
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:layout_weight="0.2"
                             android:singleLine="true"
-                            android:inputType="number"
+                            android:inputType="textPostalAddress"
                             local:MvxBind="Text Data.StreetNumber; Enabled IsAddingNewCard"
                             android:contentDescription="@string/CreditCardAdd_StreetNumberLabel" />
                     <!-- Empty View used as a delimiter (hack for API 10 that doesn't support <space> tag) -->
@@ -321,7 +321,7 @@
                             android:layout_marginStart="10dip"
                             android:layout_height="@dimen/HeightEditTextFlat"
                             android:layout_weight="0.8"
-                            android:inputType="number"
+                            android:inputType="textCapWords"
                             android:singleLine="true"
                             local:MvxBind="Text Data.StreetName; Enabled IsAddingNewCard"
                             android:layout_marginBottom="8dp"
@@ -339,7 +339,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:singleLine="true"
-                        android:inputType="number"
+                        android:inputType="textEmailAddress"
                         local:MvxBind="Enabled IsAddingNewCard; Text Data.Email; Visibility PaymentSettings.EnableAddressVerification, Converter=Visibility"
                         android:contentDescription="@string/RideSettingsEmailTitle" />
                     <TextView
