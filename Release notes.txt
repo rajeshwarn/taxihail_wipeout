@@ -817,3 +817,6 @@
 3.6.14
 	TAX-197 Moneris extra security fields for street number, street name and email address have formatting issues, and only allow numbers.
 	The street number field now also allows text (so an apartment number like 1-705 can be entered).
+
+3.6.15
+	TAX-194 no trip progress when using the web booker, issue was with null position errors.
