@@ -820,3 +820,6 @@
 
 3.6.15
 	TAX-194 no trip progress when using the web booker, issue was with null position errors.
+	
+3.6.16
+	New server setting Configuration - Show API Metadata - Allows navigation to the /api/metadata route to display API documentation, false by default, and requires App Pool/Website restart to take effect.
