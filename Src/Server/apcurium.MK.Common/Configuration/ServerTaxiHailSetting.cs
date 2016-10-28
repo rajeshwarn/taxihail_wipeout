@@ -103,6 +103,7 @@ namespace apcurium.MK.Common.Configuration
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
             CompanyTimeZone = TimeZones.NotSet;
+            ShowAPIMetadata = false;
 
             CmtGeo = new CmtGeoSettingContainer()
             {
@@ -225,5 +226,10 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
-	}
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Show API Metadata", Description = "Allows navigation to the /api/metadata route to display API documentation, false by default, and requires App Pool/Website restart to take effect.")]
+        public bool ShowAPIMetadata { get; protected set; }
+
+    }
 }

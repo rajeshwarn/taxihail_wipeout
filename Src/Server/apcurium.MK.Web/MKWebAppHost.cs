@@ -85,8 +85,9 @@ namespace apcurium.MK.Web
 
             var container = UnityServiceLocator.Instance;
             containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
-            
 
+            var serverSettings = container.Resolve<IServerSettings>();
+            
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                 new IAuthProvider[]
                 {
@@ -114,6 +115,7 @@ namespace apcurium.MK.Web
                 }
             });
 
+            
             SetConfig(new EndpointHostConfig
             {
                 GlobalResponseHeaders =
@@ -121,9 +123,8 @@ namespace apcurium.MK.Web
                     {"Access-Control-Allow-Origin", "*"},
                     {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
                 },
-#if !DEBUG
-				EnableFeatures = Feature.All.Remove(Feature.Metadata)
-#endif
+
+                EnableFeatures = (serverSettings.ServerData.ShowAPIMetadata ? Feature.All : Feature.All.Remove(Feature.Metadata) )
             });
 
 
