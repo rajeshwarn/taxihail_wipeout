@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -428,6 +428,7 @@
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <None Include="Localization\FLAT RATE.resx" />
     <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
+    <None Include="Localization\needacab.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC Kiosk.resx" />
     <EmbeddedResource Include="Localization\Yellowcab OC.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />

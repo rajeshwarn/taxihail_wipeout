@@ -823,3 +823,6 @@
 	
 3.6.16
 	New server setting Configuration - Show API Metadata - Allows navigation to the /api/metadata route to display API documentation, false by default, and requires App Pool/Website restart to take effect.
+
+3.6.17
+	TAX-114 Surburban Syracuse (needacab) change label "Need A Taxi to BOOK" new resource file on mobile side, and added to iOS and android projects.
