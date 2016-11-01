@@ -424,7 +424,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public ICommand Call
+		public ICommand CallTaxi
         {
             get 
             {
@@ -434,12 +434,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumber); };
                     this.Services().Message.ShowMessage(string.Empty,
 												Settings.DefaultPhoneNumberDisplay,
-                                               this.Services().Localize["CallButton"],
+                                               this.Services().Localize["CallTaxiButton"],
                                                call, this.Services().Localize["Cancel"], 
                                                () => {});
                 });
             }
         }
+
+		public ICommand CallLuxury
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					CloseMenu();
+					Action call = () => { _phoneService.Call(Settings.DefaultPhoneNumberForLuxury); };
+					this.Services().Message.ShowMessage(string.Empty,
+					                                    Settings.DefaultPhoneNumberForLuxuryDisplay,
+											   this.Services().Localize["CallLuxuryButton"],
+											   call, this.Services().Localize["Cancel"],
+											   () => { });
+				});
+			}
+		}
 
 		public class ItemMenuModel
 		{

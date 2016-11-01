@@ -155,6 +155,8 @@
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CallButton">Call</string>
+  <string name="CallTaxiButton">Call Taxi</string>
+  <string name="CallLuxuryButton">Call Luxury</string>
   <string name="TaxiMapTitle">Your Vehicle</string>
   <string name="UnexpectedError">Unexpected error</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
@@ -278,6 +280,8 @@
   <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>
+  <string name="PanelMenuViewCallTaxiDispatchText">Call Taxi</string>
+  <string name="PanelMenuViewCallLuxuryDispatchText">Call Dispatch</string>
   <string name="PanelMenuViewAboutUsText">About Us</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
   <string name="PanelMenuViewSignOutText">Sign Out</string>

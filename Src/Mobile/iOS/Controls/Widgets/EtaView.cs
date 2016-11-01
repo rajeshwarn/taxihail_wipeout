@@ -37,7 +37,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set
             {
                 _baseRateToggled = value;
-				OrderOptionsControl.AutoShowDestinationAddress(_baseRateToggled);
+				if (_baseRateToggled)
+					OrderOptionsControl.AutoShowDestinationAddress(true);
                 // TODO this will only work for dark company colors
                 ArrowImage.Highlighted = value;
             }

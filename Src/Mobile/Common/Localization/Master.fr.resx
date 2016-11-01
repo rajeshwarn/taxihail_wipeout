@@ -596,6 +596,12 @@
   <data name="CallButton" xml:space="preserve">
     <value>Call</value>
   </data>
+  <data name="CallTaxiButton" xml:space="preserve">
+    <value>Call Taxi</value>
+  </data>
+  <data name="CallLuxuryButton" xml:space="preserve">
+    <value>Call Luxury</value>
+  </data>
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Your Taxi</value>
   </data>
@@ -965,6 +971,12 @@
   <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
     <value>Call</value>
   </data>
+  <data name="PanelMenuViewCallTaxiDispatchText" xml:space="preserve">
+    <value>Call Taxi</value>
+  </data>
+  <data name="PanelMenuViewCallLuxuryDispatchText" xml:space="preserve">
+    <value>Call Luxury</value>
+  </data>	
   <data name="PanelMenuViewAboutUsText" xml:space="preserve">
     <value>About Us</value>
   </data>

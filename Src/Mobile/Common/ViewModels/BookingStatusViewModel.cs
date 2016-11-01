@@ -1343,7 +1343,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			// return to initial state if ride was canceled or was a noshow
 			if (OrderStatusDetail.Status != OrderStatus.Canceled)
 			{
-				var needToSelectGratuity = (GetServiceTypeForCurrentOrder() == ServiceType.Luxury);
+				var needToSelectGratuity = (GetServiceTypeForCurrentOrder() == ServiceType.Luxury 
+				                            && GetBookingSettingsForCurrentOrder().ChargeTypeId == ChargeTypes.CardOnFile.Id
+				                            && !_bottomBar.OrderWasUnpaired);
 
 				ShowViewModel<RideSummaryViewModel>(new { orderId = orderId, needToSelectGratuity = needToSelectGratuity });
 
@@ -1488,6 +1490,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			return _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask().Result;
 		}
+
+		private BookingSettings GetBookingSettingsForCurrentOrder()
+		{
+			var settings = _orderWorkflowService.GetAndObserveBookingSettings().Take(1).ToTask().Result;
+
+			return settings;
+
+		}
+
 
 	    #endregion
 
