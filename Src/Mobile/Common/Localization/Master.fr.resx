@@ -704,6 +704,9 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Estimated fare not available</value>
   </data>
+  <data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
+    <value>Booking not available for this address</value>
+  </data>
   <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Invalid email</value>
   </data>

@@ -1026,6 +1026,9 @@
 		<value>Geschatte tarief is niet beschikbaar</value>
 		<comment>Estimated fare not available</comment>
 	</data>
+	<data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
+    	<value>Booking not available for this address</value>
+	</data>
 	<data name="EstimateFareCalculating" xml:space="preserve">
 		<value>Berekenen…</value>
 		<comment>Calculating...</comment>
