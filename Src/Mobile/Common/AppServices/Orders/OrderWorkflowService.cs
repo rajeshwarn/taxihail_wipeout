@@ -1112,8 +1112,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
 		{
-			//if (forceValue && IsDestinationModeOpened())
-			//	return;
+			if ((bool)IsDestinationModeOpened())
+			{
+				if (forceValue == true)
+					return;
+			}
 			
 			var currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
 			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);

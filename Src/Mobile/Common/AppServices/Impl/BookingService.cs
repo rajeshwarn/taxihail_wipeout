@@ -344,8 +344,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (direction.ValidationResult != null
                 && direction.ValidationResult.HasError)
             {
-                fareEstimate = direction.ValidationResult.Message;
-
+				// TAX-224, since some rule messages are too long, always display a canned error message
+				fareEstimate  = _appSettings.Data.OverrideBookingRuleErrorMessage 
+								? _localize["BookingRuleOverrideErrorMessage"]
+								: direction.ValidationResult.Message;
+				
             }
             else if (direction.Distance.HasValue)
             {

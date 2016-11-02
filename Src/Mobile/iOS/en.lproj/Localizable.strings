@@ -153,6 +153,8 @@
 "PickupViewPickupLabel"="Pickup:";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "CallButton"="Call";
+"CallTaxiButton"="Call Taxi";
+"CallLuxuryButton"="Call Luxury";
 "TaxiMapTitle"="Your Vehicle";
 "UnexpectedError"="Unexpected error";
 "StatusActionButton"="Call / Book / Cancel";
@@ -276,6 +278,8 @@
 "PanelMenuViewPaymentInfoText"="Payment";
 "PanelMenuViewTutorialText"="View Tutorial";
 "PanelMenuViewCallDispatchText"="Call";
+"PanelMenuViewCallTaxiDispatchText"="Call Taxi";
+"PanelMenuViewCallLuxuryDispatchText"="Call Luxury";
 "PanelMenuViewAboutUsText"="About Us";
 "PanelMenuViewReportProblemText"="Report A Problem";
 "PanelMenuViewSignOutText"="Sign Out";
@@ -604,8 +608,8 @@
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "View_RideLinqPair"="Check In";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
-"HomeView_ManualPairing"="In a Taxi";
-"HomeView_BookTaxi"="Need a Taxi";
+"HomeView_ManualPairing"="In a Vehicle";
+"HomeView_BookTaxi"="Need a Vehicle";
 "RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";

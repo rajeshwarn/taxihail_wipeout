@@ -243,13 +243,13 @@
                             android:layout_height="1px"
                             android:layout_below="@id/settingsTutorial" />
                         <Button
-                            android:id="@+id/settingsCallCompany"
-                            local:MvxBind="Click Panel.Call; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
+                            android:id="@+id/settingsCallCompanyTaxi"
+                            local:MvxBind="Click Panel.CallTaxi; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
                             android:layout_height="42dip"
-                            android:text="@string/PanelMenuViewCallDispatchText"
+                            android:text="@string/PanelMenuViewCallTaxiDispatchText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
@@ -257,13 +257,35 @@
                             android:layout_below="@id/separator9" />
                         <View
                             android:id="@+id/separator10"
+                            local:MvxBind="Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsCallCompanyTaxi" />
+                        <Button
+                            android:id="@+id/settingsCallCompanyLuxury"
+                            local:MvxBind="Click Panel.CallLuxury; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewCallLuxuryDispatchText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator10" />
+                        <View
+                            android:id="@+id/separator11"
                             local:MvxBind="Visibility Panel.Settings.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
                             android:layout_height="1px"
-                            android:layout_below="@id/settingsCallCompany" />
+                            android:layout_below="@id/settingsCallCompanyLuxury" />
                         <Button
                             android:id="@+id/settingsAbout"
                             local:MvxBind="Click Panel.NavigateToAboutUs"
@@ -276,9 +298,9 @@
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
-                            android:layout_below="@id/separator10" />
+                            android:layout_below="@id/separator11" />
                         <View
-                            android:id="@+id/separator11"
+                            android:id="@+id/separator12"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
@@ -297,9 +319,9 @@
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
-                            android:layout_below="@id/separator11" />
+                            android:layout_below="@id/separator12" />
                         <View
-                            android:id="@+id/separator12"
+                            android:id="@+id/separator13"
                             local:MvxBind="Visibility Panel.DisplayReportProblem, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
@@ -318,7 +340,7 @@
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
-                            android:layout_below="@id/separator12" />
+                            android:layout_below="@id/separator13" />
                     </RelativeLayout>
                 </ScrollView>
             </LinearLayout>

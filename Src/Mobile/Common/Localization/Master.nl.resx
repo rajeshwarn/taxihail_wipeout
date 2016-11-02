@@ -402,6 +402,13 @@
 		<value>Bellen</value>
 		<comment>Call</comment>
 	</data>
+	  <data name="CallTaxiButton" xml:space="preserve">
+    <value>Call Taxi</value>
+	</data>
+  	<data name="CallLuxuryButton" xml:space="preserve">
+    	<value>Call Luxury</value>
+  	</data>
+
 	<data name="CallDriver" xml:space="preserve">
 		<value>Bel Chauffeur</value>
 		<comment>Call Driver</comment>
@@ -1018,6 +1025,9 @@
 	<data name="EstimatedFareNotAvailable" xml:space="preserve">
 		<value>Geschatte tarief is niet beschikbaar</value>
 		<comment>Estimated fare not available</comment>
+	</data>
+	<data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
+    	<value>Booking not available for this address</value>
 	</data>
 	<data name="EstimateFareCalculating" xml:space="preserve">
 		<value>Berekenen…</value>
@@ -1920,6 +1930,12 @@
 		<value>Bellen</value>
 		<comment>Call</comment>
 	</data>
+	<data name="PanelMenuViewCallTaxiDispatchText" xml:space="preserve">
+    	<value>Call Taxi</value>
+  	</data>
+  	<data name="PanelMenuViewCallLuxuryDispatchText" xml:space="preserve">
+    	<value>Call Luxury</value>
+  	</data>
 	<data name="PanelMenuViewLocationsText" xml:space="preserve">
 		<value>Bestemmingen</value>
 		<comment>Locations</comment>
