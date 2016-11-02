@@ -463,7 +463,7 @@
                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
                                     {{#ShowExtraInfoInReceipt}}
                                     {{#HasDriverPhoto}}
-                                    <tr style="color: { {EmailFontColor}}! important">
+                                    <tr style="color: {{EmailFontColor}}! important">
                                         <td class="driver_list_title" style="vertical-align: middle">{{ localize "Email_Body_DriverPhoto" }}</td>
                                         <td class="list_value">
                                             <div style="width: 100%">
@@ -479,7 +479,7 @@
                                     {{/ShowExtraInfoInReceipt}}
 
                                     {{#HasDriverInfo}}
-                                    <tr style="color: { {EmailFontColor}}! important">
+                                    <tr style="color: {{EmailFontColor}}! important">
                                         <td class="driver_list_title">{{ localize "Email_Body_Driver" }}</td>
                                         <td class="driver_name">{{ DriverName }}</td>
                                     </tr>
@@ -500,8 +500,12 @@
 
                                     {{#ShowExtraInfoInReceipt}}
                                     <tr>
+                                        <td class="driver_list_title">{{ localize "Email_Body_ServiceType" }}</td>
+                                        <td class="list_value">{{ ServiceType }}</td>
+                                    </tr>
+                                    <tr>
                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
-                                        <td class="list_value">{{ VehicleMake }} {{ VehicleModel }} {{ VehicleColor }}</td>
+                                        <td class="list_value">{{ FullVehicleInfo }}</td>
                                     </tr>
 
                                     {{#HasVehicleRegistration}}

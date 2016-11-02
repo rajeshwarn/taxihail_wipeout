@@ -480,6 +480,9 @@
   <data name="Email_Body_VehicleModel" xml:space="preserve">
     <value>Véhicule</value>
   </data>
+  <data name="Email_Body_ServiceType" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Votre chauffeur</value>
   </data>

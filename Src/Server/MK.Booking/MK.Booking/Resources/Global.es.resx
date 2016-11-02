@@ -543,7 +543,10 @@
     <value>Vehículo</value>
     <comment>Vehicle</comment>
   </data>
-	<data name="Email_Body_YourDriver" xml:space="preserve">
+  <data name="Email_Body_ServiceType" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>CONDUCTOR / VEHICULO</value>
     <comment>Your Driver</comment>
   </data>

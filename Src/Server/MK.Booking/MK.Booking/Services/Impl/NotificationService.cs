@@ -577,6 +577,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 var addressToUseForDropOff = _geocoding.TryToGetExactDropOffAddress(orderStatusDetail, latitude, longitude, dropOffAddress, clientLanguageCode);
                 var positionForStaticMap = TryToGetPositionOfDropOffAddress(orderId, dropOffAddress, cmtRideLinqFields);
 
+                var serviceType = orderStatusDetail.ServiceType.ToString();
+
                 var hasDropOffAddress = addressToUseForDropOff != null
                     && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
                         || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
@@ -679,6 +681,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     VehicleMake = hasDriverInfo ? driverInfos.VehicleMake : string.Empty,
                     VehicleModel = hasDriverInfo ? driverInfos.VehicleModel : string.Empty,
                     VehicleColor = hasDriverInfo ? driverInfos.VehicleColor : null,
+                    VehicleType = hasDriverInfo ? driverInfos.VehicleType : string.Empty,
+                    FullVehicleInfo = hasDriverInfo ? driverInfos.FullVehicleInfo : string.Empty,
+                    ServiceType = serviceType,
                     DriverInfos = driverInfos ?? new DriverInfos(),
                     DriverId = hasDriverInfo || cmtRideLinqFields != null ? driverInfos.DriverId : string.Empty,
                     PickupDate = cmtRideLinqFields.SelectOrDefault(x => x.PickUpDateTime) != null
