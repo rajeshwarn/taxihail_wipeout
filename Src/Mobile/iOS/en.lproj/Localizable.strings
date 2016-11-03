@@ -189,6 +189,7 @@
 "CurrencyPriceFormat"="{0:C}";
 "NotAvailable"="N/A";
 "EstimatedFareNotAvailable"="Estimated fare not available";
+"BookingRuleOverrideErrorMessage"="Booking not available for this address";
 "InvalidEmailTitle"="Invalid email";
 "InvalidEmailMessage"="The email is invalid.";
 "Create"="Create";
