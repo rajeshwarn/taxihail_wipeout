@@ -155,36 +155,24 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
+					
+				ProcessStartInfo processStartInfo = new ProcessStartInfo("/usr/local/bin/sigh");
+				processStartInfo.Arguments = string.Format ("download_all -u {0}", _job.Company.AppleAppStoreCredentials.Username);
+				processStartInfo.RedirectStandardInput = true;
+				processStartInfo.RedirectStandardOutput = true;
+				processStartInfo.UseShellExecute = false;
+				string outputString = string.Empty;
+				Process process = Process.Start(processStartInfo);
 
-				if (appId == null) 
-                {
-					UpdateJob("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
-					return;
-				}
+				if (process != null)
+				{
+					process.StandardInput.WriteLine(_job.Company.AppleAppStoreCredentials.Password);
+					process.StandardInput.Close();
 
-				if (_job.IosAdhoc) 
-                {
-					UpdateJob ("Downloading/installing Adhoc provisioning profile");
-					var message = await _customerPortalRepository.DownloadProfile (
-						             _job.Company.AppleAppStoreCredentials.Username, 
-						             _job.Company.AppleAppStoreCredentials.Password,
-						             _job.Company.AppleAppStoreCredentials.Team,
-						             appId,
-									true);
-					UpdateJob (message);
+					outputString = process.StandardOutput.ReadToEnd();
 				}
-
-				if (_job.IosAppStore) 
-                {
-					UpdateJob ("Downloading/installing AppStore provisioning profile");
-					var message = await _customerPortalRepository.DownloadProfile (
-						_job.Company.AppleAppStoreCredentials.Username, 
-						_job.Company.AppleAppStoreCredentials.Password,
-						_job.Company.AppleAppStoreCredentials.Team,
-						appId, false
-						);
-					UpdateJob (message);
-				}
+					
+				UpdateJob (outputString);
 			}
 		}
 
