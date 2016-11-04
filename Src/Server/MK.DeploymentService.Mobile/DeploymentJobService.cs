@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Reactive.Disposables;
+using System.Security;
+
 
 namespace MK.DeploymentService.Mobile
 {
@@ -155,20 +157,33 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
-					
-				ProcessStartInfo processStartInfo = new ProcessStartInfo("/usr/local/bin/sigh");
-				processStartInfo.Arguments = string.Format ("download_all -u {0}", _job.Company.AppleAppStoreCredentials.Username);
-				processStartInfo.RedirectStandardInput = true;
-				processStartInfo.RedirectStandardOutput = true;
-				processStartInfo.UseShellExecute = false;
 				string outputString = string.Empty;
-				Process process = Process.Start(processStartInfo);
+				var credential = ProcessEx.GetProcess ("/usr/local/bin/fastlane-credentials", string.Format ("add --user {0} --password {1}", _job.Company.AppleAppStoreCredentials.Username, _job.Company.AppleAppStoreCredentials.Password));
+				Process process = Process.Start(credential);
 
 				if (process != null)
 				{
-					process.StandardInput.WriteLine(_job.Company.AppleAppStoreCredentials.Password);
-					process.StandardInput.Close();
+					outputString = process.StandardOutput.ReadToEnd();
+				}
 
+				UpdateJob (outputString);
+
+				var cert = ProcessEx.GetProcess ("/usr/local/bin/cert", string.Format ("-u {0}", _job.Company.AppleAppStoreCredentials.Username));
+				process = Process.Start(credential);
+
+				if (process != null)
+				{
+					outputString = process.StandardOutput.ReadToEnd();
+				}
+
+				UpdateJob (outputString);
+
+
+				var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("download_all -u {0}", _job.Company.AppleAppStoreCredentials.Username));
+				process = Process.Start(sigh);
+
+				if (process != null)
+				{
 					outputString = process.StandardOutput.ReadToEnd();
 				}
 					
