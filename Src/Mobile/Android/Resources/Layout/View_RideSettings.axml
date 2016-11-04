@@ -163,6 +163,20 @@
                         android:contentDescription="@string/RideSettingsVehiculeType"
                         local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
                     <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/RideSettingsLuxuryVehiculeType"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility" />
+                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_marginBottom="10dip"
+                        android:contentDescription="@string/RideSettingsLuxuryVehiculeType"
+                        local:MvxBind="Text LuxuryVehicleTypeName; Data LuxuryVehicles; SelectedItem LuxuryVehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
+					<TextView
                         android:singleLine="true"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
