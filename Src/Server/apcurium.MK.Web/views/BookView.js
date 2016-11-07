@@ -112,6 +112,7 @@
             this._pickupAddressView = new TaxiHail.AddressControlView({
                     model: pickupAddress,
                     locate: true,
+                    clear :true, 
                     pin: 'green',
                     locatepopular : true
                 });

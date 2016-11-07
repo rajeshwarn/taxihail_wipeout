@@ -13,9 +13,8 @@
         android:layout_marginRight="6dip"
         android:layout_marginTop="6dip"
         android:layout_marginBottom="0dp">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <EditText
                 android:background="@drawable/drop_shadow"
@@ -29,7 +28,16 @@
                 android:paddingBottom="0dp"
                 android:paddingLeft="12dp"
                 android:hint="@string/AddressSearch" />
-        </LinearLayout>
+		    <ImageButton
+                android:id="@+id/crossImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/close" 
+				android:layout_centerVertical="true"
+				android:layout_margin="5dp"
+				android:background="@null" />
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:paddingTop="2dip"

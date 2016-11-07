@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         private AddressListView _nearbyAddressList;
         private AddressListView _searchResultsAddressList;    
         private EditText _addressEditText;
+		private ImageButton _crossImageButton;
         private ScrollView _scrollView;
         private Button _cancelButton;
         private readonly SerialDisposable _collectionChangedSubscription = new SerialDisposable();
@@ -46,20 +47,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         public AddressPicker(Context context, IAttributeSet attrs) : base(Resource.Layout.Control_AddressPicker, context, attrs)
         {
-            this.DelayBind(() =>
-            {
-                _searchList = Content.FindViewById<LinearLayout>(Resource.Id.SearchList);                
-                _defaultList = Content.FindViewById<LinearLayout>(Resource.Id.DefaultList); 
-                _favoriteAddressList = Content.FindViewById<AddressListView>(Resource.Id.FavoriteAddressList); 
-                _recentAddressList = Content.FindViewById<AddressListView>(Resource.Id.RecentAddressList); 
-                _nearbyAddressList = Content.FindViewById<AddressListView>(Resource.Id.NearbyAddressList); 
-                _searchResultsAddressList = Content.FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
-                _addressEditText = Content.FindViewById<EditText>(Resource.Id.addressEditText); 
-                _scrollView = Content.FindViewById<ScrollView>(Resource.Id.scrollView); 
-                _cancelButton = Content.FindViewById<Button>(Resource.Id.cancelButton); 
+			this.DelayBind(() =>
+			{
+				_searchList = Content.FindViewById<LinearLayout>(Resource.Id.SearchList);
+				_defaultList = Content.FindViewById<LinearLayout>(Resource.Id.DefaultList);
+				_favoriteAddressList = Content.FindViewById<AddressListView>(Resource.Id.FavoriteAddressList);
+				_recentAddressList = Content.FindViewById<AddressListView>(Resource.Id.RecentAddressList);
+				_nearbyAddressList = Content.FindViewById<AddressListView>(Resource.Id.NearbyAddressList);
+				_searchResultsAddressList = Content.FindViewById<AddressListView>(Resource.Id.SearchResultsAddressList);
+				_addressEditText = Content.FindViewById<EditText>(Resource.Id.addressEditText);
+				_crossImageButton = Content.FindViewById<ImageButton>(Resource.Id.crossImageButton);
+				_scrollView = Content.FindViewById<ScrollView>(Resource.Id.scrollView);
+				_cancelButton = Content.FindViewById<Button>(Resource.Id.cancelButton);
 
-                _addressEditText.SetSelectAllOnFocus(true);
-
+				_addressEditText.SetSelectAllOnFocus(true);
+				_addressEditText.FocusChange += (sender, eventargs) =>
+				{
+					if (_addressEditText.HasFocus)
+					{
+						_crossImageButton.Visibility = _addressEditText.Text == string.Empty ? ViewStates.Gone : ViewStates.Visible;
+						_crossImageButton.Click += (s, e) => { _addressEditText.Text = string.Empty; };
+					}
+				};
                 _addressEditText.OnKeyDown()
                     .Throttle(TimeSpan.FromMilliseconds(700))
                     .ObserveOn(SynchronizationContext.Current)
@@ -68,11 +77,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
                         if (_addressEditText.HasFocus)
                         {
                             ExecuteSearchCommand(text);
-                        }
+						}
                     });
 
                 _addressEditText.EditorAction += (sender, args) =>
                 {
+					_crossImageButton.Visibility = ViewStates.Visible;
                     if (args.ActionId != ImeAction.Go)
                     {
                         return;
