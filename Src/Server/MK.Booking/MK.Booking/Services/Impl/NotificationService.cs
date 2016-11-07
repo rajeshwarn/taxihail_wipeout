@@ -1149,9 +1149,16 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendRideCancellationNotifications(Guid accountId, Guid orderId, string alertText)
         {
-            // We can do both notifications in parrallel.
-            Task.Run(() => SendPushOrSms(accountId, alertText, new Dictionary<string, object>())).HandleErrors();
-            Task.Run(() => SendCancellationEmail(accountId, orderId)).HandleErrors();
+            if (_serverSettings.ServerData.SendOrderCancellationNotifications)
+            {
+                // We can do both notifications in parrallel.
+                if (ShouldSendNotification(accountId, x => x.OrderCancellationConfirmationPush))
+                {
+                    Task.Run(() => SendPushOrSms(accountId, alertText, new Dictionary<string, object>())).HandleErrors();
+                }
+
+                Task.Run(() => SendCancellationEmail(accountId, orderId)).HandleErrors();
+            }
         }
 
         private void SendCancellationEmail(Guid accountId, Guid orderId)
@@ -1168,7 +1175,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
-                OrderCreationDate = order.CreatedDate.ToString("f", dateFormat)
+                OrderCreationDate = order.CreatedDate.ToString("f", dateFormat),
+                IbsOrderId = order.IBSOrderId
             };
 
             SendEmail(account.Email, EmailConstant.Template.Cancellation, EmailConstant.Subject.Cancellation, templateData, account.Language);

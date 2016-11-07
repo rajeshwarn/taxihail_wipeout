@@ -261,7 +261,8 @@ namespace DatabaseInitializer
                             VehicleAtPickupPush = true,
                             PromotionUnlockedPush = true,
                             DriverBailedPush = true,
-                            NoShowPush = true
+                            NoShowPush = true,
+                            OrderCancellationConfirmationPush = true
                         }
                     });
                 }
