@@ -97,6 +97,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => VehiclesAsListItems);
 					RaisePropertyChanged(() => VehicleTypeId);
 					RaisePropertyChanged(() => VehicleTypeName);
+					RaisePropertyChanged(() => LuxuryVehicleTypeId);
+					RaisePropertyChanged(() => LuxuryVehicleTypeName);
+					RaisePropertyChanged(() => LuxuryVehicles);
 				}
 			    catch (Exception ex)
 			    {
@@ -178,8 +181,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				if (IsVehicleTypeSelectionEnabled)
-				{
-					var vehicle = _vehicles.FirstOrDefault (x => x.ServiceType == _bookingSettings.ServiceType && x.ReferenceDataVehicleId == _bookingSettings.VehicleTypeId);
+				{ 
+					var vehicle = _vehicles.FirstOrDefault (x => x.ServiceType == ServiceType.Taxi && x.ReferenceDataVehicleId == _bookingSettings.VehicleTypeId);
 
 					if (vehicle == null)
 					{
@@ -192,6 +195,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _vehicles;
             }
         }
+
+		public VehicleType[] LuxuryVehicles
+		{
+			get
+			{
+				if (IsVehicleTypeSelectionEnabled)
+				{
+					var luxuryVehicle = _vehicles.FirstOrDefault(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == _bookingSettings.LuxuryVehicleTypeId);
+
+					if (luxuryVehicle == null)
+					{
+						luxuryVehicle = _vehicles.First();
+					}
+
+					VehicleId = luxuryVehicle.Id;
+				}
+
+				return _vehicles;
+			}
+		}
 
 		public ListItem<Guid>[] VehiclesAsListItems
         {
@@ -222,16 +245,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return _bookingSettings.VehicleTypeId;
+				if (_bookingSettings.ServiceType == ServiceType.Taxi)
+				{
+					return _bookingSettings.VehicleTypeId;
+				}
+				return null;
             }
             set
             {
-                _bookingSettings.VehicleTypeId = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => VehicleTypeName);
-				_orderWorkflowService.SetVehicle (value, ServiceType);
+				if (_bookingSettings.ServiceType == ServiceType.Taxi)
+				{
+					_bookingSettings.VehicleTypeId = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => VehicleTypeName);
+					_orderWorkflowService.SetVehicle (value, ServiceType);
+				}
             }
         }
+
+
+		public int? LuxuryVehicleTypeId
+		{
+			get
+			{
+				if (_bookingSettings.ServiceType == ServiceType.Luxury)
+				{
+					return _bookingSettings.LuxuryVehicleTypeId;
+				}
+				return null;
+			}
+			set
+			{
+				if (_bookingSettings.ServiceType == ServiceType.Luxury)
+				{
+					_bookingSettings.LuxuryVehicleTypeId = value;
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => LuxuryVehicleTypeName);
+					_orderWorkflowService.SetVehicle(value, ServiceType);
+				}
+			}
+		}
 
 		public ServiceType ServiceType
 		{
@@ -244,13 +297,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_bookingSettings.ServiceType = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleTypeName);
+				RaisePropertyChanged(() => LuxuryVehicleTypeName);
 				_orderWorkflowService.SetVehicle (VehicleTypeId, value);
 			}
 		}
 
         public string VehicleTypeName
         {
-            get
+			get
             {
                 if (!VehicleTypeId.HasValue)
                 {
@@ -270,6 +324,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return vehicle.Name;
             }
         }
+
+		public string LuxuryVehicleTypeName
+		{
+			get
+			{
+				if (!LuxuryVehicleTypeId.HasValue)
+				{
+					return this.Services().Localize["NoPreference"];
+				}
+
+				if (LuxuryVehicles == null)
+				{
+					return null;
+				}
+
+				var luxuryVehicle = LuxuryVehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == LuxuryVehicleTypeId && x.ServiceType == ServiceType.Luxury);
+				if (luxuryVehicle == null)
+				{
+					luxuryVehicle = LuxuryVehicles.FirstOrDefault();
+				}
+				return luxuryVehicle.Name;
+			}
+		}
 
         public int? ChargeTypeId
         {
