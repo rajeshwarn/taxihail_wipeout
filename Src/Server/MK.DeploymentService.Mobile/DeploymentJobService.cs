@@ -157,37 +157,48 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
-				string outputString = string.Empty;
+
 				var credential = ProcessEx.GetProcess ("/usr/local/bin/fastlane-credentials", string.Format ("add --user {0} --password {1}", _job.Company.AppleAppStoreCredentials.Username, _job.Company.AppleAppStoreCredentials.Password));
 				Process process = Process.Start(credential);
 
 				if (process != null)
 				{
-					outputString = process.StandardOutput.ReadToEnd();
+					UpdateJob(process.StandardOutput.ReadToEnd());
 				}
-
-				UpdateJob (outputString);
+				else
+				{
+					UpdateJob("fastlane-credentials process not found");
+				}
 
 				var cert = ProcessEx.GetProcess ("/usr/local/bin/cert", string.Format ("-u {0}", _job.Company.AppleAppStoreCredentials.Username));
-				process = Process.Start(credential);
+				process = Process.Start(cert);
 
 				if (process != null)
 				{
-					outputString = process.StandardOutput.ReadToEnd();
+					UpdateJob(process.StandardOutput.ReadToEnd());
 				}
-
-				UpdateJob (outputString);
-
-
-				var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("download_all -u {0}", _job.Company.AppleAppStoreCredentials.Username));
-				process = Process.Start(sigh);
-
-				if (process != null)
+				else
 				{
-					outputString = process.StandardOutput.ReadToEnd();
+					UpdateJob("Cert process not found");
 				}
-					
-				UpdateJob (outputString);
+
+				if (_job.IosAdhoc) {
+					var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("-a  {0} -u {1} --adhoc", appId, _job.Company.AppleAppStoreCredentials.Username));
+					process = Process.Start (sigh);
+
+					if (process != null) {
+						UpdateJob(process.StandardOutput.ReadToEnd ());
+					}
+				}
+
+				if (_job.IosAppStore) {
+					var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("-a  {0} -u {1}", appId, _job.Company.AppleAppStoreCredentials.Username));
+					process = Process.Start (sigh);
+
+					if (process != null) {
+						UpdateJob(process.StandardOutput.ReadToEnd ());
+					}
+				}
 			}
 		}
 
