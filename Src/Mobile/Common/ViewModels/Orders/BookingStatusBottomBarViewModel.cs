@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
-		private bool _orderWasUnpaired;
 		private bool _isCmtRideLinq;
 
 		public BookingStatusBottomBarViewModel(IPhoneService phoneService, IBookingService bookingService, IPaymentService paymentService, IAccountService accountService)
@@ -28,8 +27,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_bookingService = bookingService;
 			_paymentService = paymentService;
 			_accountService = accountService;
-
 			GetIsCmtRideLinq();
+
 		}
 
 		private async void GetIsCmtRideLinq()
@@ -114,6 +113,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			UpdateActionsPossibleOnOrder();
 			RaisePropertyChanged(() => IsCallCompanyHidden);
+			CallCompanyProperty = CallCompany;
+			RaisePropertyChanged(() => CallCompany);
+			RaisePropertyChanged(() => CallCompanyProperty);
 		}
 
 		public bool IsCallCompanyHidden
@@ -174,10 +176,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return this.GetCommand(() =>
 					this.Services().Message.ShowMessage(string.Empty, isLuxury ? Settings.DefaultPhoneNumberForLuxuryDisplay : Settings.DefaultPhoneNumberDisplay,
 						this.Services().Localize["CallButton"], () => _phoneService.Call(isLuxury ? Settings.DefaultPhoneNumberForLuxury : Settings.DefaultPhoneNumber),
-                        this.Services().Localize["Cancel"], () => { }));
+						this.Services().Localize["Cancel"], () => { }));
 			}
 		}
 
+        private ICommand _callCompanyProperty;
+        public ICommand CallCompanyProperty
+        {
+            get { return _callCompanyProperty; }
+            set
+            {
+                if (value != _callCompanyProperty)
+                {
+                    _callCompanyProperty = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
 		private bool _disableOutOfAppPayment;
 
@@ -188,6 +203,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				_disableOutOfAppPayment = value;
 				RaisePropertyChanged(() => UnpairButtonText);
+			}
+		}
+
+		private bool _orderWasUnpaired;
+		public bool OrderWasUnpaired
+		{
+			get { return _orderWasUnpaired; }
+			set
+			{
+				_orderWasUnpaired = value;
+				RaisePropertyChanged();
 			}
 		}
 

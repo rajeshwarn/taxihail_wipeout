@@ -429,6 +429,9 @@
     <value>Voertuig</value>
     <comment>Vehicle</comment>
   </data>
+  <data name="Email_Body_ServiceType" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Uw Chauffeur</value>
     <comment>Your Driver</comment>

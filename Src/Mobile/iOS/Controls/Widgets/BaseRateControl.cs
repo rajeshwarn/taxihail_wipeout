@@ -63,7 +63,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				string.Format (waitTimeText, waitTimeAmount)
 			} : new string[5];
 
-			for (int i = NumberOfItems - 1; i > -1; i--)
+			var revisedNumberOfItems = ServiceType == ServiceType.Taxi ? NumberOfItems : NumberOfItems - 1;
+
+			for (int i = revisedNumberOfItems - 1; i > -1; i--)
 			{	
 				_labels [i] = new UILabel { 
 					TranslatesAutoresizingMaskIntoConstraints = false,
@@ -90,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 					NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ItemHeight)
 				});
 
-				if (i == NumberOfItems - 1)
+				if (i == revisedNumberOfItems - 1)
 				{
 					AddConstraint (NSLayoutConstraint.Create (_labels [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _labels [i].Superview, NSLayoutAttribute.Bottom, 1f, -ItemVPadding));
 					AddConstraint (NSLayoutConstraint.Create (_descriptions [i], NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _descriptions [i].Superview, NSLayoutAttribute.Bottom, 1f, -ItemVPadding));

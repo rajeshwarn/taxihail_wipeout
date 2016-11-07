@@ -69,6 +69,8 @@
 "BuildingName"="Naam Gebouw / Herkennings punt";
 "Callbox.ApplicationName"="TaxiHail Callbox";
 "CallButton"="Bellen";
+"CallTaxiButton"="Call Taxi";
+"CallLuxuryButton"="Call Luxury";
 "CallDriver"="Bel Chauffeur";
 "CallDriverUsingProxyErrorMessage"="Sorry, we waren niet in staat om een gesprek met uw chauffeur te starten.";
 "CallDriverUsingProxyMessage"="Uw chauffeur zal u binnen enkele minuten teug bellen";
@@ -223,6 +225,7 @@
 "ErrorCreateOrder_PendingOrder"="U kunt deze rit niet boeken omdat er reeds een vervoersaanvraag in behandeling is. Bekijk de status van de bestelling?";
 "ErrorCreatingOrderTitle"="Boeking kan niet worden voltooid";
 "EstimatedFareNotAvailable"="Geschatte tarief is niet beschikbaar";
+"BookingRuleOverrideErrorMessage"="Booking not available for this address";
 "EstimateFareCalculating"="Berekenen…";
 "EstimatePriceFormat"="Geschatte tarief : {0} ({1})";
 "EstimatePriceOver100"="Bel voor het tarief";
@@ -448,6 +451,8 @@
 "PairingProcessingErrorTitle"="Error opgetreden tijdens proces betaling via CreditCard";
 "PanelMenuViewAboutUsText"="Over ons";
 "PanelMenuViewCallDispatchText"="Bellen";
+"PanelMenuViewCallTaxiDispatchText"="Call Taxi";
+"PanelMenuViewCallLuxuryDispatchText"="Call Luxury";
 "PanelMenuViewLocationsText"="Bestemmingen";
 "PanelMenuViewNotificationsText"="Notificaties";
 "PanelMenuViewOrderHistoryText"="Historie";

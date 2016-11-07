@@ -591,6 +591,12 @@
   <data name="CallButton" xml:space="preserve">
     <value>Call</value>
   </data>
+  <data name="CallTaxiButton" xml:space="preserve">
+    <value>Call Taxi</value>
+  </data>
+  <data name="CallLuxuryButton" xml:space="preserve">
+    <value>Call Luxury</value>
+  </data>
   <data name="TaxiMapTitle" xml:space="preserve">
     <value>Your Taxi</value>
   </data>
@@ -692,6 +698,9 @@
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Estimated fare not available</value>
+  </data>
+  <data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
+    <value>Booking not available for this address</value>
   </data>
   <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Invalid email</value>
@@ -959,6 +968,12 @@
   </data>
   <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
     <value>Call</value>
+  </data>
+    <data name="PanelMenuViewCallTaxiDispatchText" xml:space="preserve">
+    <value>Call Taxi</value>
+  </data>
+  <data name="PanelMenuViewCallLuxuryDispatchText" xml:space="preserve">
+    <value>Call Luxury</value>
   </data>
   <data name="PanelMenuViewAboutUsText" xml:space="preserve">
     <value>About Us</value>

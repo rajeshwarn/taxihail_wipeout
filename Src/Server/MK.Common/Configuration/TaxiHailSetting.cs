@@ -104,6 +104,7 @@ namespace MK.Common.Configuration
 		    DisableChargeTypeWhenCardOnFile = false;
 		    VehicleTypeSelectionEnabled = false;
 		    SendPushAsSMS = false;
+			OverrideBookingRuleErrorMessage = true;
             AllowSimultaneousAppOrders = false;
 
 		    MaxFareEstimate = 100;
@@ -258,7 +259,11 @@ namespace MK.Common.Configuration
         [Display(Name = "SMS - Send push notifications as SMS", Description = "Send push notifications as SMS")]
         public bool SendPushAsSMS { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+		[SendToClient, CustomizableByCompany]
+		[Display(Name = "Display - Override Booking Rule Error Message", Description = "Overrides booking rule error message with lozalizable string")]
+		public bool OverrideBookingRuleErrorMessage { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
         [Display(Name = "Display - Show Terms and Conditions", Description="Show and require T&C screen")]
         public bool ShowTermsAndConditions { get; protected set; }
 

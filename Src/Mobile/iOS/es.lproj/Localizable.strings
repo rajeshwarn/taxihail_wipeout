@@ -157,6 +157,8 @@
 "PickupViewPickupLabel"="Pickup:";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "CallButton"="Call";
+"CallTaxiButton"="Call Taxi";
+"CallLuxuryButton"="Call Luxury";
 "TaxiMapTitle"="Your Taxi";
 "UnexpectedError"="Unexpected error";
 "StatusActionButton"="Call / Book / Cancel";
@@ -191,6 +193,7 @@
 "CurrencyPriceFormat"="{0:C}";
 "NotAvailable"="N/A";
 "EstimatedFareNotAvailable"="Estimated fare not available";
+"BookingRuleOverrideErrorMessage"="Booking not available for this address";
 "InvalidEmailTitle"="Invalid email";
 "InvalidEmailMessage"="The email is invalid.";
 "Create"="Create";
@@ -280,6 +283,8 @@
 "PanelMenuViewPaymentInfoText"="Payment";
 "PanelMenuViewTutorialText"="View Tutorial";
 "PanelMenuViewCallDispatchText"="Call";
+"PanelMenuViewCallTaxiDispatchText"="Call Taxi";
+"PanelMenuViewCallLuxuryDispatchText"="Call Luxury";
 "PanelMenuViewAboutUsText"="About Us";
 "PanelMenuViewReportProblemText"="Report A Problem";
 "PanelMenuViewSignOutText"="Sign Out";
