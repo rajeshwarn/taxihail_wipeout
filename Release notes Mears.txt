@@ -108,3 +108,85 @@
 0.5.10
 	Thursday October 13, 2016
 	Java Heap size set to 2G for android projects.
+	
+0.5.11
+	Monday November 7, 2016
+	Interim build until TAX-223 is checked-in or recoded
+	
+	TAX-210 User prompted to pay gratuity after paying cash
+	Users whom have their default payment type set to COF, but choose to pay cash in car, are still being prompted for additional gratuity
+	through the app. MearsLuxury would like this configured so that only users who actually pay that particular fare by CC on file, are
+	prompted for the additional gratuity. User who elect to pay cash through the app should not be prompted.
+
+	TAX-211 User prompted to rate fare twice after a 2nd trip (transfer)
+	Currently unable to reproduce monitoring
+
+	TAX-212 Mears would like the vehicle type displayed on the email receipt
+	Added Vehicle Info to the email receipt. This does not affect the printed receipt. Mears is only requesting this on the email receipt.
+	
+	TAX-213 Vehicle type blank on order details screen
+	TaxiHail side is completed
+	Assigned to Jonathan, small change still required (null check) on certain properties in IBS.
+
+	TAX-214 Once on site a push notification that the vehicle is on site is not being sent
+
+	TAX-215 Proximity messaging for Luxury pickups not being sent out
+
+	TAX-216 Mears Luxury Call button offers taxi line when in luxury mode
+	When the guest chooses the “Call” button to contact Mears it offers to call the taxi line, (407) 422-2222. This should direct the
+	guest to call the MDS Customer Service, (407) 843-2404 when in luxury mode
+	The main menu on the mobile device will now have 2 call buttons, one labeled Call Taxi and one labeled Call Luxury. The buttons will invoke
+	the ability to call the phone number associated with the given service type. When in trip, the call button is linked to the selected 
+	service type for the current trip.
+
+	TAX-217	Rates are incorrect for both luxury and taxi in dropdown lists. Taxi estimates and rates currently do not match what is in Mears Taxi production mobile app 
+	Luxury Service:
+	Minimum Fare: $15.00
+	Base Rate (no miles): $7.00
+	Per Mile Rate: $3.30 ($0.55 1/6 mi)
+	Wait Time: $1.00 per minute
+	Taxi Service:
+	Minimum Fare: $2.40
+	Base Rate (no miles): $2.40
+	Per Mile Rate: $2.40 ($0.60 1/4 mi)
+	Wait Time: $0.60 per 80 seconds
+	The issue was that the required records in the Booking.TariffDetail table were incorrect. There was only one record in the production 
+	database, and the default record had invalid values.	
+
+	TAX-218
+	The icon of the vehicle on the map should reflect the type of vehicle assigned
+	Currently unable to reproduce, the icon is black car for luxury service, and taxi (with sign on roof) for taxi service
+	
+	TAX-220 Rates are incorrect for both luxury and taxi in estimates. Taxi estimates and rates currently do not match what is in Mears Taxi production mobile app 
+	(see TAX-217 for rate breakdown)
+
+	TAX-219
+	Once picked up the fare icon remains stuck at the origin on the map while the vehicle moves away
+	When the user does not interact with the map on the mobile device, the map centres on the vehicle location periodically. If the user interacts with the map, we cancel the Auto Follow on the vehicle, because the assumption is the user is trying to see something on the map, and if we recenter the map on the vehicle, it will cause some frustration.
+	Also, the passenger icon disappears from the map once the passenger is picked up.
+	I cannot reproduce the statement defining defect TAX-219.
+
+	TAX-221 Remove Wait Time line item from the rate structure text for luxury rates only
+
+	TAX-222 Known issue with toggle of the destination button from release notes causes intermittent mis-toggle behaviour.
+	
+	TAX-224 The pulldown for pricing (where “Calculating” appears) also shows the message for a rule that was entered.  However several of our rules are long so the message appears tiny.  Can just a message stating “Booking not available for this address” be there when a restriction is encountered?  
+	
+	TAX-227 Assigned to Yves as well, they were referring to the email receipt as well as the paper receipt.
+	Added Service Type and Vehicle Info to the email receipt.	
+
+	TAX-232
+	When changing the method of payment from card on file to pay in car while in trip, and then changing the tip amount from the payment device, the email receipt tip amount is not reflected.
+
+Still outstanding
+	TAX-223
+	Need to have two profile options for preferred vehicles.  One for luxury preferred vehicle and the other for taxi preferred vehicle
+	Assigned to Kalyan
+	In Development
+
+
+
+
+
+
+	
