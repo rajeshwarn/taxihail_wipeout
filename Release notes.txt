@@ -720,6 +720,10 @@
 	Monday October 3, 2016
 	TAX-112 Laclede, The TaxiHail.ApplicationName is STLtaxi, not Laclede Cab, so the names I used for the resource files for the mobile had the wrong name. 
 	In DB1, the settings is set as Laclede Cab, but in the company settings in the customer portal it is STLtaxi, and that is the string that is used to build the mobile app.
+	
+3.5.44
+	Thursday October 13, 2016
+	Added the 2G Java Heap size to both debug and release configuration in the TaxiHail.csproj for android.
 3.6.0
 	Friday April 8, 2016
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
