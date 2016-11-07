@@ -546,6 +546,9 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Vehicle type</value>
   </data>
+  <data name="RideSettingsLuxuryVehiculeType" xml:space="preserve">
+    <value>Luxury Vehicle type</value>
+  </data>	
   <data name="RideSettingsEmailTitle" xml:space="preserve">
     <value>Email</value>
   </data>

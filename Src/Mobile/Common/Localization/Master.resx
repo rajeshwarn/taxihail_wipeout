@@ -531,7 +531,10 @@
     <value>Passengers</value>
   </data>
   <data name="RideSettingsVehiculeType" xml:space="preserve">
-    <value>Vehicle type</value>
+    <value>Taxi Vehicle type</value>
+  </data>
+  <data name="RideSettingsLuxuryVehiculeType" xml:space="preserve">
+    <value>Luxury Vehicle type</value>
   </data>
   <data name="RideSettingsEmailTitle" xml:space="preserve">
     <value>Email</value>

@@ -142,6 +142,7 @@
 "RideSettingsPhone"="Mobile";
 "RideSettingsPassengers"="Passengers";
 "RideSettingsVehiculeType"="Vehicle type";
+"RideSettingsLuxuryVehiculeType"="Luxury Vehicle type";
 "RideSettingsEmailTitle"="Email";
 "RideSettingsCompany"="Company";
 "HistoryDetailDestinationLabel"="Destination:";
