@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -421,6 +421,7 @@
     <EmbeddedResource Include="Localization\JMU SafeRides.resx" />
     <None Include="Localization\Laclede Cab.resx" />
     <EmbeddedResource Include="Localization\MELLEVA.es.resx" />
+    <None Include="Localization\needacab.resx" />
     <EmbeddedResource Include="Localization\QappMe.nl.resx" />
     <EmbeddedResource Include="Localization\Master.nl.resx" />
     <EmbeddedResource Include="Localization\groveRideNow.resx">
@@ -467,7 +468,6 @@
     <None Include="TutorialContent\Tutorial-nl.json" />
     <None Include="Localization\FLAT RATE.resx" />
     <None Include="Localization\STLtaxi.resx" />
-
   </ItemGroup>
   <Target Name="BeforeBuild">
   </Target>

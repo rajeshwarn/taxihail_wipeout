@@ -103,6 +103,7 @@ namespace apcurium.MK.Common.Configuration
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
             CompanyTimeZone = TimeZones.NotSet;
+            ShowAPIMetadata = false;
 
             CmtGeo = new CmtGeoSettingContainer()
             {
@@ -150,6 +151,10 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Configuration - Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Send Order Cancellation Notifications", Description = "Controls whether cancellation emails and push notifications can be sent. Note, the push notification has to also be enabled for push notifications to go out")]
+        public bool SendOrderCancellationNotifications{ get; private set; }
 
         [Display(Name = "Configuration - Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
         public bool DisableNewerVersionPopup { get; private set; }
@@ -221,5 +226,10 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Configuration - Hide Fare Estimate From IBS", Description = "Prevent sending fare estimate to IBS when creating an order. DO NOT enable this setting if the fare estimate is the real/flat ride fare.")]
         public bool HideFareEstimateFromIBS { get; protected set; }
-	}
+
+        [CustomizableByCompany]
+        [Display(Name = "Configuration - Show API Metadata", Description = "Allows navigation to the /api/metadata route to display API documentation, false by default, and requires App Pool/Website restart to take effect.")]
+        public bool ShowAPIMetadata { get; protected set; }
+
+    }
 }
