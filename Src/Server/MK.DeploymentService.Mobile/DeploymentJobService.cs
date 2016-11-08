@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Reactive.Disposables;
+using System.Security;
+
 
 namespace MK.DeploymentService.Mobile
 {
@@ -156,34 +158,46 @@ namespace MK.DeploymentService.Mobile
 					return;
 				}
 
-				if (appId == null) 
-                {
-					UpdateJob("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
-					return;
+				var credential = ProcessEx.GetProcess ("/usr/local/bin/fastlane-credentials", string.Format ("add --user {0} --password {1}", _job.Company.AppleAppStoreCredentials.Username, _job.Company.AppleAppStoreCredentials.Password));
+				Process process = Process.Start(credential);
+
+				if (process != null)
+				{
+					UpdateJob(process.StandardOutput.ReadToEnd());
+				}
+				else
+				{
+					UpdateJob("fastlane-credentials process not found");
 				}
 
-				if (_job.IosAdhoc) 
-                {
-					UpdateJob ("Downloading/installing Adhoc provisioning profile");
-					var message = await _customerPortalRepository.DownloadProfile (
-						             _job.Company.AppleAppStoreCredentials.Username, 
-						             _job.Company.AppleAppStoreCredentials.Password,
-						             _job.Company.AppleAppStoreCredentials.Team,
-						             appId,
-									true);
-					UpdateJob (message);
+				var cert = ProcessEx.GetProcess ("/usr/local/bin/cert", string.Format ("-u {0}", _job.Company.AppleAppStoreCredentials.Username));
+				process = Process.Start(cert);
+
+				if (process != null)
+				{
+					UpdateJob(process.StandardOutput.ReadToEnd());
+				}
+				else
+				{
+					UpdateJob("Cert process not found");
 				}
 
-				if (_job.IosAppStore) 
-                {
-					UpdateJob ("Downloading/installing AppStore provisioning profile");
-					var message = await _customerPortalRepository.DownloadProfile (
-						_job.Company.AppleAppStoreCredentials.Username, 
-						_job.Company.AppleAppStoreCredentials.Password,
-						_job.Company.AppleAppStoreCredentials.Team,
-						appId, false
-						);
-					UpdateJob (message);
+				if (_job.IosAdhoc) {
+					var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("-a  {0} -u {1} --adhoc", appId, _job.Company.AppleAppStoreCredentials.Username));
+					process = Process.Start (sigh);
+
+					if (process != null) {
+						UpdateJob(process.StandardOutput.ReadToEnd ());
+					}
+				}
+
+				if (_job.IosAppStore) {
+					var sigh = ProcessEx.GetProcess ("/usr/local/bin/sigh", string.Format ("-a  {0} -u {1}", appId, _job.Company.AppleAppStoreCredentials.Username));
+					process = Process.Start (sigh);
+
+					if (process != null) {
+						UpdateJob(process.StandardOutput.ReadToEnd ());
+					}
 				}
 			}
 		}
