@@ -720,6 +720,10 @@
 	Monday October 3, 2016
 	TAX-112 Laclede, The TaxiHail.ApplicationName is STLtaxi, not Laclede Cab, so the names I used for the resource files for the mobile had the wrong name. 
 	In DB1, the settings is set as Laclede Cab, but in the company settings in the customer portal it is STLtaxi, and that is the string that is used to build the mobile app.
+	
+3.5.44
+	Thursday October 13, 2016
+	Added the 2G Java Heap size to both debug and release configuration in the TaxiHail.csproj for android.
 3.6.0
 	Friday April 8, 2016
 	Bug fix - Show user location instead of 0,0 on VTS vehicles
@@ -802,3 +806,27 @@
 3.6.11
 	Thursday October 6, 2016
 	TAX-174 Moneris payment issues, needed to update IBSCab.dll on IBS server, and update compiled projects / web service proxy to latest version.
+	
+3.6.12
+	TAX-195 Order cancellation emails are sent out with the wrong working, saying no show fees will be charged.
+	New server settings:
+	Configuration - Send Order Cancellation Notifications
+	Controls whether cancellation emails and push notifications can be sent. Note, the push notification has to also be enabled for push notifications to go out
+	Push Notification Setting: Order Cancellation Confirmation Push, controls whether push notifications for order cancellations are sent out. 
+	Requires the server configuration setting for sending order cancellation notifications to be enabled.
+	
+3.6.13
+	Added the 2G Java Heap size to the release configuration in the TaxiHail.csproj for android.
+
+3.6.14
+	TAX-197 Moneris extra security fields for street number, street name and email address have formatting issues, and only allow numbers.
+	The street number field now also allows text (so an apartment number like 1-705 can be entered).
+
+3.6.15
+	TAX-194 no trip progress when using the web booker, issue was with null position errors.
+	
+3.6.16
+	New server setting Configuration - Show API Metadata - Allows navigation to the /api/metadata route to display API documentation, false by default, and requires App Pool/Website restart to take effect.
+
+3.6.17
+	TAX-114 Surburban Syracuse (needacab) change label "Need A Taxi to BOOK" new resource file on mobile side, and added to iOS and android projects.

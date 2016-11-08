@@ -133,7 +133,8 @@
     "promotionUnlockedPush": "Promotion Unlocked",
     "unpairingReminderPush": "Unpairing Reminder",
     "driverBailedPush": "Driver Bailed",
-    "noShowPush": "No Show",
+  "noShowPush": "No Show",
+  "orderCancellationConfirmationPush": "Order Cancellation Confirmation Push", 
 
     "/******* End notification settings Aliases ******/": ""
 }

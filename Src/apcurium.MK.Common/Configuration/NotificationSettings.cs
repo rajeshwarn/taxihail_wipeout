@@ -23,5 +23,6 @@ namespace apcurium.MK.Common.Configuration
         public bool? PromotionUnlockedPush { get; set; }
         public bool? DriverBailedPush { get; set; }
         public bool? NoShowPush { get; set; }
+        public bool? OrderCancellationConfirmationPush { get; set; }
     }
 }

@@ -547,6 +547,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thank you for choosing {{ApplicationName}}..
+        /// </summary>
+        public static string Email_Body_Cancellation_Conclusion {
+            get {
+                return ResourceManager.GetString("Email_Body_Cancellation_Conclusion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your ride #{{IbsOrderId}} has been cancelled..
+        /// </summary>
+        public static string Email_Body_CancellationConfirmation {
+            get {
+                return ResourceManager.GetString("Email_Body_CancellationConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled..
         /// </summary>
         public static string Email_Body_CancellationFee {
@@ -1128,6 +1146,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_Cancellation {
             get {
                 return ResourceManager.GetString("Email_Subject_Cancellation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Cancellation Confirmation.
+        /// </summary>
+        public static string Email_Subject_CancellationConfirmation {
+            get {
+                return ResourceManager.GetString("Email_Subject_CancellationConfirmation", resourceCulture);
             }
         }
         
