@@ -1370,6 +1370,18 @@
     <AndroidResource Include="..\Android\Resources\Layout\CountryCodeItemMVX.axml">
       <Link>Resources\Layout\CountryCodeItemMVX.axml</Link>
     </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleTypeItem.axml">
+      <Link>Resources\Layout\VehicleTypeItem.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleTypeItemDropDown.axml">
+      <Link>Resources\Layout\VehicleTypeItemDropDown.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleTypeItemDropDownMVX.axml">
+      <Link>Resources\Layout\VehicleTypeItemDropDownMVX.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\Android\Resources\Layout\VehicleTypeItemMVX.axml">
+      <Link>Resources\Layout\VehicleTypeItemMVX.axml</Link>
+    </AndroidResource>
     <AndroidResource Include="..\Android\Resources\Layout\CreditCardListItem.axml">
       <Link>Resources\Layout\CreditCardListItem.axml</Link>
     </AndroidResource>

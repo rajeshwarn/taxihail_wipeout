@@ -870,6 +870,9 @@
     <AndroidResource Include="Resources\Layout\CountryCodeItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\VehicleTypeItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SubView_BookingStatus.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -882,6 +885,9 @@
     <AndroidResource Include="Resources\Layout\CountryCodeItemDropDown.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\VehicleTypeItemDropDown.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\PhoneEditor.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -889,6 +895,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\CountryCodeItemDropDownMVX.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\VehicleTypeItemMVX.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\VehicleTypeItemDropDownMVX.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\PhoneEditorBottom.axml">

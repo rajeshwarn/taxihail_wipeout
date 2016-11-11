@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/HeightEditTextFlat">
+        <TextView
+            android:id="@+id/vehicleTypeDropDownItem"
+            android:layout_marginLeft="5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/HeightEditTextFlat"
+            android:layout_centerVertical="true"
+        	android:gravity="left|center_vertical"
+			android:textSize="20dp"
+            local:MvxBind="Text Name" />
+    </RelativeLayout>
+</LinearLayout>
