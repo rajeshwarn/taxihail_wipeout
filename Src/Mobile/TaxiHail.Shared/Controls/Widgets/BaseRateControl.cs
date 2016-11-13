@@ -62,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				var label = layout.FindViewById<TextView>(labelIds[i]);
 				label.Text = labelTexts[i];
+				_labels.Add(label);
 				var description = layout.FindViewById<TextView>(descriptionIds[i]);
 				_descriptions.Add(description);
 			}
@@ -115,9 +116,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				string.Format (waitTimeText, waitTimeAmount)
 			} : new string[4];
 
+			var revisedNumberOfItems = ServiceType == ServiceType.Taxi ? descriptionsText.Length : descriptionsText.Length - 1;
+
 			for (int i = 0; i < descriptionsText.Length; i++)
 			{
 				_descriptions [i].Text = descriptionsText [i];
+				if (i >= revisedNumberOfItems)
+				{
+					_descriptions[i].Text = String.Empty;
+					_labels[i].Visibility = ViewStates.Invisible;
+				}
+				else
+				{
+					_labels[i].Visibility = ViewStates.Visible;
+				}
 			}
 
 			if (BaseRate == null)

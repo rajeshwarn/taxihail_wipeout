@@ -141,6 +141,8 @@
   <string name="RideSettingsPassengers">Passengers</string>
   <string name="RideSettingsVehiculeType">Taxi Vehicle type</string>
   <string name="RideSettingsLuxuryVehiculeType">Luxury Vehicle type</string>
+  <string name="RideSettingsSelectedVehicleType">Taxi Vehicle type</string>
+  <string name="RideSettingsSelectedLuxuryVehicleType">Luxury Vehicle type</string>
   <string name="RideSettingsEmailTitle">Email</string>
   <string name="RideSettingsCompany">Company</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
@@ -282,7 +284,7 @@
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>
   <string name="PanelMenuViewCallTaxiDispatchText">Call Taxi</string>
-  <string name="PanelMenuViewCallLuxuryDispatchText">Call Dispatch</string>
+  <string name="PanelMenuViewCallLuxuryDispatchText">Call Luxury</string>
   <string name="PanelMenuViewAboutUsText">About Us</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
   <string name="PanelMenuViewSignOutText">Sign Out</string>

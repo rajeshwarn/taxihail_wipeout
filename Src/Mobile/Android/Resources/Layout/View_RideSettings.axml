@@ -156,12 +156,21 @@
                         android:text="@string/RideSettingsVehiculeType"
                         style="@style/BlackTextLabel"
                         local:MvxBind="Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_marginBottom="10dip"
-                        android:contentDescription="@string/RideSettingsVehiculeType"
-                        local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
+                        android:layout_height="@dimen/HeightEditTextFlat">
+                        <MvxSpinner
+                            android:layout_width="fill_parent"
+                            android:layout_gravity="left"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:layout_marginBottom="10dip"
+                            android:background="@drawable/edit_text_flat"
+                            android:contentDescription="@string/RideSettingsSelectedVehicleType"
+                            style="@style/MainTheme"
+                            local:MvxItemTemplate="@layout/vehicletypeitemmvx"
+                            local:MvxDropDownItemTemplate="@layout/vehicletypeitemdropdownmvx"
+                            local:MvxBind="ItemsSource Vehicles; SelectedItem SelectedVehicleTaxi" />
+                    </LinearLayout>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -170,13 +179,22 @@
                         android:text="@string/RideSettingsLuxuryVehiculeType"
                         style="@style/BlackTextLabel"
                         local:MvxBind="Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility" />
-                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:layout_marginBottom="10dip"
-                        android:contentDescription="@string/RideSettingsLuxuryVehiculeType"
-                        local:MvxBind="Text LuxuryVehicleTypeName; Data LuxuryVehicles; SelectedItem LuxuryVehicleTypeId; Visibility IsVehicleTypeSelectionEnabled, Converter=Visibility; Enabled IsVehicleTypeSelectionEnabled" />
-					<TextView
+                        android:layout_height="@dimen/HeightEditTextFlat">
+                        <MvxSpinner
+                            android:layout_width="fill_parent"
+                            android:gravity="left"
+                            android:layout_height="@dimen/HeightEditTextFlat"
+                            android:layout_marginBottom="10dip"
+                            android:background="@drawable/edit_text_flat"
+                            android:contentDescription="@string/RideSettingsSelectedLuxuryVehicleType"
+                            style="@style/MainTheme"
+                            local:MvxItemTemplate="@layout/vehicletypeitemmvx"
+                            local:MvxDropDownItemTemplate="@layout/vehicletypeitemdropdownmvx"
+                            local:MvxBind="ItemsSource LuxuryVehicles; SelectedItem SelectedVehicleLuxury" />
+                    </LinearLayout>
+                    <TextView
                         android:singleLine="true"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
