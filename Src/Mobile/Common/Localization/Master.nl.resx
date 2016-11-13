@@ -1029,7 +1029,10 @@
 	<data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
     	<value>Booking not available for this address</value>
 	</data>
-	<data name="EstimateFareCalculating" xml:space="preserve">
+  <data name="BookingRuleOverrideErrorMessageLuxury" xml:space="preserve">
+    <value>Please call 407-843-2404 for service in this area.</value>
+  </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
 		<value>Berekenen…</value>
 		<comment>Calculating...</comment>
 	</data>
