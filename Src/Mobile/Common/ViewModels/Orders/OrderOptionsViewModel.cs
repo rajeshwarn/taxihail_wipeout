@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private bool _destinationInputDisabled;
 		private bool _vehicleTypeInputDisabled;
 		private bool _canShowRateBox = true;
+		private BookingSettings _bookingSettings;
 
 		private static readonly int TimeBeforeUpdatingEtaWhenNoVehicle = 10;  // In seconds
 		private DateTime? _keepEtaWhenNoVehicleStartTime = null;
@@ -39,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_vehicleService = vehicleService;
 			_vehicleTypeService = vehicleTypeService;
-
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
 					IsDestinationModeOpened = isDestinationModeOpened;
@@ -50,11 +50,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe (_orderWorkflowService.GetAndObserveAddressSelectionMode (), selectionMode => AddressSelectionMode = selectionMode);
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
-			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
+			Observe (_orderWorkflowService.GetAndObserveVehicleTypeTaxi (), vehicleType => VehicleTypeId = vehicleType);
+			Observe (_orderWorkflowService.GetAndObserveVehicleTypeLuxury(), vehicleType => VehicleTypeId = vehicleType);
 			Observe (_orderWorkflowService.GetAndObserveServiceType (), serviceType => ServiceType = serviceType);
 			Observe (_vehicleTypeService.GetAndObserveVehiclesList(), vehicleTypes => VehicleTypesChanged(vehicleTypes)); 
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			Observe (_vehicleService.GetAndObserveAvailableVehicles(), vehicles => _availableVehicles = vehicles);
+			Observe (_orderWorkflowService.GetAndObserveBookingSettings (), bookingSettings => _bookingSettings = bookingSettings);
 		}
 
 		public override void Start()
@@ -140,7 +142,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	    private async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
+
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault ?? false);
+
+			var vehicleProfileDefault = (ServiceType == ServiceType.Taxi)
+			                             ? data.VehiclesList.FirstOrDefault(x => x.Id == _bookingSettings.VehicleTypeId)
+										 : data.VehiclesList.FirstOrDefault(x => x.Id == _bookingSettings.LuxuryVehicleTypeId);
+
+			defaultVehicleType = vehicleProfileDefault ?? defaultVehicleType;
+
 			var defaultId = defaultVehicleType != null
                 ? defaultVehicleType.Id ?? 0
                 : 0;
@@ -179,6 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			set
 			{
 				_serviceType = value;
+
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => SelectedVehicleType);
 			}
@@ -529,7 +540,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					if (!VehicleTypeInputDisabled) 
 					{
 						var vehicle = (GroupVehiclesByServiceType && !model.IsSubMenuSelection)
-							? VehicleTypes.First(x => x.ServiceType == model.VehicleType.ServiceType)
+							? VehicleTypes.First(x => x.ServiceType == model.VehicleType.ServiceType 
+							                     && x.ReferenceDataVehicleId == (model.VehicleType.ServiceType == ServiceType.Taxi 
+							                                                     ? _bookingSettings.VehicleTypeId 
+							                                                     : _bookingSettings.LuxuryVehicleTypeId))
 							: model.VehicleType;
 						ServiceType = vehicle.ServiceType;
 						_orderWorkflowService.SetVehicle(vehicle.ReferenceDataVehicleId, vehicle.ServiceType);

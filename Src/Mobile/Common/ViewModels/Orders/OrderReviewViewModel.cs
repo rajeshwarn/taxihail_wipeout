@@ -10,6 +10,8 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Runtime.CompilerServices;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -86,11 +88,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			var chargeTypes = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 			ChargeType = this.Services().Localize[chargeTypes.First(x => x.Id == settings.ChargeTypeId).Display];
 
-			var vehicle = (await _vehicleTypeService.GetAndObserveVehiclesList().Take(1)).FirstOrDefault(x => x.ReferenceDataVehicleId == settings.VehicleTypeId);
-			if (vehicle != null)
+			var serviceType = (await _orderWorkflowService.GetAndObserveServiceType().Take(1).ToTask());
+			VehicleType vehicle;
+
+			if (serviceType == Common.Enumeration.ServiceType.Taxi)
 			{
-				VehiculeType = vehicle.Name;
+				var taxiVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Taxi && x.ReferenceDataVehicleId == settings.VehicleTypeId).ToArray();
+				var taxi = taxiVehicles.First();
+				vehicle = taxi;
+				Settings.VehicleType = vehicle.Name;
 			}
+			else
+			{
+				var luxuryVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == settings.LuxuryVehicleTypeId).ToArray();
+				var lux = luxuryVehicles.First();
+				vehicle = lux;
+				Settings.LuxuryVehicleType = vehicle.Name;;
+			}
+
+			VehiculeType = vehicle.Name ?? String.Empty;
 		}
 
 		private BookingSettings _settings;

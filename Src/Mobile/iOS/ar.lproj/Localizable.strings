@@ -144,6 +144,8 @@
 "RideSettingsPassengers"="Passengers";
 "RideSettingsVehiculeType"="Vehicle type";
 "RideSettingsLuxuryVehiculeType"="Luxury Vehicle type";
+"VehicleTypeSelectorTitle"="Taxi Vehicle type";
+"LuxuryVehicleTypeSelectorTitle"="Luxury Vehicle type";
 "RideSettingsEmailTitle"="Email";
 "RideSettingsCompany"="Company";
 "HistoryDetailDestinationLabel"="Destination:";

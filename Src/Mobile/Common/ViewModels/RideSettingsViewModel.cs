@@ -199,6 +199,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+
+		public VehicleType SelectedVehicleTaxi
+		{
+			get
+			{
+				return Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == _bookingSettings.VehicleTypeId);
+			}
+			set
+			{
+				_bookingSettings.VehicleTypeId = value.ReferenceDataVehicleId;
+				_bookingSettings.VehicleType = value.Name;
+				RaisePropertyChanged();				
+			}
+
+		}
+
         private VehicleType[] _luxuryVehicles;
 		public VehicleType[] LuxuryVehicles
 		{
@@ -220,6 +236,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public VehicleType SelectedVehicleLuxury
+		{
+			get
+			{
+				return Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == _bookingSettings.LuxuryVehicleTypeId);
+			}
+			set
+			{
+				_bookingSettings.LuxuryVehicleTypeId = value.ReferenceDataVehicleId;
+				_bookingSettings.LuxuryVehicleType = value.Name;
+				RaisePropertyChanged();
+			}
+
+		}
 		public ListItem<Guid>[] VehiclesAsListItems
         {
             get
@@ -628,6 +658,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					        try
 					        {
 								await _accountService.UpdateSettings(_bookingSettings, Email, _accountService.CurrentAccount.DefaultTipPercent);
+								await _orderWorkflowService.UpdateBookingSettingsSubject(_bookingSettings);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }

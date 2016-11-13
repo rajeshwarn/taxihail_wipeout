@@ -329,9 +329,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return Status != null && Status.DriverInfos != null
+				var vehicleType = (Order != null && Order.Settings != null)
+					? (Order.Settings.ServiceType == Common.Enumeration.ServiceType.Taxi ? Order.Settings.VehicleType : Order.Settings.LuxuryVehicleType)
+					: String.Empty;
+				
+				var vehicleInfo = Status != null && Status.DriverInfos != null
 					? Status.DriverInfos.FullVehicleInfo.ToString()
 					: String.Empty;
+
+				if (String.IsNullOrEmpty(vehicleType))
+					return vehicleInfo;
+
+				if (String.IsNullOrEmpty(vehicleInfo))
+					return vehicleType;
+
+				return (vehicleType + " " + vehicleInfo);
 			}
 		}
 

@@ -68,6 +68,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void SetPromoCode(string code);
 
+		Task<bool> UpdateBookingSettingsSubject(BookingSettings bookingSettings);
+
 		Task<double?> GetTipIncentive();
 
 		IObservable<Address> GetAndObservePickupAddress();
@@ -80,7 +82,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IObservable<Airline[]> GetAndObservePOIRefAirlineList();
 
-        IObservable<int?> GetAndObserveVehicleType();
+        IObservable<int?> GetAndObserveVehicleTypeTaxi();
+		IObservable<int?> GetAndObserveVehicleTypeLuxury();
 		IObservable<ServiceType> GetAndObserveServiceType();
 
 		IObservable<BookingSettings> GetAndObserveBookingSettings();

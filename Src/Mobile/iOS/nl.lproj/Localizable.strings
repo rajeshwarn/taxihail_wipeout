@@ -574,7 +574,9 @@
 "RideSettingsPayBack"="Terug Betalen";
 "RideSettingsPhone"="Mobiel";
 "RideSettingsVehiculeType"="Type Voertuig";
-"RideSettingsLuxuryVehiculeType"="Luxury Vehicle type";
+"RideSettingsLuxuryVehiculeType"="Type Voertuig";
+"VehicleTypeSelectorTitle"="Taxi Vehicle type";
+"LuxuryVehicleTypeSelectorTitle"="Luxury Vehicle type";
 "RideSummarySubTitleText"="Dank voor het rijden met {0}, We kijken er naar uit om u nogmaals van dienst te zijn.";
 "RideSummaryTitleText"="Dank u";
 "RingCode"="Toegangscode";

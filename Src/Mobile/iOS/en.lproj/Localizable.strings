@@ -139,6 +139,8 @@
 "RideSettingsPassengers"="Passengers";
 "RideSettingsVehiculeType"="Taxi Vehicle type";
 "RideSettingsLuxuryVehiculeType"="Luxury Vehicle type";
+"VehicleTypeSelectorTitle"="Taxi Vehicle type";
+"LuxuryVehicleTypeSelectorTitle"="Luxury Vehicle type";
 "RideSettingsEmailTitle"="Email";
 "RideSettingsCompany"="Company";
 "HistoryDetailDestinationLabel"="Destination:";
@@ -540,7 +542,7 @@
 "CreditCardBookingSettingsError"="An error occurred when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsGenericError"="An error occurred when updating the booking settings";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
-"MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a vehicle company from this area.";
+"MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
 "MarketChangedMessageTitle"="New service area detected";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
@@ -611,7 +613,7 @@
 "View_RideLinqPair"="Check In";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
 "HomeView_ManualPairing"="In a Vehicle";
-"HomeView_BookTaxi"="Need a Taxi";
+"HomeView_BookTaxi"="Need a Vehicle";
 "RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
@@ -622,7 +624,7 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Unpair"="Unpair";
-"ManualRideLinqStatus_PairingError"="An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.";
+"ManualRideLinqStatus_PairingError"="An error has occurred. Please try to checking again using the code displayed on the vehicle touchscreen.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
@@ -793,11 +795,3 @@
 "NoCreditCard"="No credit card selected";
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
 "RideSettingsLastCreditCardDeletion"="Just a heads up - you'll have to add a credit card the next time you want to e-hail or pay for a vehicle.";
-"EtaLessThanAMinute_Luxury"="Nearest vehicle is less than a minute away";
-"EtaNoTaxiAvailable_Luxury"="Sorry, no vehicles currently available nearby.";
-"Eta_Luxury"="Nearest vehicle is {0} {1} away";
-"HomeView_BookTaxi_Luxury"="Need a vehicle";
-"ManualRideLinqStatus_PairingError_Luxury"="An error has occured. Please try to checkin again using the code displayed on the vehicle touchscreen.";
-"MarketChangedMessage_Luxury"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a company from this area.";
-"ReminderDetails_Luxury"="Reminder: A vehicle will pick you up from {0} at {1} on {2}.";
-"StatusConfirmNewBooking_Luxury"="Booking a new vehicle will keep this order active, do you want to continue ?";

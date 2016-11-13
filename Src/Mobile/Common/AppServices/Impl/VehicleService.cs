@@ -22,7 +22,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	public class VehicleService : BaseService, IVehicleService
 	{
 		private readonly IConnectableObservable<AvailableVehicle[]> _availableVehiclesObservable;
-		private readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
+		private readonly IObservable<AvailableVehicle[]> _availableVehiclesTaxiWhenTypeChangesObservable;
+		private readonly IObservable<AvailableVehicle[]> _availableVehiclesLuxuryWhenTypeChangesObservable;
 		private readonly IObservable<Direction> _etaObservable;
 		private readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 		private readonly IObservable<bool> _isUsingGeoServicesObservable; 
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly IDirections _directions;
 		private readonly IAppSettings _settings;
 		private bool _isStarted;
+		private IOrderWorkflowService _orderWorkFlowService;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
@@ -38,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_directions = directions;
 			_settings = settings;
+			_orderWorkFlowService = orderWorkflowService;
 
 			// having publish and connect fixes the problem that caused the code to be executed 2 times
 			// because there was 2 subscriptions
@@ -52,7 +55,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Select(x => x.address)
 				.SelectMany(async x => 
 					{
-						var vehicleTypeId = await orderWorkflowService.GetAndObserveVehicleType()
+						var vehicleTypeIdTaxi = await orderWorkflowService.GetAndObserveVehicleTypeTaxi()
+							.Take(1)
+							.ToTask()
+							.ConfigureAwait(false);
+
+						var vehicleTypeIdLuxury = await orderWorkflowService.GetAndObserveVehicleTypeLuxury()
+							.Take(1)
+							.ToTask()
+							.ConfigureAwait(false);
+
+						var serviceType = await orderWorkflowService.GetAndObserveServiceType()
+							.Take(1)
+							.ToTask()
+							.ConfigureAwait(false);
+				
+						var vehicleTypeId = (serviceType == ServiceType.Taxi ? vehicleTypeIdTaxi : vehicleTypeIdLuxury);
+
+						return await CheckForAvailableVehicles(x, vehicleTypeId, serviceType).ConfigureAwait(false);
+					})
+				.Publish();
+			_availableVehiclesObservable.Connect ();
+
+			_availableVehiclesTaxiWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleTypeTaxi()
+				.SelectMany(async vehicleTypeId => 
+					{ 
+						var address = await orderWorkflowService.GetAndObservePickupAddress()
 							.Take(1)
 							.ToTask()
 							.ConfigureAwait(false);
@@ -62,14 +90,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 							.ToTask()
 							.ConfigureAwait(false);
 
-						return await CheckForAvailableVehicles(x, vehicleTypeId, serviceType).ConfigureAwait(false);
+						return new { vehicleTypeId, address, serviceType };
 					})
-				.Publish();
-			_availableVehiclesObservable.Connect ();
+				.Where(x => x.address.HasValidCoordinate())
+				.SelectMany(x => CheckForAvailableVehicles(x.address, x.vehicleTypeId, x.serviceType));
 
-			_availableVehiclesWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleType()
-				.SelectMany(async vehicleTypeId => 
-					{ 
+			_availableVehiclesLuxuryWhenTypeChangesObservable = orderWorkflowService.GetAndObserveVehicleTypeLuxury()
+				.SelectMany(async vehicleTypeId =>
+					{
 						var address = await orderWorkflowService.GetAndObservePickupAddress()
 							.Take(1)
 							.ToTask()
@@ -301,12 +329,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
 		{
-			return _availableVehiclesObservable.Merge (_availableVehiclesWhenTypeChangesObservable);
+			//var serviceType = await _orderWorkFlowService.GetAndObserveServiceType()
+			//				.Take(1)
+			//				.ToTask()
+			//				.ConfigureAwait(false);
+
+			return _availableVehiclesObservable.Merge (_availableVehiclesTaxiWhenTypeChangesObservable);
 		}
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehiclesWhenVehicleTypeChanges()
 		{
-			return _availableVehiclesWhenTypeChangesObservable;
+			return _availableVehiclesTaxiWhenTypeChangesObservable;
 		}
 
 		public IObservable<Direction> GetAndObserveEta()
