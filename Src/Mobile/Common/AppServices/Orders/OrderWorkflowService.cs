@@ -727,7 +727,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			var direction = await GetFareEstimate ();
 
-			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
+            var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			if (newCancelToken.IsCancellationRequested) {
 				return;

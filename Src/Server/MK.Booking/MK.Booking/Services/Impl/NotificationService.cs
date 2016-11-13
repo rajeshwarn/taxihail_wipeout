@@ -519,6 +519,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
 
+                _logger.LogMessage(String.Format("showTripSection = hasDriverInfo = {0}", hasDriverInfo.ToString()));
+
                 var showMinimalDriverInfo = !hasDriverInfo && cmtRideLinqFields != null;
                 var showTripSection = hasDriverInfo || cmtRideLinqFields != null;
                 var paymentAmount = string.Empty;
