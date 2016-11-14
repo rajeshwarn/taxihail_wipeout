@@ -226,6 +226,7 @@
 "ErrorCreatingOrderTitle"="Boeking kan niet worden voltooid";
 "EstimatedFareNotAvailable"="Geschatte tarief is niet beschikbaar";
 "BookingRuleOverrideErrorMessage"="Booking not available for this address";
+"BookingRuleOverrideErrorMessageLuxury"="Please call 407-843-2404 for service in this area.";
 "EstimateFareCalculating"="Berekenen…";
 "EstimatePriceFormat"="Geschatte tarief : {0} ({1})";
 "EstimatePriceOver100"="Bel voor het tarief";

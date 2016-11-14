@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {
         Task<DirectionInfo> GetFareEstimate(CreateOrderRequest order);
 
-        string GetFareEstimateDisplay(DirectionInfo direction);
+        string GetFareEstimateDisplay(DirectionInfo direction, ServiceType serviceType);
 
         bool IsStatusCompleted(OrderStatusDetail status);
 
