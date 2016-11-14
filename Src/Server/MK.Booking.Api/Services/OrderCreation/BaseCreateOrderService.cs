@@ -336,7 +336,6 @@ namespace apcurium.MK.Booking.Api.Services.OrderCreation
             orderCommand.Market = market;
             orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
-            //orderCommand.Settings.VehicleType = vehicleType;
             orderCommand.IbsAccountId = account.IBSAccountId.Value;
             orderCommand.ReferenceDataCompanyList = referenceData.CompaniesList.ToArray();
             orderCommand.IbsInformationNote = ibsInformationNote;

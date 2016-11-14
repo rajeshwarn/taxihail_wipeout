@@ -287,11 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				//if (_bookingSettings.ServiceType == ServiceType.Taxi)
-				//{
-					return _bookingSettings.VehicleTypeId;
-				//}
-				//return null;
+				return _bookingSettings.VehicleTypeId;
             }
             set
             {
@@ -310,11 +306,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				//if (_bookingSettings.ServiceType == ServiceType.Luxury)
-				//{
-					return _bookingSettings.LuxuryVehicleTypeId;
-				//}
-				//return null;
+				return _bookingSettings.LuxuryVehicleTypeId;
 			}
 			set
 			{
