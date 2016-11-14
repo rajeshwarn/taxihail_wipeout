@@ -329,11 +329,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public IObservable<AvailableVehicle[]> GetAndObserveAvailableVehicles()
 		{
-			//var serviceType = await _orderWorkFlowService.GetAndObserveServiceType()
-			//				.Take(1)
-			//				.ToTask()
-			//				.ConfigureAwait(false);
-
 			return _availableVehiclesObservable.Merge (_availableVehiclesTaxiWhenTypeChangesObservable);
 		}
 

@@ -43,10 +43,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    OrderId = id;
 		    using (this.Services().Message.ShowProgress ())
 		    {
-				await LoadStatus();
 		        await LoadOrder();
-				//LoadOrder().Wait();
-				//Task.Delay(1000).Wait();
+				await LoadStatus();
 		        RaisePropertyChanged(() => StatusDescription); 
 		    }
 		}

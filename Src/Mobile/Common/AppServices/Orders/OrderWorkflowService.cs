@@ -350,7 +350,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
-				//UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId, order.Settings.ServiceType);	
+				// This next line was overwritting the account settings profile values with the latest selection, need to confirm this was not desired.
+				//UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId, order.Settings.ServiceType);
+
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
 				_deviceCollectorService.GenerateNewSessionIdAndCollect();
@@ -425,10 +427,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             await SetBookingSettings (bookingSettings);
 
-//			if (serviceTypeChanged)
-			//{
-				await CalculateEstimatedFare();
-			//}
+			await CalculateEstimatedFare();
+
 		}
 
 		private async Task<bool> ChangeServiceTypeIfNecessary(ServiceType nextServiceType)
@@ -442,16 +442,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			return wasChanged;
 		}
-//
-//		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
-//		{ 
-//			var vehicleTypes = await _accountService.GetVehiclesList();
-//			var vehicleType = vehicleTypes
-//				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
-//
-//			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
-//		}
-//
+
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
 		{
 			// Get the vehicle type selected on the home screen and put them in the 
@@ -522,8 +513,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				await SetVehicle(bookingSettings.LuxuryVehicleTypeId, bookingSettings.ServiceType);
 			}
 			return true;
-			//_vehicleTypeSubjectTaxi.OnNext(bookingSettings.VehicleTypeId);
-			//_vehicleTypeSubjectLuxury.OnNext(bookingSettings.LuxuryVehicleTypeId);
 		}
 
 		public async Task SetPickupAptAndRingCode(string apt, string ringCode)
