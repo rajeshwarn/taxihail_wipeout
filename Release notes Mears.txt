@@ -184,9 +184,10 @@ Still outstanding
 	Assigned to Kalyan
 	In Development
 
-
-
-
-
-
-	
+0.5.12 
+	Monday November 14, 2016
+	TAX-221 Waiting time line was still present on android for Luxury service
+	TAX-223 Multiple profile settings for Luxury and Taxi fleet vehicle types
+	TAX-224 Operations would like the message on the pulldown tab (where “Calculating…” appears) to read 
+	“Please call 407-843-2404 for service in this area.” when booking rules are applicable for luxury service. 
+	"Booking not available for this address" when booking rules are applicable for luxury service. 
