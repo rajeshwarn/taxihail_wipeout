@@ -198,6 +198,7 @@
 "NotAvailable"="N/A";
 "EstimatedFareNotAvailable"="Estimated fare not available";
 "BookingRuleOverrideErrorMessage"="Booking not available for this address";
+"BookingRuleOverrideErrorMessageLuxury"="Please call 407-843-2404 for service in this area.";
 "InvalidEmailTitle"="Invalid email";
 "InvalidEmailMessage"="The email is invalid.";
 "Create"="Create";

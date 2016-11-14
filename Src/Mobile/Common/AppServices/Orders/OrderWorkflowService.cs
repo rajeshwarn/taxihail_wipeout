@@ -794,8 +794,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
 			var direction = await GetFareEstimate ();
+			var currentServiceType = await _serviceTypeSubject.Take(1).ToTask();
 
-            var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
+            var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction, currentServiceType);
 
 			if (newCancelToken.IsCancellationRequested) {
 				return;
@@ -1145,8 +1146,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _tipIncentiveSubject.OnNext(previous.TipIncentive);
 
 			_serviceTypeSubject.OnNext(previous.Settings.ServiceType);
-			_vehicleTypeSubjectTaxi.OnNext(previous.Settings.VehicleTypeId);
-			_vehicleTypeSubjectLuxury.OnNext(previous.Settings.LuxuryVehicleTypeId);
+			if(previous.Settings.ServiceType == ServiceType.Taxi)
+			{
+				_vehicleTypeSubjectTaxi.OnNext(previous.Settings.VehicleTypeId);	
+			}
+			else 
+			{
+				_vehicleTypeSubjectLuxury.OnNext(previous.Settings.LuxuryVehicleTypeId);
+			}
 
 			await SetVehicle(previous.Settings.ServiceType == ServiceType.Taxi
 							 ? previous.Settings.VehicleTypeId
