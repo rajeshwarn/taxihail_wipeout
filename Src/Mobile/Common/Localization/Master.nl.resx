@@ -1029,7 +1029,10 @@
 	<data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
     	<value>Booking not available for this address</value>
 	</data>
-	<data name="EstimateFareCalculating" xml:space="preserve">
+  <data name="BookingRuleOverrideErrorMessageLuxury" xml:space="preserve">
+    <value>Please call 407-843-2404 for service in this area.</value>
+  </data>
+  <data name="EstimateFareCalculating" xml:space="preserve">
 		<value>Berekenen…</value>
 		<comment>Calculating...</comment>
 	</data>
@@ -2420,6 +2423,16 @@
 		<value>Type Voertuig</value>
 		<comment>Vehicle type</comment>
 	</data>
+    <data name="RideSettingsLuxuryVehiculeType" xml:space="preserve">
+		<value>Type Voertuig</value>
+    	<comment>Luxury Vehicle type</comment>
+	</data>	
+    <data name="VehicleTypeSelectorTitle" xml:space="preserve">
+      <value>Taxi Vehicle type</value>
+    </data>
+    <data name="LuxuryVehicleTypeSelectorTitle" xml:space="preserve">
+      <value>Luxury Vehicle type</value>
+    </data>
 	<data name="RideSummarySubTitleText" xml:space="preserve">
 		<value>Dank voor het rijden met {0}, We kijken er naar uit om u nogmaals van dienst te zijn.</value>
 		<comment>Thank you for riding with {0}, we look forward to serving you again soon.</comment>

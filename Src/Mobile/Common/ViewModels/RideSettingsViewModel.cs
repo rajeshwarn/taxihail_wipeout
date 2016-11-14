@@ -16,6 +16,7 @@ using MK.Common.Exceptions;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -91,15 +92,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					RaisePropertyChanged(() => SelectedCountryCode); 
 
 					// this should be called last since it calls the server, we don't want to slow down other controls
-					_vehicles = (await _accountService.GetVehiclesList()).ToArray();
+					_vehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Taxi).ToArray();
+					_luxuryVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Luxury).ToArray();
 
 					RaisePropertyChanged(() => Vehicles);
 					RaisePropertyChanged(() => VehiclesAsListItems);
 					RaisePropertyChanged(() => VehicleTypeId);
 					RaisePropertyChanged(() => VehicleTypeName);
+					RaisePropertyChanged(() => LuxuryVehicles);
+					RaisePropertyChanged(() => LuxuryVehiclesAsListItems);
 					RaisePropertyChanged(() => LuxuryVehicleTypeId);
 					RaisePropertyChanged(() => LuxuryVehicleTypeName);
-					RaisePropertyChanged(() => LuxuryVehicles);
 				}
 			    catch (Exception ex)
 			    {
@@ -196,26 +199,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+
+		public VehicleType SelectedVehicleTaxi
+		{
+			get
+			{
+				return Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == _bookingSettings.VehicleTypeId);
+			}
+			set
+			{
+				_bookingSettings.VehicleTypeId = value.ReferenceDataVehicleId;
+				_bookingSettings.VehicleType = value.Name;
+				RaisePropertyChanged();				
+			}
+
+		}
+
+        private VehicleType[] _luxuryVehicles;
 		public VehicleType[] LuxuryVehicles
 		{
 			get
 			{
 				if (IsVehicleTypeSelectionEnabled)
 				{
-					var luxuryVehicle = _vehicles.FirstOrDefault(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == _bookingSettings.LuxuryVehicleTypeId);
+					var luxuryVehicle = _luxuryVehicles.FirstOrDefault(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == _bookingSettings.LuxuryVehicleTypeId);
 
 					if (luxuryVehicle == null)
 					{
-						luxuryVehicle = _vehicles.First();
+						luxuryVehicle = _luxuryVehicles.First();
 					}
 
-					VehicleId = luxuryVehicle.Id;
+					LuxuryVehicleId = luxuryVehicle.Id;
 				}
 
-				return _vehicles;
+				return _luxuryVehicles;
 			}
 		}
 
+		public VehicleType SelectedVehicleLuxury
+		{
+			get
+			{
+				return Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == _bookingSettings.LuxuryVehicleTypeId);
+			}
+			set
+			{
+				_bookingSettings.LuxuryVehicleTypeId = value.ReferenceDataVehicleId;
+				_bookingSettings.LuxuryVehicleType = value.Name;
+				RaisePropertyChanged();
+			}
+
+		}
 		public ListItem<Guid>[] VehiclesAsListItems
         {
             get
@@ -223,6 +257,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return (_vehicles ?? new VehicleType[0]).Select(x => new ListItem<Guid> { Id = x.Id, Display = x.Name }).ToArray();
             }
         }
+
+		public ListItem<Guid>[] LuxuryVehiclesAsListItems
+		{
+			get
+			{
+				return (_luxuryVehicles ?? new VehicleType[0]).Select(x => new ListItem<Guid> { Id = x.Id, Display = x.Name }).ToArray();
+			}
+		}
 
 		private ListItem[] _payments;
 	    private bool _isChargeTypesEnabled;
@@ -245,19 +287,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				if (_bookingSettings.ServiceType == ServiceType.Taxi)
-				{
-					return _bookingSettings.VehicleTypeId;
-				}
-				return null;
+				return _bookingSettings.VehicleTypeId;
             }
             set
             {
+				_bookingSettings.VehicleTypeId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => VehicleTypeName);
 				if (_bookingSettings.ServiceType == ServiceType.Taxi)
 				{
-					_bookingSettings.VehicleTypeId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => VehicleTypeName);
 					_orderWorkflowService.SetVehicle (value, ServiceType);
 				}
             }
@@ -268,19 +306,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				if (_bookingSettings.ServiceType == ServiceType.Luxury)
-				{
-					return _bookingSettings.LuxuryVehicleTypeId;
-				}
-				return null;
+				return _bookingSettings.LuxuryVehicleTypeId;
 			}
 			set
 			{
+				_bookingSettings.LuxuryVehicleTypeId = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => LuxuryVehicleTypeName);
 				if (_bookingSettings.ServiceType == ServiceType.Luxury)
 				{
-					_bookingSettings.LuxuryVehicleTypeId = value;
-					RaisePropertyChanged();
-					RaisePropertyChanged(() => LuxuryVehicleTypeName);
 					_orderWorkflowService.SetVehicle(value, ServiceType);
 				}
 			}
@@ -298,7 +332,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleTypeName);
 				RaisePropertyChanged(() => LuxuryVehicleTypeName);
-				_orderWorkflowService.SetVehicle (VehicleTypeId, value);
+				_orderWorkflowService.SetVehicle((ServiceType == ServiceType.Taxi 
+				                                  ? VehicleTypeId 
+				                                  : LuxuryVehicleTypeId),
+				                                 value);
 			}
 		}
 
@@ -316,7 +353,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     return null;
                 }
 
-				var vehicle = Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId && x.ServiceType == ServiceType);
+				var vehicle = Vehicles.FirstOrDefault(x => x.ReferenceDataVehicleId == VehicleTypeId && x.ServiceType == ServiceType.Taxi);
 				if (vehicle == null)
 				{
 					vehicle = Vehicles.FirstOrDefault();
@@ -541,7 +578,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public ICommand SetLuxuryVehicleType
+		{
+			get
+			{
+				return this.GetCommand<Guid>(id =>
+			   {
+				   LuxuryVehicleId = id;
+				   var luxuryVehicle = LuxuryVehicles.FirstOrDefault(x => x.Id == id) ?? LuxuryVehicles.FirstOrDefault();
+				   if (luxuryVehicle != null)
+				   {
+					   LuxuryVehicleTypeId = luxuryVehicle.ReferenceDataVehicleId;
+					   ServiceType = luxuryVehicle.ServiceType;
+				   }
+			   });
+			}
+		}
+
+
 		public Guid VehicleId  { get; set; }
+		public Guid LuxuryVehicleId { get; set; }
 
 		public ICommand NavigateToUpdatePassword
         {
@@ -594,6 +650,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					        try
 					        {
 								await _accountService.UpdateSettings(_bookingSettings, Email, _accountService.CurrentAccount.DefaultTipPercent);
+								await _orderWorkflowService.UpdateBookingSettingsSubject(_bookingSettings);
 					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
 					            Close(this);
 					        }

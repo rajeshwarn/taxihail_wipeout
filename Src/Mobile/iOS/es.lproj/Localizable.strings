@@ -142,6 +142,9 @@
 "RideSettingsPhone"="Mobile";
 "RideSettingsPassengers"="Passengers";
 "RideSettingsVehiculeType"="Vehicle type";
+"RideSettingsLuxuryVehiculeType"="Luxury Vehicle type";
+"VehicleTypeSelectorTitle"="Taxi Vehicle type";
+"LuxuryVehicleTypeSelectorTitle"="Luxury Vehicle type";
 "RideSettingsEmailTitle"="Email";
 "RideSettingsCompany"="Company";
 "HistoryDetailDestinationLabel"="Destination:";
@@ -194,6 +197,7 @@
 "NotAvailable"="N/A";
 "EstimatedFareNotAvailable"="Estimated fare not available";
 "BookingRuleOverrideErrorMessage"="Booking not available for this address";
+"BookingRuleOverrideErrorMessageLuxury"="Please call 407-843-2404 for service in this area.";
 "InvalidEmailTitle"="Invalid email";
 "InvalidEmailMessage"="The email is invalid.";
 "Create"="Create";

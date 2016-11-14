@@ -47,8 +47,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
-		readonly ISubject<int?> _vehicleTypeSubject;
-        readonly ISubject<BookingSettings> _bookingSettingsSubject;
+		readonly ISubject<int?> _vehicleTypeSubjectTaxi;
+		readonly ISubject<int?> _vehicleTypeSubjectLuxury;
+		readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<ServiceType> _serviceTypeSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
 		readonly ISubject<OrderValidationResult> _orderValidationResultSubject = 
@@ -121,17 +122,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			_serviceTypeSubject = new BehaviorSubject<ServiceType>(serviceType);
 
-            var vehicleTypeId =
+            var vehicleTypeIdTaxi =
                 _appSettings.Data.VehicleTypeSelectionEnabled
                 ? _accountService.CurrentAccount.Settings.VehicleTypeId
                 : null;
 
-            _vehicleTypeSubject = new BehaviorSubject<int?>(vehicleTypeId);
+			var vehicleTypeIdLuxury =
+				_appSettings.Data.VehicleTypeSelectionEnabled
+				? _accountService.CurrentAccount.Settings.LuxuryVehicleTypeId
+				: null;
+
+            _vehicleTypeSubjectTaxi = new BehaviorSubject<int?>(vehicleTypeIdTaxi);
+			_vehicleTypeSubjectLuxury = new BehaviorSubject<int?>(vehicleTypeIdLuxury);
 
             Observe(_networkRoamingService.GetAndObserveMarketSettings(), marketSettings => MarketChanged(marketSettings).FireAndForget());
             Observe(_vehicleTypeService.GetAndObserveVehiclesList(), vehiclesList => PreselectDefaultVehicleType(vehiclesList));
 
-            SetVehicle(vehicleTypeId, serviceType);
+			SetVehicle((serviceType == ServiceType.Taxi) 
+				           ? vehicleTypeIdTaxi 
+				           : vehicleTypeIdLuxury, 
+				           serviceType);
+
 
         }
 
@@ -228,11 +239,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
 		{
-			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
+			var serviceType = await _serviceTypeSubject.Take(1).ToTask();
+			var vehicleTypeIdTaxi = await _vehicleTypeSubjectTaxi.Take(1).ToTask();
+			var vehicleTypeIdLuxury = await _vehicleTypeSubjectLuxury.Take(1).ToTask();
 			var vehicleTypes = await _vehicleTypeService.GetAndObserveVehiclesList().Take(1).ToTask();
 			var data = await _accountService.GetReferenceData();
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
+
+			var vehicleTypeId = (serviceType == ServiceType.Taxi ? vehicleTypeIdTaxi : vehicleTypeIdLuxury);
 
 			if (vehicleTypeId == null
 				&& defaultVehicleType != null)
@@ -335,7 +350,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					PromoCode = order.PromoCode
 				};
 
-				UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId, order.Settings.ServiceType);	
+				// This next line was overwritting the account settings profile values with the latest selection, need to confirm this was not desired.
+				//UpdateAccountSettingsWithVehicleTypeAndServiceType (order.Settings.VehicleTypeId, order.Settings.ServiceType);
+
 				Logger.LogMessage("Order created: ID [" + orderCreated.Id + "], IBS ID [" + orderStatus.IBSOrderId + "]");
 
 				_deviceCollectorService.GenerateNewSessionIdAndCollect();
@@ -378,25 +395,40 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task SetVehicle(int? vehicleTypeId, ServiceType serviceType)
 		{
             // this must be done before changing vehicleTypeSubject because of VehicleService observables
-
-//            var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
+			// var serviceTypeChanged = await ChangeServiceTypeIfNecessary(serviceType);
             
             if (_appSettings.Data.VehicleTypeSelectionEnabled)
 			{
 				_serviceTypeSubject.OnNext(serviceType); // May be removed
-				_vehicleTypeSubject.OnNext(vehicleTypeId);
+				if (serviceType == ServiceType.Taxi)
+					_vehicleTypeSubjectTaxi.OnNext(vehicleTypeId);
+				else
+					_vehicleTypeSubjectLuxury.OnNext(vehicleTypeId);
 			}
 
 			var bookingSettings = await _bookingSettingsSubject.Take (1).ToTask ();
-			bookingSettings.VehicleTypeId = vehicleTypeId;
             bookingSettings.ServiceType = serviceType;
+
+			if (serviceType == ServiceType.Taxi)
+			{
+				bookingSettings.VehicleTypeId = vehicleTypeId;
+				var taxiVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Taxi && x.ReferenceDataVehicleId == vehicleTypeId).ToArray();
+				var taxi = taxiVehicles.First();
+				bookingSettings.VehicleType = taxi.Name;
+
+			}
+			else
+			{
+				bookingSettings.LuxuryVehicleTypeId = vehicleTypeId;
+				var luxuryVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == vehicleTypeId).ToArray();
+				var lux = luxuryVehicles.First();
+				bookingSettings.LuxuryVehicleType = lux.Name;
+			}
 
             await SetBookingSettings (bookingSettings);
 
-//			if (serviceTypeChanged)
-			{
-				await CalculateEstimatedFare();
-			}
+			await CalculateEstimatedFare();
+
 		}
 
 		private async Task<bool> ChangeServiceTypeIfNecessary(ServiceType nextServiceType)
@@ -410,25 +442,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			return wasChanged;
 		}
-//
-//		public async Task<ServiceType> GetServiceTypeForVehicleId (int? vehicleTypeId)
-//		{ 
-//			var vehicleTypes = await _accountService.GetVehiclesList();
-//			var vehicleType = vehicleTypes
-//				.FirstOrDefault(x => x.ReferenceDataVehicleId == vehicleTypeId);
-//
-//			return vehicleType != null ? vehicleType.ServiceType : ServiceType.Taxi;
-//		}
-//
+
 		public async Task SetBookingSettings(BookingSettings bookingSettings)
 		{
 			// Get the vehicle type selected on the home screen and put them in the 
 			// bookingsettings to prevent the default vehicle type to override the selected value
-			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
-			bookingSettings.VehicleTypeId = vehicleTypeId;
             
             var serviceType = await _serviceTypeSubject.Take(1).ToTask ();
             bookingSettings.ServiceType = serviceType;
+
+			if (serviceType == Common.Enumeration.ServiceType.Taxi)
+			{
+				var vehicleTypeIdTaxi = await _vehicleTypeSubjectTaxi.Take(1).ToTask();
+				bookingSettings.VehicleTypeId = vehicleTypeIdTaxi;
+				var taxiVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Taxi && x.ReferenceDataVehicleId == vehicleTypeIdTaxi).ToArray();
+				var taxi = taxiVehicles.First();
+				bookingSettings.VehicleType = taxi.Name;
+			}
+			else
+			{
+				var vehicleTypeIdLuxury = await _vehicleTypeSubjectLuxury.Take(1).ToTask();
+				bookingSettings.LuxuryVehicleTypeId = vehicleTypeIdLuxury;
+				var luxuryVehicles = (await _accountService.GetVehiclesList()).Where(x => x.ServiceType == ServiceType.Luxury && x.ReferenceDataVehicleId == vehicleTypeIdLuxury).ToArray();
+				var lux = luxuryVehicles.First();
+				bookingSettings.LuxuryVehicleType = lux.Name; ;
+			}
 
 			var paymentList = await _accountService.GetAndObservePaymentsList().Take(1).ToTask();
 
@@ -461,6 +499,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_cacheService.Set ("ServiceTypeForProgressAnimation", serviceType.ToString());
 
 			_bookingSettingsSubject.OnNext(bookingSettings);
+		}
+
+		public async Task<bool> UpdateBookingSettingsSubject(BookingSettings bookingSettings)
+		{
+			_bookingSettingsSubject.OnNext(bookingSettings);
+			if (bookingSettings.ServiceType == ServiceType.Taxi)
+			{
+				await SetVehicle(bookingSettings.VehicleTypeId, bookingSettings.ServiceType);
+			}
+			else
+			{
+				await SetVehicle(bookingSettings.LuxuryVehicleTypeId, bookingSettings.ServiceType);
+			}
+			return true;
 		}
 
 		public async Task SetPickupAptAndRingCode(string apt, string ringCode)
@@ -597,9 +649,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public IObservable<int?> GetAndObserveVehicleType()
+		public IObservable<int?> GetAndObserveVehicleTypeTaxi()
 		{
-			return _vehicleTypeSubject;
+			return _vehicleTypeSubjectTaxi;
+		}
+
+		public IObservable<int?> GetAndObserveVehicleTypeLuxury()
+		{
+			return _vehicleTypeSubjectLuxury;
 		}
 
 		public IObservable<ServiceType> GetAndObserveServiceType()
@@ -726,8 +783,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
 			var direction = await GetFareEstimate ();
+			var currentServiceType = await _serviceTypeSubject.Take(1).ToTask();
 
-			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
+            var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction, currentServiceType);
 
 			if (newCancelToken.IsCancellationRequested) {
 				return;
@@ -1075,7 +1133,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingSettingsSubject.OnNext(previous.Settings);
             _noteToDriverSubject.OnNext(previous.Note);
             _tipIncentiveSubject.OnNext(previous.TipIncentive);
-            await CalculateEstimatedFare();
+
+			_serviceTypeSubject.OnNext(previous.Settings.ServiceType);
+			if(previous.Settings.ServiceType == ServiceType.Taxi)
+			{
+				_vehicleTypeSubjectTaxi.OnNext(previous.Settings.VehicleTypeId);	
+			}
+			else 
+			{
+				_vehicleTypeSubjectLuxury.OnNext(previous.Settings.LuxuryVehicleTypeId);
+			}
+
+			await SetVehicle(previous.Settings.ServiceType == ServiceType.Taxi
+							 ? previous.Settings.VehicleTypeId
+							 : previous.Settings.LuxuryVehicleTypeId,
+							 previous.Settings.ServiceType);
+			
+			//await CalculateEstimatedFare();
 		}
 
         public bool IsOrderRebooked()
@@ -1099,7 +1173,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				if (_marketSettings.IsLocalMarket)
 				{
-					matchingVehicle = vehicleList.FirstOrDefault (v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
+					matchingVehicle = vehicleList.FirstOrDefault (v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.LuxuryVehicleTypeId);
 				}
 				 
 				matchingVehicle = matchingVehicle ?? vehicleList.FirstOrDefault ();

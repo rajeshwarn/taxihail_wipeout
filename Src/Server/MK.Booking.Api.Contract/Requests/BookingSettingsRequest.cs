@@ -29,6 +29,12 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public int? VehicleTypeId { get; set; }
 
+        public string VehicleType { get; set; }
+
+		public int? LuxuryVehicleTypeId { get; set; }
+
+        public string LuxuryVehicleType { get; set;  }
+
 		public ServiceType ServiceType { get; set; }
 
         public int? ChargeTypeId { get; set; }

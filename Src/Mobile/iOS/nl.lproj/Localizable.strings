@@ -226,6 +226,7 @@
 "ErrorCreatingOrderTitle"="Boeking kan niet worden voltooid";
 "EstimatedFareNotAvailable"="Geschatte tarief is niet beschikbaar";
 "BookingRuleOverrideErrorMessage"="Booking not available for this address";
+"BookingRuleOverrideErrorMessageLuxury"="Please call 407-843-2404 for service in this area.";
 "EstimateFareCalculating"="Berekenen…";
 "EstimatePriceFormat"="Geschatte tarief : {0} ({1})";
 "EstimatePriceOver100"="Bel voor het tarief";
@@ -574,6 +575,9 @@
 "RideSettingsPayBack"="Terug Betalen";
 "RideSettingsPhone"="Mobiel";
 "RideSettingsVehiculeType"="Type Voertuig";
+"RideSettingsLuxuryVehiculeType"="Type Voertuig";
+"VehicleTypeSelectorTitle"="Taxi Vehicle type";
+"LuxuryVehicleTypeSelectorTitle"="Luxury Vehicle type";
 "RideSummarySubTitleText"="Dank voor het rijden met {0}, We kijken er naar uit om u nogmaals van dienst te zijn.";
 "RideSummaryTitleText"="Dank u";
 "RingCode"="Toegangscode";

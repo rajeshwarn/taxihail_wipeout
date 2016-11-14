@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 lblVehicleType.RemoveFromSuperview();
                 txtVehicleType.RemoveFromSuperview();
+				lblLuxuryVehicleType.RemoveFromSuperview();
+				txtLuxuryVehicleType.RemoveFromSuperview();
             }
 
             if (!ViewModel.IsLinkedWithFacebook)
@@ -61,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblEmailTitle.Text = Localize.GetValue("RideSettingsEmailTitle");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
-            lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
+            lblLuxuryVehicleType.Text = Localize.GetValue("RideSettingsLuxuryVehiculeType");
+			lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
             lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
@@ -81,7 +84,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtVehicleType.Placeholder = Localize.GetValue("RideSettingsVehiculeType");
             txtVehicleType.AccessibilityLabel = txtVehicleType.Placeholder;
 
-            txtChargeType.Placeholder = Localize.GetValue("RideSettingsChargeType");
+            txtLuxuryVehicleType.Placeholder = Localize.GetValue("RideSettingsLuxuryVehiculeType");
+			txtLuxuryVehicleType.AccessibilityLabel = txtLuxuryVehicleType.Placeholder;
+
+			txtChargeType.Placeholder = Localize.GetValue("RideSettingsChargeType");
             txtChargeType.AccessibilityLabel = txtChargeType.Placeholder;
 
             txtPassword.Placeholder = Localize.GetValue("RideSettingsPassword");
@@ -118,7 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtPayBack.ShowCloseButtonOnKeyboard();
 
 			txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.VehiclesAsListItems, () => ViewModel.VehicleId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
-            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
+			txtLuxuryVehicleType.Configure(Localize.GetValue("RideSettingsLuxuryVehiculeType"), () => ViewModel.LuxuryVehiclesAsListItems, () => ViewModel.LuxuryVehicleId, x => ViewModel.SetLuxuryVehicleType.ExecuteIfPossible(x.Id));
+			txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
@@ -148,6 +155,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(txtVehicleType)
                 .For(v => v.Text)
 				.To(vm => vm.VehicleTypeName);
+
+            set.Bind(txtLuxuryVehicleType)
+				.For(v => v.Text)
+			    .To(vm => vm.LuxuryVehicleTypeName);
 
 			set.Bind (txtChargeType)
                 .For (v => v.Text)

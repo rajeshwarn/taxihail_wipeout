@@ -546,6 +546,15 @@
   <data name="RideSettingsVehiculeType" xml:space="preserve">
     <value>Vehicle type</value>
   </data>
+  <data name="RideSettingsLuxuryVehiculeType" xml:space="preserve">
+    <value>Luxury Vehicle type</value>
+  </data>	
+    <data name="VehicleTypeSelectorTitle" xml:space="preserve">
+    <value>Taxi Vehicle type</value>
+  </data>
+  <data name="LuxuryVehicleTypeSelectorTitle" xml:space="preserve">
+    <value>Luxury Vehicle type</value>
+  </data>
   <data name="RideSettingsEmailTitle" xml:space="preserve">
     <value>Email</value>
   </data>
@@ -701,6 +710,9 @@
   </data>
   <data name="BookingRuleOverrideErrorMessage" xml:space="preserve">
     <value>Booking not available for this address</value>
+  </data>
+  <data name="BookingRuleOverrideErrorMessageLuxury" xml:space="preserve">
+    <value>Please call 407-843-2404 for service in this area.</value>
   </data>
   <data name="InvalidEmailTitle" xml:space="preserve">
     <value>Invalid email</value>

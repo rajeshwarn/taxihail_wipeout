@@ -335,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new DirectionInfo() { ValidationResult = validationResult };
         }
 
-        public string GetFareEstimateDisplay(DirectionInfo direction)
+        public string GetFareEstimateDisplay(DirectionInfo direction, ServiceType serviceType)
         {
             var fareEstimate = _localize[_appSettings.Data.DestinationIsRequired
                 ? "NoFareTextIfDestinationIsRequired"
@@ -346,8 +346,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 				// TAX-224, since some rule messages are too long, always display a canned error message
 				fareEstimate  = _appSettings.Data.OverrideBookingRuleErrorMessage 
-								? _localize["BookingRuleOverrideErrorMessage"]
-								: direction.ValidationResult.Message;
+								? (serviceType == ServiceType.Taxi) ? _localize["BookingRuleOverrideErrorMessage"] : _localize["BookingRuleOverrideErrorMessageLuxury"]
+                                : direction.ValidationResult.Message;
 				
             }
             else if (direction.Distance.HasValue)

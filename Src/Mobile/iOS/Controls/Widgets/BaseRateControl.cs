@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				ToCurrency (BaseRate.BaseRateNoMiles), 
 				string.Format (mileageRateText, ToCurrency (BaseRate.PerMileRate), mileageRateAmount),
 				string.Format (waitTimeText, waitTimeAmount)
-			} : new string[5];
+			} : new string[4];
 
 			var revisedNumberOfItems = ServiceType == ServiceType.Taxi ? NumberOfItems : NumberOfItems - 1;
 
